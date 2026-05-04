@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบบันทึกเงินเดือน & ประเมินภาษี</title>
+    <title>ระบบบันทึกเงินเดือน & ประเมินภาษี (Cloud Sync)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -50,12 +50,25 @@
         .year-label { font-weight: 700; color: #334155; }
         
         #appSection { display: none; }
+        #loadingOverlay { display: none; text-align: center; color: #3b82f6; font-weight: bold; margin-bottom: 15px; }
 
         @media (max-width: 768px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-            .container { padding: 20px; }
-            h1 { font-size: 1.5rem; }
-            #userBar { flex-direction: column; text-align: center; }
+            body { padding: 10px; }
+            .container { padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+            h1 { font-size: 1.4rem; margin-bottom: 15px; }
+            #userBar { flex-direction: column; text-align: center; gap: 12px; padding: 15px; }
+            #userBar div { width: 100%; justify-content: center; }
+            #displayYear { width: 100% !important; max-width: 200px; }
+            .dashboard-container { grid-template-columns: 1fr; gap: 15px; margin-top: 20px; margin-bottom: 20px; }
+            .card { padding: 15px; border-radius: 16px; }
+            .chart-wrapper { height: 200px; }
+            .tax-row { font-size: 0.9rem; flex-wrap: wrap; }
+            .tax-total { flex-direction: column; align-items: center; gap: 8px; text-align: center; font-size: 1.1rem; }
+            .input-grid { grid-template-columns: 1fr; padding: 15px !important; gap: 15px; }
+            .ot-header { margin-top: 5px; font-size: 1rem; }
+            th, td { padding: 10px; font-size: 0.9rem; }
+            .btn { padding: 12px; font-size: 1rem; }
+            .btn-logout { margin-top: 30px; }
         }
     </style>
 </head>
@@ -63,8 +76,8 @@
 
     <div id="authSection" class="auth-section container">
         <h2 id="authTitle">🔐 เข้าสู่ระบบ</h2>
-        <div class="form-group"><label>👤 Username</label><input type="text" id="username"></div>
-        <div class="form-group"><label>🔑 Password</label><input type="password" id="password"></div>
+        <div class="form-group"><label>📧 Email</label><input type="email" id="email" placeholder="example@mail.com"></div>
+        <div class="form-group"><label>🔑 Password</label><input type="password" id="password" placeholder="รหัสผ่าน 6 ตัวขึ้นไป"></div>
         <button id="authBtn" class="btn" style="background:#3b82f6; color:white;" onclick="handleAuth()">ตกลง</button>
         <div id="authToggle" onclick="toggleAuth()">ยังไม่มีบัญชี? สมัครสมาชิก</div>
     </div>
@@ -80,6 +93,8 @@
             </div>
         </div>
         
+        <div id="loadingOverlay">⏳ กำลังโหลดข้อมูลจาก Cloud...</div>
+
         <div class="dashboard-container">
             <div class="card">
                 <h3>📊 กราฟสรุปชั่วโมงโอที</h3>
@@ -110,21 +125,21 @@
                     <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                 </select>
             </div>
-            <div class="form-group"><label>💰 ฐานเงินเดือน</label><input type="number" id="baseIn" value="18000"></div>
-            <div class="form-group"><label>🏠 ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000"></div>
-            <div class="form-group"><label>🍲 ค่าอาหาร</label><input type="number" id="foodIn" value="0"></div>
-            <div class="form-group"><label>❌ หักลางาน/หักอื่น</label><input type="number" id="leaveIn" value="0"></div>
-            <div class="form-group"><label>🏥 หักประกันสังคม</label><input type="number" id="ssIn" value="875"></div>
+            <div class="form-group"><label>💰 ฐานเงินเดือน</label><input type="number" id="baseIn" value="18000" step="any"></div>
+            <div class="form-group"><label>🏠 ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000" step="any"></div>
+            <div class="form-group"><label>🍲 ค่าอาหาร</label><input type="number" id="foodIn" value="0" step="any"></div>
+            <div class="form-group"><label>❌ หักลางาน/หักอื่น</label><input type="number" id="leaveIn" value="0" step="any"></div>
+            <div class="form-group"><label>🏥 หักประกันสังคม</label><input type="number" id="ssIn" value="875" step="any"></div>
         </div>
 
         <div class="input-grid">
             <div class="ot-header">⏱️ บันทึกชั่วโมงโอที</div>
-            <div class="form-group"><label>OT 1.5 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot15h"><input type="number" id="ot15m"></div></div>
-            <div class="form-group"><label>OT 2.0 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot20h"><input type="number" id="ot20m"></div></div>
-            <div class="form-group"><label>OT 3.0 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot30h"><input type="number" id="ot30m"></div></div>
+            <div class="form-group"><label>OT 1.5 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot15h" step="any"><input type="number" id="ot15m" step="any"></div></div>
+            <div class="form-group"><label>OT 2.0 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot20h" step="any"><input type="number" id="ot20m" step="any"></div></div>
+            <div class="form-group"><label>OT 3.0 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot30h" step="any"><input type="number" id="ot30m" step="any"></div></div>
         </div>
 
-        <button id="saveBtn" class="btn btn-save" onclick="handleSaveData()">💾 บันทึกข้อมูลประจำเดือน</button>
+        <button id="saveBtn" class="btn btn-save" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้น Cloud</button>
 
         <div class="table-responsive">
             <table>
@@ -140,63 +155,130 @@
         <button class="btn btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
     </div>
 
-    <script>
+    <!-- Firebase SDK Modules -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // การตั้งค่า Firebase ของคุณ
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZcICrO4tzSzSOs3N9iMaZhYdRTfrX98I",
+            authDomain: "salary-tax-app.firebaseapp.com",
+            projectId: "salary-tax-app",
+            storageBucket: "salary-tax-app.firebasestorage.app",
+            messagingSenderId: "212143318700",
+            appId: "1:212143318700:web:6660d9e73c08050ecfa109",
+            measurementId: "G-3K4NH8MFK4"
+        };
+
+        // เริ่มต้นการใช้งาน Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ตัวแปรส่วนกลาง
         let isLoginMode = true;
         const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
         let currentData = Array(12).fill(null);
-        let currentUser = "";
-        let selectedYear = "";
+        let currentUserUid = null;
+        let selectedYear = new Date().getFullYear().toString();
         let myChart = null;
 
-        window.onload = function() {
-            const yearSelect = document.getElementById('displayYear');
-            const currentYear = new Date().getFullYear();
-            for(let y = 2020; y <= 2045; y++) {
-                let opt = document.createElement('option');
-                opt.value = y;
-                opt.text = `${y} (พ.ศ. ${y + 543})`;
-                if(y === currentYear) opt.selected = true;
-                yearSelect.appendChild(opt);
-            }
-            selectedYear = yearSelect.value;
-        };
+        // เตรียม Dropdown ปี
+        const yearSelect = document.getElementById('displayYear');
+        const currentYear = new Date().getFullYear();
+        for(let y = 2024; y <= 2030; y++) {
+            let opt = document.createElement('option');
+            opt.value = y;
+            opt.text = `${y} (พ.ศ. ${y + 543})`;
+            if(y === currentYear) opt.selected = true;
+            yearSelect.appendChild(opt);
+        }
 
-        function toggleAuth() {
+        // เชื่อมฟังก์ชันเข้ากับ window เพื่อให้ HTML เรียกใช้ได้
+        window.toggleAuth = () => {
             isLoginMode = !isLoginMode;
             document.getElementById('authTitle').innerText = isLoginMode ? "🔐 เข้าสู่ระบบ" : "📝 สมัครสมาชิก";
             document.getElementById('authToggle').innerText = isLoginMode ? "ยังไม่มีบัญชี? สมัครสมาชิก" : "มีบัญชีแล้ว? เข้าสู่ระบบ";
-        }
+        };
 
-        function handleAuth() {
-            const u = document.getElementById('username').value.trim();
+        window.handleAuth = async () => {
+            const email = document.getElementById('email').value.trim();
             const p = document.getElementById('password').value.trim();
-            if(!u || !p) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
-            
-            if(!isLoginMode) {
-                if(localStorage.getItem('user_' + u)) return alert('ชื่อผู้ใช้นี้มีคนใช้แล้ว');
-                localStorage.setItem('user_' + u, p); 
-                alert('สมัครสมาชิกสำเร็จ!'); 
-                toggleAuth();
+            if(!email || !p) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+
+            const btn = document.getElementById('authBtn');
+            btn.innerText = "กำลังประมวลผล...";
+            btn.disabled = true;
+
+            try {
+                if(!isLoginMode) {
+                    await createUserWithEmailAndPassword(auth, email, p);
+                    alert('สมัครสมาชิกสำเร็จ! ยินดีต้อนรับครับ');
+                } else {
+                    await signInWithEmailAndPassword(auth, email, p);
+                }
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') alert('อีเมลนี้มีผู้ใช้งานแล้ว');
+                else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+                else if (error.code === 'auth/invalid-email') alert('รูปแบบอีเมลไม่ถูกต้อง');
+                else if (error.code === 'auth/weak-password') alert('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
+                else alert('เกิดข้อผิดพลาด: ' + error.message);
+            } finally {
+                btn.innerText = "ตกลง";
+                btn.disabled = false;
+            }
+        };
+
+        window.logout = () => {
+            signOut(auth);
+        };
+
+        window.changeYear = () => { 
+            selectedYear = document.getElementById('displayYear').value; 
+            loadData(); 
+        };
+
+        // ติดตามสถานะการล็อกอิน
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('appSection').style.display = 'block';
+                document.getElementById('displayUser').innerText = user.email;
+                currentUserUid = user.uid;
+                loadData();
             } else {
-                if(localStorage.getItem('user_' + u) === p) {
-                    document.getElementById('authSection').style.display = 'none';
-                    document.getElementById('appSection').style.display = 'block';
-                    document.getElementById('displayUser').innerText = u;
-                    currentUser = u; 
-                    loadData();
-                } else { alert('รหัสผ่านไม่ถูกต้อง'); }
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('appSection').style.display = 'none';
+                currentUserUid = null;
+            }
+        });
+
+        async function loadData() {
+            if(!currentUserUid) return;
+            document.getElementById('loadingOverlay').style.display = 'block';
+            
+            try {
+                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    currentData = docSnap.data().monthsData || Array(12).fill(null);
+                } else {
+                    currentData = Array(12).fill(null);
+                }
+                renderTable(); 
+                updateUI();
+            } catch (error) {
+                console.error("Error loading document: ", error);
+                alert("มีปัญหาในการโหลดข้อมูลจาก Cloud");
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
             }
         }
 
-        function logout() { location.reload(); }
-        function changeYear() { selectedYear = document.getElementById('displayYear').value; loadData(); }
-
-        function loadData() {
-            currentData = JSON.parse(localStorage.getItem('data_' + currentUser + '_' + selectedYear)) || Array(12).fill(null);
-            renderTable(); updateUI();
-        }
-
-        function handleSaveData() {
+        window.handleSaveData = async () => {
             const m = document.getElementById('monthSelect').value;
             const base = parseFloat(document.getElementById('baseIn').value) || 0;
             const house = parseFloat(document.getElementById('houseIn').value) || 0;
@@ -213,24 +295,37 @@
             const netVal = (base + house + food + otVal) - leave - ss;
 
             currentData[m] = { base, house, food, leave, ss, otTotal: otVal, totalOtHours: totalH, net: netVal };
-            localStorage.setItem('data_' + currentUser + '_' + selectedYear, JSON.stringify(currentData));
             
-            document.querySelectorAll('.ot-row input').forEach(el => el.value = '');
-            
-            loadData(); 
-            alert('✅ บันทึกข้อมูลเดือน ' + months[m] + ' สำเร็จ!');
-        }
+            document.getElementById('saveBtn').innerText = "⏳ กำลังบันทึก...";
+            document.getElementById('saveBtn').disabled = true;
+
+            try {
+                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
+                await setDoc(docRef, { monthsData: currentData });
+                
+                document.querySelectorAll('.ot-row input').forEach(el => el.value = '');
+                renderTable(); 
+                updateUI();
+                alert('✅ บันทึกข้อมูลเดือน ' + months[m] + ' ขึ้น Cloud สำเร็จ!');
+            } catch (error) {
+                console.error("Error saving document: ", error);
+                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+            } finally {
+                document.getElementById('saveBtn').innerText = "💾 บันทึกข้อมูลขึ้น Cloud";
+                document.getElementById('saveBtn').disabled = false;
+            }
+        };
 
         function renderTable() {
             const body = document.getElementById('tableBody'); body.innerHTML = '';
             let sB=0, sO=0, sN=0, sH=0;
             currentData.forEach((d, i) => {
                 if(d) {
-                    let foodVal = d.food || 0; // เผื่อข้อมูลเก่าที่ยังไม่มีค่าอาหาร
+                    let foodVal = d.food || 0;
                     body.innerHTML += `<tr>
                         <td style="text-align:center;">${months[i]}</td>
                         <td>${(d.base + d.house + foodVal).toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
-                        <td style="color:#d97706; font-weight:600;">${d.totalOtHours.toFixed(1)} ชม.</td>
+                        <td style="color:#d97706; font-weight:600;">${d.totalOtHours.toFixed(2)} ชม.</td>
                         <td>${d.otTotal.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
                         <td class="income">${d.net.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
                     </tr>`;
@@ -244,14 +339,13 @@
             });
             document.getElementById('totalBase').innerText = sB.toLocaleString('th-TH', {minimumFractionDigits: 2});
             document.getElementById('totalOt').innerText = sO.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('totalHoursText').innerText = sH.toFixed(1) + " ชม.";
+            document.getElementById('totalHoursText').innerText = sH.toFixed(2) + " ชม.";
             document.getElementById('totalNet').innerText = sN.toLocaleString('th-TH', {minimumFractionDigits: 2});
         }
 
         function updateUI() {
             let ots = currentData.map(d => d ? d.totalOtHours : 0);
             
-            // นำค่าอาหาร (food) มารวมคำนวณฐานประเมินภาษีด้วย
             let totalG = currentData.reduce((a,b) => a + (b ? (b.base + b.house + (b.food || 0) + b.otTotal - b.leave) : 0), 0);
             let totalSS = currentData.reduce((a,b) => a + (b ? b.ss : 0), 0);
 
