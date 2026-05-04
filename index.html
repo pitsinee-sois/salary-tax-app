@@ -24,7 +24,7 @@
             --chart-bar: #3b82f6;
         }
 
-        [data-theme="matcha"] { /* 🍵 มัทฉะ */
+        [data-theme="matcha"] { /* 🍵 มัทฉะลาเต้ */
             --bg-main: #f0fdf4;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #f0fdf4;
@@ -37,7 +37,7 @@
             --chart-bar: #10b981;
         }
         
-        [data-theme="bamboo"] { /* 🎋 ไผ่กวนอิม */
+        [data-theme="bamboo"] { /* 🎋 ไผ่กวนอิมนำโชค */
             --bg-main: #f7fee7;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #ecfccb;
@@ -50,7 +50,7 @@
             --chart-bar: #65a30d;
         }
 
-        [data-theme="sakura"] { /* 🌸 ซากุระ */
+        [data-theme="sakura"] { /* 🌸 เกียวโตซากุระ */
             --bg-main: #fdf2f8;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #fdf2f8;
@@ -76,7 +76,7 @@
             --chart-bar: #ef4444;
         }
 
-        [data-theme="purple"] { /* 🟣 ลาเวนเดอร์ */
+        [data-theme="purple"] { /* 🪻 ลาเวนเดอร์ดรีม */
             --bg-main: #faf5ff;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #f3e8ff;
@@ -89,7 +89,7 @@
             --chart-bar: #a855f7;
         }
 
-        [data-theme="orange"] { /* 🍊 ส้ม */
+        [data-theme="orange"] { /* 🍊 ส้มซันเซ็ต */
             --bg-main: #fff7ed;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #ffedd5;
@@ -102,7 +102,7 @@
             --chart-bar: #f97316;
         }
         
-        [data-theme="ocean"] { /* 🌊 เกลียวคลื่น */
+        [data-theme="ocean"] { /* 🌊 เกลียวคลื่นทะเล */
             --bg-main: #f0fdfa;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #ccfbf1;
@@ -115,7 +115,7 @@
             --chart-bar: #14b8a6;
         }
 
-        [data-theme="skyblue"] { /* 🩵 ท่้องฟ้า */
+        [data-theme="skyblue"] { /* 🩵 ท้องฟ้าสดใส */
             --bg-main: #f0f9ff;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #e0f2fe;
@@ -128,7 +128,7 @@
             --chart-bar: #0ea5e9;
         }
 
-        [data-theme="twotone"] { /* 🌈 ทูโทน */
+        [data-theme="twotone"] { /* 🌈 พาสเทลทูโทน */
             --bg-main: linear-gradient(135deg, #fbcfe8 0%, #bfdbfe 100%);
             --bg-card: rgba(255, 255, 255, 0.85);
             --bg-input: rgba(255, 255, 255, 0.6);
@@ -141,9 +141,9 @@
             --chart-bar: #8b5cf6;
         }
         
-        [data-theme="fuji"] { /* 🗻 ฟูจิซัง */
+        [data-theme="fuji"] { /* 🗻 ฟูจิซังคาวาอี้ */
             --bg-main: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card: rgba(255, 255, 255, 0.88);
             --bg-input: rgba(255, 255, 255, 0.7);
             --text-main: #0c4a6e;
             --text-muted: #0284c7;
@@ -154,9 +154,9 @@
             --chart-bar: #38bdf8;
         }
         
-        [data-theme="tokyo"] { /* 🌃 โตเกียวไนท์ */
+        [data-theme="tokyo"] { /* 🌃 โตเกียวมิดไนท์ */
             --bg-main: #09090b;
-            --bg-card: rgba(24, 24, 27, 0.95);
+            --bg-card: rgba(24, 24, 27, 0.92);
             --bg-input: #27272a;
             --text-main: #f4f4f5;
             --text-muted: #a1a1aa;
@@ -167,7 +167,7 @@
             --chart-bar: #f43f5e;
         }
 
-        [data-theme="dark"] { /* 🌙 กลางคืน */
+        [data-theme="dark"] { /* 🌙 โหมดกลางคืน */
             --bg-main: #0f172a;
             --bg-card: #1e293b;
             --bg-input: #334155;
@@ -181,15 +181,23 @@
         }
         /* ----------------------------------------- */
         
-        /* ✨ Animation Effects */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* ✨ Animation & Effects Layer */
+        #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
+        
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+        @keyframes floatUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 0.5; } }
+        @keyframes drift { 0% { transform: translateX(-10vw); opacity: 0;} 10% {opacity: 0.6;} 90% {opacity: 0.6;} 100% { transform: translateX(110vw); opacity: 0;} }
+        @keyframes blink { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+
+        .falling-item { position: absolute; animation: fall linear infinite; font-size: 24px; opacity: 0.6; }
+        .drifting-item { position: absolute; animation: drift linear infinite; font-size: 40px; opacity: 0.4; }
+        .fuji-bg { position: fixed; bottom: -20px; right: 5%; font-size: 180px; opacity: 0.4; animation: floatUp 2s ease-out forwards; filter: drop-shadow(0 -10px 20px rgba(255,255,255,0.5)); }
+        .tokyo-neon { position: absolute; font-size: 16px; animation: blink 2s infinite alternate; text-shadow: 0 0 10px var(--color-primary); }
 
         body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); padding: 20px; margin: 0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: background 0.5s ease, color 0.5s ease; background-attachment: fixed; }
         
-        .container { width: 100%; max-width: 1000px; background: var(--bg-card); padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); box-sizing: border-box; margin-bottom: 40px; transition: 0.5s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); animation: fadeUp 0.8s ease-out forwards; }
+        .container { width: 100%; max-width: 1000px; background: var(--bg-card); padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); box-sizing: border-box; margin-bottom: 40px; transition: 0.5s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); animation: fadeUp 0.8s ease-out forwards; position: relative; z-index: 1; }
         
         h1 { text-align: center; color: var(--color-header); margin-bottom: 25px; font-size: 1.8rem; letter-spacing: -0.5px; transition: 0.3s; }
         
@@ -278,6 +286,9 @@
 </head>
 <body>
 
+    <!-- เอฟเฟกต์แบคกราวด์ -->
+    <div id="themeEffectLayer"></div>
+
     <div id="authSection" class="auth-section container">
         <div class="auth-header">
             <h2 id="authTitle">👋 ยินดีต้อนรับกลับมา</h2>
@@ -316,25 +327,26 @@
             <div class="theme-controls" style="display:flex; align-items:center; gap:15px; flex-wrap: wrap; justify-content: center;">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="year-label">🎨 ธีม:</span>
-                    <select id="themeSelect" onchange="changeTheme()" style="width:140px; padding:6px 10px;">
+                    <select id="themeSelect" onchange="changeTheme()" style="width:auto; min-width: 150px; padding:6px 10px;">
                         <option value="blue">🔵 คลาสสิก</option>
                         <option value="ruby">🍎 แดงทับทิม</option>
-                        <option value="bamboo">🎋 ไผ่กวนอิม</option>
-                        <option value="matcha">🍵 มัทฉะ</option>
-                        <option value="ocean">🌊 เกลียวคลื่น</option>
-                        <option value="skyblue">🩵 ฟ้าสว่าง</option>
-                        <option value="sakura">🌸 ซากุระ</option>
-                        <option value="purple">🟣 ม่วง</option>
-                        <option value="orange">🍊 ส้ม</option>
-                        <option value="twotone">🌈 ทูโทน</option>
-                        <option value="fuji">🗻 ฟูจิซัง</option>
-                        <option value="tokyo">🌃 โตเกียวไนท์</option>
-                        <option value="dark">🌙 กลางคืน</option>
+                        <option value="bamboo">🎋 ไผ่กวนอิมนำโชค</option>
+                        <option value="matcha">🍵 มัทฉะลาเต้</option>
+                        <option value="ocean">🌊 เกลียวคลื่นทะเล</option>
+                        <option value="skyblue">🩵 ท้องฟ้าสดใส</option>
+                        <option value="sakura">🌸 เกียวโตซากุระ</option>
+                        <option value="purple">🪻 ลาเวนเดอร์ดรีม</option>
+                        <option value="orange">🍊 ส้มซันเซ็ต</option>
+                        <option value="twotone">🌈 พาสเทลทูโทน</option>
+                        <option value="fuji">🗻 ฟูจิซังคาวาอี้</option>
+                        <option value="tokyo">🌃 โตเกียวมิดไนท์</option>
+                        <option value="dark">🌙 โหมดกลางคืน</option>
                     </select>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="year-label">🗓️ ข้อมูลปี:</span>
-                    <select id="displayYear" onchange="changeYear()" style="width:130px; padding:6px 10px;"></select>
+                    <!-- แก้ความกว้างช่องปีให้พอดีกับข้อความ -->
+                    <select id="displayYear" onchange="changeYear()" style="width:auto; min-width: 140px; padding:6px 10px;"></select>
                 </div>
             </div>
         </div>
@@ -427,7 +439,6 @@
         let selectedYear = new Date().getFullYear().toString();
         let myChart = null;
 
-        // --- เพิ่มปีให้เลือกได้อีก 50 ปี ---
         const yearSelect = document.getElementById('displayYear');
         const currentYear = new Date().getFullYear();
         for(let y = 2024; y <= currentYear + 50; y++) {
@@ -438,16 +449,112 @@
             yearSelect.appendChild(opt);
         }
 
+        // --- ระบบสร้าง Effect ตาม Theme ---
+        function renderThemeEffects(theme) {
+            const effectLayer = document.getElementById('themeEffectLayer');
+            effectLayer.innerHTML = ''; // ล้างของเก่าทิ้ง
+            
+            if (theme === 'sakura') {
+                for(let i=0; i<15; i++) {
+                    let p = document.createElement('div');
+                    p.className = 'falling-item';
+                    p.innerText = '🌸';
+                    p.style.left = Math.random() * 100 + 'vw';
+                    p.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                    p.style.animationDelay = Math.random() * 5 + 's';
+                    p.style.fontSize = (Math.random() * 10 + 15) + 'px';
+                    effectLayer.appendChild(p);
+                }
+            } else if (theme === 'fuji') {
+                let fuji = document.createElement('div');
+                fuji.className = 'fuji-bg';
+                fuji.innerText = '🗻';
+                effectLayer.appendChild(fuji);
+                // เพิ่มก้อนเมฆลอย
+                for(let i=0; i<4; i++) {
+                    let c = document.createElement('div');
+                    c.className = 'drifting-item';
+                    c.innerText = '☁️';
+                    c.style.top = (Math.random() * 40) + 'vh';
+                    c.style.animationDuration = (Math.random() * 20 + 20) + 's';
+                    c.style.animationDelay = (Math.random() * 5) + 's';
+                    effectLayer.appendChild(c);
+                }
+            } else if (theme === 'tokyo') {
+                for(let i=0; i<20; i++) {
+                    let star = document.createElement('div');
+                    star.className = 'tokyo-neon';
+                    star.innerText = i % 3 === 0 ? '✨' : '⭐';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                    star.style.animationDelay = Math.random() * 2 + 's';
+                    effectLayer.appendChild(star);
+                }
+            } else if (theme === 'bamboo') {
+                for(let i=0; i<10; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'falling-item';
+                    leaf.innerText = '🌿';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.animationDuration = (Math.random() * 4 + 5) + 's';
+                    leaf.style.animationDelay = Math.random() * 5 + 's';
+                    effectLayer.appendChild(leaf);
+                }
+            } else if (theme === 'ruby') {
+                for(let i=0; i<12; i++) {
+                    let spark = document.createElement('div');
+                    spark.className = 'falling-item';
+                    spark.innerText = '✨';
+                    spark.style.color = '#ef4444';
+                    spark.style.left = Math.random() * 100 + 'vw';
+                    spark.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    effectLayer.appendChild(spark);
+                }
+            } else if (theme === 'ocean') {
+                for(let i=0; i<15; i++) {
+                    let bubble = document.createElement('div');
+                    bubble.className = 'falling-item';
+                    bubble.innerText = '🫧';
+                    bubble.style.left = Math.random() * 100 + 'vw';
+                    bubble.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                    effectLayer.appendChild(bubble);
+                }
+            } else if (theme === 'purple' || theme === 'twotone') {
+                for(let i=0; i<10; i++) {
+                    let magic = document.createElement('div');
+                    magic.className = 'tokyo-neon';
+                    magic.innerText = '🔮';
+                    magic.style.opacity = 0.3;
+                    magic.style.left = Math.random() * 100 + 'vw';
+                    magic.style.top = Math.random() * 100 + 'vh';
+                    magic.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    effectLayer.appendChild(magic);
+                }
+            } else if (theme === 'orange') {
+                for(let i=0; i<8; i++) {
+                    let sun = document.createElement('div');
+                    sun.className = 'drifting-item';
+                    sun.innerText = '⛅';
+                    sun.style.top = (Math.random() * 30) + 'vh';
+                    sun.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                    effectLayer.appendChild(sun);
+                }
+            }
+        }
+
         window.changeTheme = () => {
             const theme = document.getElementById('themeSelect').value;
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('user_theme', theme);
+            renderThemeEffects(theme);
             if(myChart) updateUI();
         };
 
         const savedTheme = localStorage.getItem('user_theme') || 'blue';
         document.getElementById('themeSelect').value = savedTheme;
         document.documentElement.setAttribute('data-theme', savedTheme);
+        renderThemeEffects(savedTheme); // โหลด Effect ทันทีที่เปิดหน้า
 
         window.toggleAuth = () => {
             isLoginMode = !isLoginMode;
