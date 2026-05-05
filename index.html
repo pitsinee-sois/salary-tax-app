@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Perfect Cute Edition)</title>
+    <title>Salary & Tax System (Perfect Animated Edition)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
         
-        /* ✨ ล็อกสัดส่วนกล่องไม่ให้ทะลุขอบ (แก้ปัญหาหน้า Login ล้น) */
         * { box-sizing: border-box; }
 
         /* 🎨 ระบบตัวแปรสีสุดละมุน (Soft Pastel Colors) */
@@ -77,12 +76,11 @@
             --color-primary-hover: #a855f7; --color-header: #5b21b6; --chart-bar: #c084fc;
         }
 
-        /* 🌳 เลเยอร์สำหรับ Background และ Animations เคลื่อนไหว */
+        /* 🌳 SCENERY: ต้นไม้และวิวที่สมมาตร */
         #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
         
         .scenery-element { position: absolute; background-repeat: no-repeat; opacity: 0.9; }
         
-        /* ต้นไม้ 2 ข้างทาง */
         .tree-avenue {
             bottom: -5vh; width: 45vh; height: 85vh; max-width: 400px;
             background-size: contain; background-position: bottom center;
@@ -92,21 +90,19 @@
         .tree-left { left: -5vw; transform-origin: bottom center; }
         .tree-right { right: -5vw; transform: scaleX(-1); transform-origin: bottom center; animation-direction: alternate-reverse;}
 
-        /* ภูเขาไฟฟูจิ */
         .fuji-mountain {
             position: fixed; bottom: -5vh; right: 5vw; width: 70vh; height: 35vh; max-width: 600px;
             background-size: contain; background-position: bottom right; background-repeat: no-repeat; 
-            filter: drop-shadow(0 -10px 20px rgba(0,0,0,0.08)); animation: floatUp 1.5s ease-out forwards;
+            filter: drop-shadow(0 -10px 20px rgba(0,0,0,0.08)); animation: floatUp 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-        /* พระอาทิตย์ */
         .cute-sun {
             position: fixed; top: 12vh; left: 10vw; width: 14vh; height: 14vh;
             background: linear-gradient(135deg, #fde047, #f59e0b); border-radius: 50%;
-            box-shadow: 0 0 40px rgba(251, 191, 36, 0.6); animation: pulseSun 4s infinite alternate;
+            box-shadow: 0 0 40px rgba(251, 191, 36, 0.6), 0 0 80px rgba(245, 158, 11, 0.4);
+            animation: pulseSun 4s infinite alternate;
         }
 
-        /* เกลียวคลื่น */
         .ocean-waves { 
             position: fixed; bottom: 0; left: 0; width: 100vw; height: 25vh; 
             background-size: cover; background-position: top center;
@@ -120,34 +116,35 @@
         @keyframes pulseSun { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
         @keyframes floatUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        /* แอนิเมชันของตกลงมา (ซากุระ, ใบเมเปิล) */
+        /* 🌟 แก้บัคอนิเมชันของตก/ลอย ให้ทำงานได้จริง 100% */
         @keyframes fall { 
-            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; } 
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0; } 
             10% { opacity: 0.9; } 
             90% { opacity: 0.9; } 
-            100% { transform: translate(-20vw, 110vh) rotate(360deg); opacity: 0; } 
+            100% { transform: translate(-20vw, 120vh) rotate(360deg); opacity: 0; } 
         }
-        
-        /* แอนิเมชันของลอยไปด้านข้าง (เมฆ, นก, ปลา) */
         @keyframes driftRight { 
-            0% { left: -20vw; opacity: 0;} 
+            0% { transform: translateX(0); opacity: 0;} 
             15% { opacity: 0.9; } 
             85% { opacity: 0.9; } 
-            100% { left: 120vw; opacity: 0; } 
+            100% { transform: translateX(120vw); opacity: 0; } 
         }
-        
+        @keyframes riseUp { 
+            0% { transform: translateY(0) scale(0.5); opacity: 0; } 
+            20% { opacity: 0.8; } 
+            80% { opacity: 0.8; } 
+            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; } 
+        }
         @keyframes blink { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
-        @keyframes bubbleUp { 0% { transform: translateY(110vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
-        @keyframes shootingStar { 0% { transform: translate(120vw, -20vh) rotate(-45deg); width: 0; opacity: 1; } 100% { transform: translate(-20vw, 120vh) rotate(-45deg); width: 200px; opacity: 0; } }
+        @keyframes shootingStar { 0% { transform: translate(0, 0) rotate(-45deg); width: 0; opacity: 1; } 100% { transform: translate(-100vw, 100vh) rotate(-45deg); width: 200px; opacity: 0; } }
 
-        .particle { position: absolute; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+        .particle { position: fixed; pointer-events: none; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
 
         /* 📱 MAIN LAYOUT */
         body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 4vh 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; overflow-x: hidden; transition: background 0.5s ease; }
         
         .container { 
-            width: 100%; 
-            max-width: 900px; /* ขนาดกล่องเพรียวบาง โชว์แบคกราวน์ */
+            width: 100%; max-width: 900px; 
             background: var(--bg-card); 
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 2px solid var(--border-color); 
@@ -159,7 +156,7 @@
         
         h1 { text-align: center; color: var(--color-header); margin-top: 0; margin-bottom: 35px; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* 🐰 Cute Popup (หน้าต่างเด้งดึ๋ง น่ารักๆ) */
+        /* 🐰 Cute Popup */
         .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
         .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
         .cute-popup-box { background: var(--bg-input); border: 4px solid var(--color-primary); padding: 40px 30px; border-radius: 36px; text-align: center; max-width: 360px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
@@ -218,7 +215,7 @@
         .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.08); border: 2px solid rgba(225, 29, 72, 0.15); }
         .tax-total-box .tax-value { color: #e11d48; font-size: 2rem; }
         
-        /* Tables & Inputs */
+        /* Inputs & Tables */
         .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
         .ot-row { display: flex; gap: 10px; }
         .ot-row input { text-align: center; font-weight: 800; color: var(--color-primary); font-size: 1.15rem; }
@@ -260,7 +257,7 @@
     <!-- 🌸 เลเยอร์วาดทิวทัศน์ (Vector Scenery Layer) -->
     <div id="themeEffectLayer"></div>
 
-    <!-- 🐰 Cute Popup (ดีไซน์น่ารักโค้งมน) -->
+    <!-- 🐰 Cute Popup (หน้าต่างเด้งดึ๋ง น่ารักๆ) -->
     <div id="customPopup" class="cute-popup-overlay">
         <div class="cute-popup-box">
             <div class="cute-popup-icon" id="popupIcon">✨</div>
@@ -315,6 +312,7 @@
                     <option value="skyblue">☁️ Sunny Sky</option>
                     <option value="matcha">🍵 Matcha Garden</option>
                     <option value="ocean">🌊 Deep Ocean</option>
+                    <option value="blue">💧 Rainy Mood</option>
                     <option value="ruby">🍓 Berry Sweet</option>
                     <option value="purple">🔮 Magic Lavender</option>
                     <option value="twotone">🦄 Pastel Magic</option>
@@ -324,6 +322,8 @@
                 <select id="displayYear" onchange="changeYear()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);"></select>
             </div>
         </div>
+        
+        <div id="loadingOverlay">กำลังซิงค์ข้อมูล... ⏳</div>
 
         <div class="dashboard-top">
             <div class="card">
@@ -360,7 +360,7 @@
                     <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>3.0x</span><span class="legend-val" id="leg30">0</span></div>
                 </div>
                 
-                <div style="text-align: center; background: var(--bg-card); padding: 15px; border-radius: 20px; margin-top: 15px; border: 2px dashed var(--color-primary);">
+                <div style="text-align: center; background: var(--bg-input); padding: 15px; border-radius: 20px; margin-top: 15px; border: 2px dashed var(--color-primary);">
                     <span style="font-weight: 800; color: var(--text-muted); font-size: 1rem;">💸 ยอดเงินโอทีที่ได้รับ<br></span>
                     <span id="legTotalMoney" style="font-weight: 800; font-size: 1.6rem; color: var(--color-primary);">0.00 บาท</span>
                 </div>
@@ -521,8 +521,9 @@
                     let p = document.createElement('div'); p.className = 'particle fall';
                     p.innerText = types[Math.floor(Math.random() * types.length)];
                     p.style.left = (Math.random() * 100) + 'vw';
+                    p.style.top = '-10vh';
                     p.style.animationDuration = (Math.random() * 6 + 4) + 's';
-                    p.style.animationDelay = '-' + (Math.random() * 10) + 's'; // กระจายตัว
+                    p.style.animationDelay = `-${Math.random() * 10}s`; // กระจายตัว
                     p.style.fontSize = (Math.random() * 15 + 15) + 'px';
                     effectLayer.appendChild(p);
                 }
@@ -532,7 +533,8 @@
                     let cloud = document.createElement('div'); cloud.className = 'particle giant-cloud'; 
                     cloud.innerText = '☁️';
                     cloud.style.top = (Math.random() * 40) + 'vh';
-                    // วิ่งจากขวาไปซ้าย หรือซ้ายไปขวา
+                    cloud.style.left = '-20vw';
+                    // วิ่งจากซ้ายไปขวา
                     cloud.style.animation = `driftRight ${Math.random() * 40 + 30}s linear infinite`;
                     cloud.style.animationDelay = `-${Math.random() * 30}s`; 
                     cloud.style.fontSize = (Math.random() * 100 + 100) + 'px';
@@ -542,6 +544,7 @@
                     for(let i=0; i<5; i++) {
                         let bird = document.createElement('div'); bird.className = 'particle'; bird.innerText = '🕊️';
                         bird.style.top = (Math.random() * 40) + 'vh'; 
+                        bird.style.left = '-10vw';
                         bird.style.animation = `driftRight ${Math.random() * 15 + 10}s linear infinite`;
                         bird.style.animationDelay = `-${Math.random() * 15}s`;
                         bird.style.fontSize = '30px'; effectLayer.appendChild(bird);
@@ -549,8 +552,10 @@
                 } else {
                     for(let i=0; i<15; i++) {
                         let p = document.createElement('div'); p.className = 'particle fall'; p.innerText = '🌸';
-                        p.style.left = (Math.random() * 100) + 'vw'; p.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                        p.style.left = (Math.random() * 100) + 'vw'; p.style.top = '-10vh';
+                        p.style.animationDuration = (Math.random() * 5 + 5) + 's';
                         p.style.animationDelay = `-${Math.random() * 10}s`;
+                        p.style.fontSize = (Math.random() * 10 + 15) + 'px';
                         effectLayer.appendChild(p);
                     }
                 }
@@ -559,52 +564,72 @@
                     let moon = document.createElement('div'); moon.className = 'cute-sun'; moon.style.background = '#fde047'; moon.style.boxShadow = '0 0 40px #fef08a'; effectLayer.appendChild(moon);
                 }
                 let types = theme === 'tokyo' ? ['✨', '⚡', '🏮'] : ['⭐', '✨'];
-                for(let i=0; i<40; i++) {
+                for(let i=0; i<45; i++) {
                     let s = document.createElement('div'); s.className = 'particle neon';
                     s.innerText = types[Math.floor(Math.random() * types.length)];
                     s.style.color = theme === 'dark' ? '#fde047' : 'inherit';
                     s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
+                    s.style.fontSize = (Math.random() * 10 + 10) + 'px';
                     s.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                    s.style.animationDelay = `-${Math.random() * 2}s`;
                     effectLayer.appendChild(s);
                 }
                 for(let i=0; i<5; i++) {
                     let star = document.createElement('div'); star.className = 'particle';
                     star.style.animation = `shootingStar ${Math.random() * 1 + 1.5}s linear infinite`;
-                    star.style.animationDelay = `${Math.random() * 8}s`;
+                    star.style.animationDelay = `-${Math.random() * 8}s`;
                     star.style.height = '3px'; star.style.background = 'linear-gradient(to right, white, transparent)'; star.style.borderRadius = '50%';
                     effectLayer.appendChild(star);
                 }
             } else if (theme === 'ocean' || theme === 'blue') {
-                for(let i=0; i<30; i++) {
-                    let b = document.createElement('div'); b.className = theme === 'ocean' ? 'particle bubble' : 'particle fall';
-                    b.innerText = theme === 'ocean' ? '🫧' : '💧';
+                let isOcean = theme === 'ocean';
+                for(let i=0; i<35; i++) {
+                    let b = document.createElement('div'); b.className = 'particle';
+                    b.innerText = isOcean ? '🫧' : '💧';
                     b.style.left = Math.random() * 100 + 'vw';
-                    b.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                    b.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                    
+                    if (isOcean) {
+                        b.style.bottom = '-10vh';
+                        b.style.animation = `riseUp ${Math.random() * 4 + 3}s linear infinite`;
+                    } else {
+                        b.style.top = '-10vh';
+                        b.style.opacity = '0.6';
+                        b.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+                    }
                     b.style.animationDelay = `-${Math.random() * 5}s`;
                     effectLayer.appendChild(b);
                 }
             } else if (theme === 'bamboo' || theme === 'matcha') {
-                for(let i=0; i<25; i++) {
+                let types = theme === 'bamboo' ? ['🌿', '✨'] : ['🍃', '🍵', '🍡'];
+                for(let i=0; i<30; i++) {
                     let leaf = document.createElement('div'); leaf.className = 'particle fall'; 
-                    leaf.innerText = theme === 'bamboo' ? '🌿' : '🍃';
-                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.innerText = types[Math.floor(Math.random() * types.length)];
+                    leaf.style.left = Math.random() * 100 + 'vw'; leaf.style.top = '-10vh';
+                    leaf.style.fontSize = (Math.random() * 15 + 15) + 'px';
                     leaf.style.animationDuration = (Math.random() * 4 + 5) + 's';
                     leaf.style.animationDelay = `-${Math.random() * 5}s`;
                     effectLayer.appendChild(leaf);
                 }
             } else if (theme === 'ruby') {
-                for(let i=0; i<25; i++) {
+                let types = ['🍎', '🍓', '✨']; 
+                for(let i=0; i<30; i++) {
                     let p = document.createElement('div'); p.className = 'particle fall';
-                    let types = ['🍎', '🍓', '✨']; p.innerText = types[Math.floor(Math.random() * types.length)];
-                    p.style.left = Math.random() * 100 + 'vw'; p.style.animationDuration = (Math.random() * 4 + 5) + 's';
+                    p.innerText = types[Math.floor(Math.random() * types.length)];
+                    p.style.left = Math.random() * 100 + 'vw'; p.style.top = '-10vh';
+                    p.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                    p.style.animationDuration = (Math.random() * 4 + 5) + 's';
                     p.style.animationDelay = `-${Math.random() * 5}s`;
                     effectLayer.appendChild(p);
                 }
             } else if (theme === 'twotone') {
-                for(let i=0; i<25; i++) {
+                let types = ['🦄', '💖', '✨', '🍭']; 
+                for(let i=0; i<30; i++) {
                     let m = document.createElement('div'); m.className = 'particle fall'; 
-                    let types = ['🦄', '💖', '✨', '🍭']; m.innerText = types[Math.floor(Math.random() * types.length)];
-                    m.style.left = Math.random() * 100 + 'vw'; m.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                    m.innerText = types[Math.floor(Math.random() * types.length)];
+                    m.style.left = Math.random() * 100 + 'vw'; m.style.top = '-10vh';
+                    m.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                    m.style.animationDuration = (Math.random() * 5 + 5) + 's';
                     m.style.animationDelay = `-${Math.random() * 5}s`;
                     effectLayer.appendChild(m);
                 }
@@ -692,7 +717,7 @@
 
         async function loadData() {
             if(!currentUserUid) return;
-            // ❌ เอา Popup Error ทิ้งไปเลย ให้ Fallback เป็นตารางเปล่าๆ แบบเนียนๆ แทน จะได้ไม่น่ารำคาญ
+            // ไม่ให้โชว์ Popup โหลดข้อมูลล้มเหลว ให้รันตารางเปล่าแบบเนียนๆ
             try {
                 const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
                 const docSnap = await getDoc(docRef);
@@ -733,7 +758,7 @@
                 renderTable(); updateUI();
                 showPopup(`บันทึกข้อมูลเดือน ${months[m]} เรียบร้อยจ้า!`, '💾');
             } catch (error) { console.error(error); showPopup("บันทึกข้อมูลไม่สำเร็จ", "⚠️"); } 
-            finally { btn.innerText = "💾 บันทึกข้อมูลขึ้น Cloud"; btn.disabled = false; }
+            finally { btn.innerText = "💾 บันทึกข้อมูลขึ้นระบบ"; btn.disabled = false; }
         };
 
         // --- 🍩 อัปเดตการ์ดโอทีแยกเดือน ---
