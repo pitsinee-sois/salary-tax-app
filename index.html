@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบบันทึกเงินเดือน & ประเมินภาษี (Pro Themes & Effects)</title>
+    <title>ระบบบันทึกเงินเดือน & ประเมินภาษี (Ultimate Themes)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -12,14 +12,14 @@
         
         /* 🎨 ระบบตัวแปรสี (CSS Variables) สำหรับเปลี่ยน Theme */
         :root { /* 🔵 คลาสสิก */
-            --bg-main: #eff6ff;
+            --bg-main: #f1f5f9;
             --bg-card: rgba(255, 255, 255, 0.95);
             --bg-input: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
             --color-primary: #3b82f6;
             --color-primary-hover: #2563eb;
-            --color-header: #1e40af;
+            --color-header: #0f172a;
             --border-color: #e2e8f0;
             --chart-bar: #3b82f6;
         }
@@ -181,83 +181,113 @@
         }
         /* ----------------------------------------- */
         
-        /* ✨ Animation & Effects Layer */
+        /* ✨ Animation & Premium Effects Layer */
         #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
         
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
         @keyframes floatUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 0.5; } }
         @keyframes drift { 0% { transform: translateX(-10vw); opacity: 0;} 10% {opacity: 0.6;} 90% {opacity: 0.6;} 100% { transform: translateX(110vw); opacity: 0;} }
         @keyframes blink { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+        @keyframes sway { 0% { transform: rotate(0deg); } 100% { transform: rotate(3deg); } }
+        @keyframes swayBamboo { 0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); } }
+        @keyframes petalWind { 0% { transform: translate(0, -10vh) rotate(0deg) scale(0.8); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translate(-30vw, 110vh) rotate(360deg) scale(1.2); opacity: 0; } }
+        @keyframes bubbleUp { 0% { transform: translateY(110vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
+        @keyframes floatRandom { 0% { transform: translate(0, 0) scale(1); opacity: 0;} 25% { opacity: 0.5; } 50% { transform: translate(20px, -30px) scale(1.1); } 75% { opacity: 0.5; } 100% { transform: translate(-20px, -60px) scale(1); opacity: 0;} }
 
         .falling-item { position: absolute; animation: fall linear infinite; font-size: 24px; opacity: 0.6; }
         .drifting-item { position: absolute; animation: drift linear infinite; font-size: 40px; opacity: 0.4; }
-        .fuji-bg { position: fixed; bottom: -20px; right: 5%; font-size: 180px; opacity: 0.4; animation: floatUp 2s ease-out forwards; filter: drop-shadow(0 -10px 20px rgba(255,255,255,0.5)); }
         .tokyo-neon { position: absolute; font-size: 16px; animation: blink 2s infinite alternate; text-shadow: 0 0 10px var(--color-primary); }
+        .floating-blob { position: absolute; animation: floatRandom 8s ease-in-out infinite alternate; filter: blur(20px); border-radius: 50%; opacity: 0.4; }
+
+        /* Specific Elements */
+        .sakura-branch-container { position: fixed; top: -30px; right: -30px; width: 350px; height: 350px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cpath d='M200,0 Q120,40 50,150 Q100,100 200,80 Z' fill='%235c4033'/%3E%3Ccircle cx='80' cy='120' r='40' fill='%23fbcfe8'/%3E%3Ccircle cx='140' cy='60' r='50' fill='%23fbcfe8'/%3E%3Ccircle cx='60' cy='160' r='25' fill='%23fce7f3'/%3E%3Ccircle cx='160' cy='110' r='45' fill='%23fce7f3'/%3E%3Ccircle cx='100' cy='80' r='35' fill='%23f9a8d4'/%3E%3Ccircle cx='120' cy='140' r='20' fill='%23fbcfe8'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-size: contain; transform-origin: top right; animation: sway 3s ease-in-out infinite alternate; filter: drop-shadow(0 10px 15px rgba(236, 72, 153, 0.2)); opacity: 0.9; z-index: -1;}
+        .sakura-petal { position: absolute; animation: petalWind linear infinite; filter: drop-shadow(0 2px 3px rgba(236,72,153,0.3)); }
+        .fuji-bg { position: fixed; bottom: -20px; right: 5%; font-size: 180px; opacity: 0.6; animation: floatUp 2s ease-out forwards; filter: drop-shadow(0 -10px 20px rgba(255,255,255,0.5)); }
+        .fuji-sun { position: fixed; top: 10%; left: 10%; font-size: 120px; opacity: 0.8; animation: sway 4s ease-in-out infinite alternate; filter: drop-shadow(0 0 20px rgba(253, 186, 116, 0.6)); }
+        .bamboo-tree { position: fixed; bottom: -20px; left: 20px; width: 150px; height: 400px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Crect x='40' y='0' width='12' height='300' fill='%2365a30d' rx='5'/%3E%3Crect x='38' y='50' width='16' height='4' fill='%233f6212'/%3E%3Crect x='38' y='120' width='16' height='4' fill='%233f6212'/%3E%3Crect x='38' y='190' width='16' height='4' fill='%233f6212'/%3E%3Crect x='38' y='260' width='16' height='4' fill='%233f6212'/%3E%3Cpath d='M50,50 Q70,20 90,40 Q70,50 50,50 Z' fill='%23a3e635'/%3E%3Cpath d='M50,120 Q30,90 10,110 Q30,120 50,120 Z' fill='%23a3e635'/%3E%3Cpath d='M50,190 Q80,160 95,180 Q80,190 50,190 Z' fill='%23a3e635'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-size: contain; transform-origin: bottom center; animation: swayBamboo 4s ease-in-out infinite alternate; opacity: 0.8; }
+        .bubble { position: absolute; animation: bubbleUp linear infinite; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+        .ocean-waves { position: fixed; bottom: 0; left: 0; width: 100vw; height: 150px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230ea5e9' fill-opacity='0.3' d='M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,149.3C672,139,768,149,864,170.7C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E"); background-size: cover; animation: sway 6s infinite alternate; }
 
         body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); padding: 20px; margin: 0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: background 0.5s ease, color 0.5s ease; background-attachment: fixed; }
         
-        .container { width: 100%; max-width: 1000px; background: var(--bg-card); padding: 30px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.08); box-sizing: border-box; margin-bottom: 40px; transition: 0.5s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); animation: fadeUp 0.8s ease-out forwards; position: relative; z-index: 1; }
+        .container { width: 100%; max-width: 1050px; background: var(--bg-card); padding: 30px; border-radius: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.06); box-sizing: border-box; margin-bottom: 40px; transition: 0.5s ease; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); animation: fadeUp 0.8s ease-out forwards; position: relative; z-index: 1; }
+        
+        /* 🌟 Minimalist Auth Section (Login/Register) */
+        #authSection { max-width: 440px; margin-top: 10vh; padding: 50px 40px; border-radius: 32px; box-shadow: 0 25px 50px rgba(0,0,0,0.08); background: var(--bg-card); }
+        .auth-header { margin-bottom: 35px; text-align: center; }
+        .auth-icon { font-size: 3rem; margin-bottom: 15px; display: inline-block; animation: floatRandom 4s ease-in-out infinite alternate; }
+        #authTitle { font-size: 2rem; margin-bottom: 10px; color: var(--color-header); font-weight: 700; letter-spacing: -0.5px; }
+        #authSubtitle { color: var(--text-muted); font-size: 1rem; margin-top: 0; font-weight: 400; }
+        
+        .form-group { text-align: left; margin-bottom: 20px; position: relative; }
+        .form-group label { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; display: block; padding-left: 5px; }
+        
+        /* Modern Inputs */
+        input, select { width: 100%; padding: 16px 20px; border: 2px solid transparent; border-radius: 16px; box-sizing: border-box; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; background-color: var(--bg-input); color: var(--text-main); transition: all 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }
+        input::placeholder { color: #94a3b8; font-weight: 400; }
+        input:focus, select:focus { border-color: var(--color-primary); background-color: var(--bg-card); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), inset 0 2px 4px rgba(0,0,0,0); transform: translateY(-2px); outline: none; }
+        
+        /* Modern Buttons */
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-size: 1.15rem; display: flex; justify-content: center; align-items: center; gap: 10px; letter-spacing: 0.5px; }
+        .btn-login-style { background: var(--color-header); color: white; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); margin-top: 15px; }
+        .btn-login-style:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); background: var(--color-primary); }
+        .btn-register-style { background: var(--color-primary); color: white; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); margin-top: 15px; }
+        .btn-register-style:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3); filter: brightness(1.1); }
+        
+        .toggle-area { margin-top: 30px; text-align: center; }
+        .toggle-text { color: var(--text-muted); font-size: 1rem; }
+        .toggle-text span { color: var(--color-primary); font-weight: 700; cursor: pointer; transition: 0.2s; padding: 5px 10px; border-radius: 8px; }
+        .toggle-text span:hover { background: rgba(59,130,246,0.1); }
+        .forgot-text { font-size: 0.9rem; color: #94a3b8; cursor: pointer; margin-top: 15px; display: inline-block; transition: 0.2s; border-bottom: 1px dashed transparent; padding-bottom: 2px; }
+        .forgot-text:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+        
+        /* --------------------------------------------------- */
         
         h1 { text-align: center; color: var(--color-header); margin-bottom: 25px; font-size: 1.8rem; letter-spacing: -0.5px; transition: 0.3s; }
         
-        .auth-section { max-width: 420px; margin: auto; text-align: center; margin-top: 8vh; padding: 40px 30px; }
-        .auth-header { margin-bottom: 30px; }
-        #authTitle { font-size: 1.8rem; margin-bottom: 8px; color: var(--color-header); transition: 0.3s; }
-        #authSubtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0; transition: 0.3s; }
+        /* 📊 Dashboard Grid Layout */
+        .dashboard-top { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-top: 30px; margin-bottom: 20px; }
         
-        .form-group { text-align: left; margin-bottom: 15px; }
-        label { color: var(--text-muted); font-weight: 600; font-size: 0.95rem; display: block; margin-bottom: 8px; transition: 0.3s; }
+        .card { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 24px; padding: 30px; transition: all 0.4s ease; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
+        .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; font-size: 1.15rem; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
         
-        input, select { width: 100%; padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 12px; box-sizing: border-box; font-family: 'Sarabun', sans-serif; font-size: 1rem; background-color: var(--bg-input); color: var(--text-main); transition: all 0.3s ease; }
-        input:focus, select:focus { border-color: var(--color-primary); background-color: var(--bg-card); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); transform: translateY(-2px); outline: none; }
+        .chart-wrapper { height: 260px; width: 100%; flex-grow: 1; }
+        .pie-wrapper { position: relative; height: 220px; width: 100%; margin: auto; display: flex; justify-content: center; align-items: center; }
         
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-size: 1.1rem; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        .btn-login-style { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); color: white; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); margin-top: 10px; }
-        .btn-login-style:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); filter: brightness(1.1); }
-        .btn-register-style { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.25); margin-top: 10px; }
-        .btn-register-style:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(139, 92, 246, 0.35); filter: brightness(1.1); }
-        
-        .toggle-area { margin-top: 25px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center; transition: 0.3s; }
-        .toggle-text { color: var(--text-muted); font-size: 0.95rem; }
-        .toggle-text span { color: var(--color-primary); font-weight: 700; cursor: pointer; text-decoration: underline; transition: 0.2s; }
-        .toggle-text span:hover { filter: brightness(0.8); }
-        .forgot-text { font-size: 0.85rem; color: var(--text-muted); cursor: pointer; margin-top: 15px; display: inline-block; transition: 0.2s; }
-        .forgot-text:hover { color: var(--color-primary); text-decoration: underline; }
+        /* 🧾 Tax Grid */
+        .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px; }
+        .tax-box { background: var(--bg-card); padding: 20px 15px; border-radius: 16px; border: 1px solid var(--border-color); text-align: center; transition: 0.3s; }
+        .tax-box:hover { border-color: var(--color-primary); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .tax-label { display: block; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 8px; }
+        .tax-value { display: block; font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
+        .tax-value.deduct { color: #059669; }
+        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.08); border-color: rgba(225, 29, 72, 0.2); }
+        .tax-total-box .tax-value { color: #e11d48; font-size: 1.8rem; }
         
         .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .section-box { background: var(--bg-input); padding: 25px; border-radius: 20px; border: 1px solid var(--border-color); transition: all 0.4s ease; }
-        .section-box:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.05); }
+        .section-box { background: var(--bg-input); padding: 30px; border-radius: 24px; border: 1px solid var(--border-color); transition: all 0.4s ease; margin-bottom: 20px; }
+        .section-box:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
         
         .ot-row { display: flex; gap: 10px; }
         .ot-row input { text-align: center; }
-        .ot-header { grid-column: 1 / -1; margin-top: 10px; font-size: 1.1rem; color: var(--color-header); font-weight: 700; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; transition: 0.3s; }
+        .ot-header { grid-column: 1 / -1; margin-top: 10px; font-size: 1.15rem; color: var(--color-header); font-weight: 700; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 10px; transition: 0.3s; }
         
-        .btn-save { background-color: var(--color-primary); color: white; margin-top: 15px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-        .btn-save:hover { background-color: var(--color-primary-hover); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
-        .btn-logout { background-color: transparent; color: #ef4444; border: 1px solid var(--border-color); max-width: 220px; margin: 40px auto 0; transition: 0.3s; }
-        .btn-logout:hover { background-color: rgba(239, 68, 68, 0.1); transform: translateY(-2px); }
+        .btn-save { background-color: var(--color-primary); color: white; margin-top: 20px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+        .btn-save:hover { background-color: var(--color-primary-hover); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); }
+        .btn-logout { background-color: transparent; color: #ef4444; border: 2px solid var(--border-color); max-width: 220px; margin: 40px auto 0; transition: 0.3s; padding: 12px; font-size: 1rem; border-radius: 12px; }
+        .btn-logout:hover { background-color: rgba(239, 68, 68, 0.1); transform: translateY(-2px); border-color: rgba(239, 68, 68, 0.3); }
         
-        .dashboard-container { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; margin-top: 30px; margin-bottom: 30px; }
-        .card { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 20px; padding: 25px; transition: all 0.4s ease; }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
-        .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px solid var(--border-color); padding-bottom: 12px; font-size: 1.1rem; transition: 0.3s; }
-        .chart-wrapper { height: 250px; width: 100%; }
-        
-        .tax-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.95rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 6px; transition: 0.3s; }
-        .tax-row:hover { transform: scale(1.02); padding-left: 5px; padding-right: 5px; }
-        .tax-total { font-weight: 800; color: #e11d48; font-size: 1.3rem; border-bottom: none; background: rgba(225, 29, 72, 0.1); padding: 15px; border-radius: 12px; margin-top: 15px; transition: 0.3s; }
-        .tax-total:hover { transform: scale(1.05); }
-        
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 16px; border: 1px solid var(--border-color); margin-top: 20px; transition: 0.3s; }
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px; transition: 0.3s; background: var(--bg-card); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        th, td { padding: 15px; text-align: right; border-bottom: 1px solid var(--border-color); color: var(--text-main); transition: background 0.2s; }
+        th, td { padding: 18px 15px; text-align: right; border-bottom: 1px solid var(--border-color); color: var(--text-main); transition: background 0.2s; }
         tbody tr:hover td { background-color: rgba(0,0,0,0.02); }
         th { background-color: var(--bg-input); color: var(--color-header); font-weight: 700; text-align: center; }
         .tfoot-bg { background: var(--bg-input); font-weight: bold; }
         .income { color: var(--color-primary); font-weight: 700; }
         
-        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 15px 20px; background: var(--bg-input); border-radius: 12px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px 25px; background: var(--bg-input); border-radius: 20px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
         .year-label { font-weight: 700; color: var(--text-muted); }
         
         #appSection { display: none; animation: fadeUp 0.6s ease-out forwards; }
@@ -265,22 +295,18 @@
 
         @media (max-width: 768px) {
             body { padding: 10px; }
-            .container { padding: 20px; border-radius: 16px; margin-bottom: 20px; }
-            h1 { font-size: 1.4rem; margin-bottom: 15px; }
-            .auth-section { margin-top: 2vh; padding: 30px 20px; }
-            #userBar { flex-direction: column; text-align: center; gap: 12px; padding: 15px; }
+            .container { padding: 20px; border-radius: 24px; margin-bottom: 20px; }
+            h1 { font-size: 1.5rem; margin-bottom: 20px; }
+            #authSection { margin-top: 5vh; padding: 40px 25px; }
+            #authTitle { font-size: 1.6rem; }
+            #userBar { flex-direction: column; text-align: center; gap: 15px; padding: 20px; }
             #userBar div { width: 100%; justify-content: center; }
-            .theme-controls { flex-direction: column; width: 100%; gap: 10px; }
-            .dashboard-container { grid-template-columns: 1fr; gap: 15px; margin-top: 20px; margin-bottom: 20px; }
-            .card { padding: 15px; border-radius: 16px; }
-            .chart-wrapper { height: 200px; }
-            .tax-row { font-size: 0.9rem; flex-wrap: wrap; }
-            .tax-total { flex-direction: column; align-items: center; gap: 8px; text-align: center; font-size: 1.1rem; }
-            .input-grid { grid-template-columns: 1fr; padding: 15px !important; gap: 15px; }
-            .ot-header { margin-top: 5px; font-size: 1rem; }
-            th, td { padding: 10px; font-size: 0.9rem; }
-            .btn { padding: 12px; font-size: 1rem; }
-            .btn-logout { margin-top: 30px; }
+            .theme-controls { flex-direction: column; width: 100%; gap: 12px; }
+            .dashboard-top { grid-template-columns: 1fr; }
+            .pie-wrapper { height: 220px; }
+            .input-grid { grid-template-columns: 1fr; padding: 20px !important; gap: 15px; }
+            th, td { padding: 12px; font-size: 0.95rem; }
+            .btn { padding: 15px; font-size: 1.05rem; }
         }
     </style>
 </head>
@@ -289,36 +315,39 @@
     <!-- เอฟเฟกต์แบคกราวด์ -->
     <div id="themeEffectLayer"></div>
 
-    <div id="authSection" class="auth-section container">
+    <!-- 🌟 หน้าเข้าสู่ระบบ สไตล์มินิมอล -->
+    <div id="authSection" class="container">
         <div class="auth-header">
-            <h2 id="authTitle">👋 ยินดีต้อนรับกลับมา</h2>
+            <div class="auth-icon" id="authEmoji">✨</div>
+            <h2 id="authTitle">ยินดีต้อนรับกลับมา</h2>
             <p id="authSubtitle">เข้าสู่ระบบเพื่อจัดการข้อมูลเงินเดือนของคุณ</p>
         </div>
         
         <form onsubmit="event.preventDefault(); handleAuth();">
             <div class="form-group">
-                <label>📧 อีเมล (Email)</label>
-                <input type="email" id="email" placeholder="example@mail.com" required>
+                <label>อีเมล (Email)</label>
+                <input type="email" id="email" placeholder="ชื่อ@อีเมล.com" required>
             </div>
             <div class="form-group">
-                <label>🔑 รหัสผ่าน (Password)</label>
-                <input type="password" id="password" placeholder="รหัสผ่าน 6 ตัวอักษรขึ้นไป" required>
+                <label>รหัสผ่าน (Password)</label>
+                <input type="password" id="password" placeholder="••••••••" required>
             </div>
             
             <div class="form-group" id="confirmPasswordGroup" style="display: none;">
-                <label>🔒 ยืนยันรหัสผ่าน (Confirm Password)</label>
-                <input type="password" id="confirmPassword" placeholder="พิมพ์รหัสผ่านอีกครั้ง">
+                <label>ยืนยันรหัสผ่าน (Confirm Password)</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••">
             </div>
 
             <button type="submit" id="authBtn" class="btn btn-login-style">เข้าสู่ระบบ</button>
         </form>
         
         <div class="toggle-area">
-            <div id="authToggle" class="toggle-text" onclick="toggleAuth()">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span></div>
+            <div id="authToggle" class="toggle-text" onclick="toggleAuth()">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิก</span></div>
             <div id="forgotToggle" class="forgot-text" onclick="handleResetPassword()">ลืมรหัสผ่าน? คลิกเพื่อตั้งใหม่</div>
         </div>
     </div>
 
+    <!-- ส่วนแอปพลิเคชันหลัก -->
     <div id="appSection" class="container">
         <h1>💸 ระบบบันทึกเงินเดือน & ประเมินภาษี</h1>
         
@@ -327,51 +356,77 @@
             <div class="theme-controls" style="display:flex; align-items:center; gap:15px; flex-wrap: wrap; justify-content: center;">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="year-label">🎨 ธีม:</span>
-                    <select id="themeSelect" onchange="changeTheme()" style="width:auto; min-width: 150px; padding:6px 10px;">
+                    <select id="themeSelect" onchange="changeTheme()" style="width:auto; min-width: 160px; padding:8px 12px; border-radius: 12px;">
                         <option value="blue">🔵 คลาสสิก</option>
                         <option value="ruby">🍎 แดงทับทิม</option>
-                        <option value="bamboo">🎋 ไผ่กวนอิมนำโชค</option>
+                        <option value="bamboo">🎋 ไผ่กวนอิม</option>
                         <option value="matcha">🍵 มัทฉะลาเต้</option>
-                        <option value="ocean">🌊 เกลียวคลื่นทะเล</option>
+                        <option value="ocean">🌊 เกลียวคลื่น</option>
                         <option value="skyblue">🩵 ท้องฟ้าสดใส</option>
                         <option value="sakura">🌸 เกียวโตซากุระ</option>
                         <option value="purple">🪻 ลาเวนเดอร์ดรีม</option>
                         <option value="orange">🍊 ส้มซันเซ็ต</option>
                         <option value="twotone">🌈 พาสเทลทูโทน</option>
-                        <option value="fuji">🗻 ฟูจิซังคาวาอี้</option>
+                        <option value="fuji">🗻 ฟูจิซัง</option>
                         <option value="tokyo">🌃 โตเกียวมิดไนท์</option>
                         <option value="dark">🌙 โหมดกลางคืน</option>
                     </select>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="year-label">🗓️ ข้อมูลปี:</span>
-                    <!-- แก้ความกว้างช่องปีให้พอดีกับข้อความ -->
-                    <select id="displayYear" onchange="changeYear()" style="width:auto; min-width: 140px; padding:6px 10px;"></select>
+                    <span class="year-label">🗓️ ปี:</span>
+                    <select id="displayYear" onchange="changeYear()" style="width:auto; min-width: 140px; padding:8px 12px; border-radius: 12px;"></select>
                 </div>
             </div>
         </div>
         
-        <div id="loadingOverlay">⏳ กำลังโหลดข้อมูลจาก Cloud...</div>
+        <div id="loadingOverlay">⏳ กำลังโหลดข้อมูล...</div>
 
-        <div class="dashboard-container">
+        <!-- 📊 Dashboard Layout -->
+        <div class="dashboard-top">
             <div class="card">
-                <h3>📊 กราฟสรุปชั่วโมงโอที</h3>
+                <h3>📊 สรุปชั่วโมงโอทีรายเดือน</h3>
                 <div class="chart-wrapper"><canvas id="otChart"></canvas></div>
-                <div id="overworkAlert" style="margin-top:15px; text-align:center; font-weight:700; padding:10px; border-radius:8px;"></div>
+                <div id="overworkAlert" style="margin-top:15px; text-align:center; font-weight:700; padding:10px; border-radius:12px;"></div>
             </div>
+
             <div class="card">
-                <h3>🧾 ประเมินภาษีประจำปี (ภ.ง.ด. 91)</h3>
-                <div class="tax-row"><span>รายได้รวมทั้งปี:</span> <strong id="taxGross">0.00</strong></div>
-                <div class="tax-row"><span>หักค่าใช้จ่าย (สูงสุด 1 แสน):</span> <strong style="color:#059669">- <span id="taxExp">0.00</span></strong></div>
-                <div class="tax-row"><span>หักลดหย่อนส่วนตัว:</span> <strong style="color:#059669">- 60,000.00</strong></div>
-                <div class="tax-row"><span>หักประกันสังคม:</span> <strong style="color:#059669">- <span id="taxSS">0.00</span></strong></div>
-                <div class="tax-row tax-total"><span>ภาษีที่ต้องชำระ:</span> <span id="taxAmount">0.00 บาท</span></div>
+                <h3>🍩 สัดส่วนโอที (1.5 / 2.0 / 3.0)</h3>
+                <div class="pie-wrapper">
+                    <canvas id="otPieChart"></canvas>
+                    <div id="noOtMessage" style="position: absolute; text-align: center; color: var(--text-muted); display: none; font-size: 0.95rem;">ยังไม่มีข้อมูลโอที<br><small>(เพิ่มข้อมูลด้านล่าง)</small></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 30px;">
+            <h3>🧾 ประเมินภาษีประจำปี (ภ.ง.ด. 91)</h3>
+            <div class="tax-grid">
+                <div class="tax-box">
+                    <span class="tax-label">รายได้รวมทั้งปี</span>
+                    <span class="tax-value" id="taxGross">0.00</span>
+                </div>
+                <div class="tax-box">
+                    <span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span>
+                    <span class="tax-value deduct">- <span id="taxExp">0.00</span></span>
+                </div>
+                <div class="tax-box">
+                    <span class="tax-label">หักลดหย่อนส่วนตัว</span>
+                    <span class="tax-value deduct">- 60,000.00</span>
+                </div>
+                <div class="tax-box">
+                    <span class="tax-label">หักประกันสังคม</span>
+                    <span class="tax-value deduct">- <span id="taxSS">0.00</span></span>
+                </div>
+                <div class="tax-box tax-total-box">
+                    <span class="tax-label" style="color: #be123c;">ภาษีที่ต้องชำระ</span>
+                    <span class="tax-value" id="taxAmount">0.00 บาท</span>
+                </div>
             </div>
         </div>
 
         <div class="input-grid section-box">
             <div class="form-group" style="grid-column: 1 / -1;">
-                <label style="color: var(--color-header); font-size:1.1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 15px;">📝 บันทึกข้อมูลประจำเดือน</label>
+                <label style="color: var(--color-header); font-size:1.15rem; border-bottom: 2px solid var(--border-color); padding-bottom: 12px; margin-bottom: 10px;">📝 บันทึกรายได้และรายการหัก</label>
             </div>
             
             <div class="form-group">
@@ -391,10 +446,10 @@
         </div>
 
         <div class="input-grid section-box">
-            <div class="ot-header">⏱️ บันทึกชั่วโมงโอที</div>
-            <div class="form-group"><label>OT 1.5 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot15h" step="any"><input type="number" id="ot15m" step="any"></div></div>
-            <div class="form-group"><label>OT 2.0 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot20h" step="any"><input type="number" id="ot20m" step="any"></div></div>
-            <div class="form-group"><label>OT 3.0 (ชม. / นาที)</label><div class="ot-row"><input type="number" id="ot30h" step="any"><input type="number" id="ot30m" step="any"></div></div>
+            <div class="ot-header">⏱️ บันทึกชั่วโมงโอที (ชั่วโมง / นาที)</div>
+            <div class="form-group"><label>OT 1.5</label><div class="ot-row"><input type="number" id="ot15h" step="any" placeholder="ชม."><input type="number" id="ot15m" step="any" placeholder="นาที"></div></div>
+            <div class="form-group"><label>OT 2.0</label><div class="ot-row"><input type="number" id="ot20h" step="any" placeholder="ชม."><input type="number" id="ot20m" step="any" placeholder="นาที"></div></div>
+            <div class="form-group"><label>OT 3.0</label><div class="ot-row"><input type="number" id="ot30h" step="any" placeholder="ชม."><input type="number" id="ot30m" step="any" placeholder="นาที"></div></div>
         </div>
 
         <button id="saveBtn" class="btn btn-save" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้น Cloud</button>
@@ -410,7 +465,7 @@
                 </tfoot>
             </table>
         </div>
-        <button class="btn btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
+        <button class="btn btn-logout" onclick="logout()">ออกจากระบบ</button>
     </div>
 
     <script type="module">
@@ -437,7 +492,9 @@
         let currentData = Array(12).fill(null);
         let currentUserUid = null;
         let selectedYear = new Date().getFullYear().toString();
+        
         let myChart = null;
+        let myPieChart = null;
 
         const yearSelect = document.getElementById('displayYear');
         const currentYear = new Date().getFullYear();
@@ -449,96 +506,162 @@
             yearSelect.appendChild(opt);
         }
 
-        // --- ระบบสร้าง Effect ตาม Theme ---
+        // --- ระบบสร้าง Premium Effects ให้ครบทุกธีม ---
         function renderThemeEffects(theme) {
             const effectLayer = document.getElementById('themeEffectLayer');
-            effectLayer.innerHTML = ''; // ล้างของเก่าทิ้ง
+            effectLayer.innerHTML = ''; 
             
             if (theme === 'sakura') {
-                for(let i=0; i<15; i++) {
-                    let p = document.createElement('div');
-                    p.className = 'falling-item';
-                    p.innerText = '🌸';
-                    p.style.left = Math.random() * 100 + 'vw';
-                    p.style.animationDuration = (Math.random() * 3 + 4) + 's';
-                    p.style.animationDelay = Math.random() * 5 + 's';
-                    p.style.fontSize = (Math.random() * 10 + 15) + 'px';
-                    effectLayer.appendChild(p);
+                let branch = document.createElement('div');
+                branch.className = 'sakura-branch-container'; effectLayer.appendChild(branch);
+                for(let i=0; i<30; i++) {
+                    let petal = document.createElement('div');
+                    petal.className = 'sakura-petal';
+                    let types = ['🌸', '💮', '🌸']; 
+                    petal.innerText = types[Math.floor(Math.random() * types.length)];
+                    petal.style.left = (Math.random() * 120) + 'vw';
+                    petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                    petal.style.animationDelay = Math.random() * 7 + 's';
+                    petal.style.fontSize = (Math.random() * 12 + 10) + 'px';
+                    effectLayer.appendChild(petal);
                 }
             } else if (theme === 'fuji') {
+                let sun = document.createElement('div');
+                sun.className = 'fuji-sun'; sun.innerText = '☀️'; effectLayer.appendChild(sun);
                 let fuji = document.createElement('div');
-                fuji.className = 'fuji-bg';
-                fuji.innerText = '🗻';
-                effectLayer.appendChild(fuji);
-                // เพิ่มก้อนเมฆลอย
+                fuji.className = 'fuji-bg'; fuji.innerText = '🗻'; effectLayer.appendChild(fuji);
                 for(let i=0; i<4; i++) {
                     let c = document.createElement('div');
-                    c.className = 'drifting-item';
-                    c.innerText = '☁️';
+                    c.className = 'drifting-item'; c.innerText = '☁️';
                     c.style.top = (Math.random() * 40) + 'vh';
                     c.style.animationDuration = (Math.random() * 20 + 20) + 's';
                     c.style.animationDelay = (Math.random() * 5) + 's';
                     effectLayer.appendChild(c);
                 }
+            } else if (theme === 'bamboo') {
+                let bamboo = document.createElement('div');
+                bamboo.className = 'bamboo-tree'; effectLayer.appendChild(bamboo);
+                for(let i=0; i<15; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'falling-item'; leaf.innerText = '🌿';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.animationDuration = (Math.random() * 4 + 5) + 's';
+                    leaf.style.animationDelay = Math.random() * 5 + 's';
+                    effectLayer.appendChild(leaf);
+                }
+            } else if (theme === 'ocean') {
+                let waves = document.createElement('div');
+                waves.className = 'ocean-waves'; effectLayer.appendChild(waves);
+                for(let i=0; i<4; i++) {
+                    let fish = document.createElement('div');
+                    fish.className = 'drifting-item'; fish.innerText = '🐟';
+                    fish.style.top = (Math.random() * 80 + 10) + 'vh';
+                    fish.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                    fish.style.animationDelay = (Math.random() * 5) + 's';
+                    effectLayer.appendChild(fish);
+                }
+                for(let i=0; i<25; i++) {
+                    let bubble = document.createElement('div');
+                    bubble.className = 'bubble'; bubble.innerText = '🫧';
+                    bubble.style.left = Math.random() * 100 + 'vw';
+                    bubble.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                    bubble.style.animationDelay = Math.random() * 3 + 's';
+                    bubble.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                    effectLayer.appendChild(bubble);
+                }
             } else if (theme === 'tokyo') {
-                for(let i=0; i<20; i++) {
+                for(let i=0; i<25; i++) {
                     let star = document.createElement('div');
-                    star.className = 'tokyo-neon';
-                    star.innerText = i % 3 === 0 ? '✨' : '⭐';
+                    star.className = 'tokyo-neon'; star.innerText = i % 3 === 0 ? '⚡' : '⭐';
                     star.style.left = Math.random() * 100 + 'vw';
                     star.style.top = Math.random() * 100 + 'vh';
                     star.style.animationDuration = (Math.random() * 2 + 1) + 's';
                     star.style.animationDelay = Math.random() * 2 + 's';
                     effectLayer.appendChild(star);
                 }
-            } else if (theme === 'bamboo') {
-                for(let i=0; i<10; i++) {
-                    let leaf = document.createElement('div');
-                    leaf.className = 'falling-item';
-                    leaf.innerText = '🌿';
-                    leaf.style.left = Math.random() * 100 + 'vw';
-                    leaf.style.animationDuration = (Math.random() * 4 + 5) + 's';
-                    leaf.style.animationDelay = Math.random() * 5 + 's';
-                    effectLayer.appendChild(leaf);
-                }
             } else if (theme === 'ruby') {
-                for(let i=0; i<12; i++) {
+                for(let i=0; i<15; i++) {
                     let spark = document.createElement('div');
-                    spark.className = 'falling-item';
-                    spark.innerText = '✨';
+                    spark.className = 'falling-item'; spark.innerText = '✨';
                     spark.style.color = '#ef4444';
                     spark.style.left = Math.random() * 100 + 'vw';
                     spark.style.animationDuration = (Math.random() * 3 + 3) + 's';
                     effectLayer.appendChild(spark);
                 }
-            } else if (theme === 'ocean') {
-                for(let i=0; i<15; i++) {
-                    let bubble = document.createElement('div');
-                    bubble.className = 'falling-item';
-                    bubble.innerText = '🫧';
-                    bubble.style.left = Math.random() * 100 + 'vw';
-                    bubble.style.animationDuration = (Math.random() * 4 + 3) + 's';
-                    effectLayer.appendChild(bubble);
-                }
             } else if (theme === 'purple' || theme === 'twotone') {
-                for(let i=0; i<10; i++) {
+                for(let i=0; i<12; i++) {
                     let magic = document.createElement('div');
-                    magic.className = 'tokyo-neon';
-                    magic.innerText = '🔮';
+                    magic.className = 'tokyo-neon'; magic.innerText = '🔮';
                     magic.style.opacity = 0.3;
                     magic.style.left = Math.random() * 100 + 'vw';
                     magic.style.top = Math.random() * 100 + 'vh';
                     magic.style.animationDuration = (Math.random() * 3 + 2) + 's';
                     effectLayer.appendChild(magic);
                 }
+                for(let i=0; i<5; i++) {
+                    let blob = document.createElement('div');
+                    blob.className = 'floating-blob';
+                    blob.style.width = (Math.random() * 200 + 100) + 'px';
+                    blob.style.height = blob.style.width;
+                    blob.style.background = theme === 'purple' ? '#a855f7' : '#93c5fd';
+                    blob.style.left = Math.random() * 100 + 'vw';
+                    blob.style.top = Math.random() * 100 + 'vh';
+                    blob.style.animationDelay = Math.random() * 5 + 's';
+                    effectLayer.appendChild(blob);
+                }
             } else if (theme === 'orange') {
                 for(let i=0; i<8; i++) {
                     let sun = document.createElement('div');
-                    sun.className = 'drifting-item';
-                    sun.innerText = '⛅';
+                    sun.className = 'drifting-item'; sun.innerText = '⛅';
                     sun.style.top = (Math.random() * 30) + 'vh';
                     sun.style.animationDuration = (Math.random() * 15 + 15) + 's';
                     effectLayer.appendChild(sun);
+                }
+            } else if (theme === 'skyblue') {
+                for(let i=0; i<6; i++) {
+                    let cloud = document.createElement('div');
+                    cloud.className = 'drifting-item'; cloud.innerText = '☁️';
+                    cloud.style.top = (Math.random() * 50) + 'vh';
+                    cloud.style.animationDuration = (Math.random() * 25 + 15) + 's';
+                    effectLayer.appendChild(cloud);
+                }
+                for(let i=0; i<3; i++) {
+                    let bird = document.createElement('div');
+                    bird.className = 'drifting-item'; bird.innerText = '🕊️';
+                    bird.style.top = (Math.random() * 30) + 'vh';
+                    bird.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    effectLayer.appendChild(bird);
+                }
+            } else if (theme === 'matcha') {
+                for(let i=0; i<15; i++) {
+                    let leaf = document.createElement('div');
+                    leaf.className = 'falling-item'; leaf.innerText = '🍃';
+                    leaf.style.left = Math.random() * 100 + 'vw';
+                    leaf.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                    effectLayer.appendChild(leaf);
+                }
+            } else if (theme === 'dark') {
+                let moon = document.createElement('div');
+                moon.className = 'fuji-sun'; moon.innerText = '🌙'; effectLayer.appendChild(moon);
+                for(let i=0; i<30; i++) {
+                    let star = document.createElement('div');
+                    star.className = 'tokyo-neon'; star.innerText = '⭐';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                    effectLayer.appendChild(star);
+                }
+            } else if (theme === 'blue') {
+                for(let i=0; i<8; i++) {
+                    let blob = document.createElement('div');
+                    blob.className = 'floating-blob';
+                    blob.style.width = (Math.random() * 150 + 100) + 'px';
+                    blob.style.height = blob.style.width;
+                    blob.style.background = '#bae6fd';
+                    blob.style.left = Math.random() * 100 + 'vw';
+                    blob.style.top = Math.random() * 100 + 'vh';
+                    blob.style.animationDelay = Math.random() * 5 + 's';
+                    effectLayer.appendChild(blob);
                 }
             }
         }
@@ -554,7 +677,7 @@
         const savedTheme = localStorage.getItem('user_theme') || 'blue';
         document.getElementById('themeSelect').value = savedTheme;
         document.documentElement.setAttribute('data-theme', savedTheme);
-        renderThemeEffects(savedTheme); // โหลด Effect ทันทีที่เปิดหน้า
+        renderThemeEffects(savedTheme);
 
         window.toggleAuth = () => {
             isLoginMode = !isLoginMode;
@@ -566,27 +689,30 @@
             const toggleText = document.getElementById('authToggle');
             const forgotToggle = document.getElementById('forgotToggle');
             const confirmInput = document.getElementById('confirmPassword');
+            const emoji = document.getElementById('authEmoji');
             
             document.getElementById('password').value = '';
             confirmInput.value = '';
 
             if (isLoginMode) {
-                title.innerText = "👋 ยินดีต้อนรับกลับมา";
+                emoji.innerText = "✨";
+                title.innerText = "ยินดีต้อนรับกลับมา";
                 subtitle.innerText = "เข้าสู่ระบบเพื่อจัดการข้อมูลเงินเดือนของคุณ";
                 btn.innerText = "เข้าสู่ระบบ";
                 btn.className = "btn btn-login-style";
                 confirmGroup.style.display = "none";
                 confirmInput.removeAttribute('required');
-                toggleText.innerHTML = "ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span>";
+                toggleText.innerHTML = "ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิก</span>";
                 forgotToggle.style.display = "inline-block";
             } else {
-                title.innerText = "✨ สร้างบัญชีใหม่";
-                subtitle.innerText = "สมัครใช้งานฟรี เพื่อบันทึกข้อมูลของคุณอย่างปลอดภัย";
+                emoji.innerText = "🚀";
+                title.innerText = "สร้างบัญชีใหม่";
+                subtitle.innerText = "สมัครฟรี เพื่อซิงค์ข้อมูลอย่างปลอดภัย";
                 btn.innerText = "สมัครสมาชิก";
                 btn.className = "btn btn-register-style";
                 confirmGroup.style.display = "block";
                 confirmInput.setAttribute('required', 'true');
-                toggleText.innerHTML = "มีบัญชีอยู่แล้ว? <span>เข้าสู่ระบบที่นี่</span>";
+                toggleText.innerHTML = "มีบัญชีอยู่แล้ว? <span>เข้าสู่ระบบ</span>";
                 forgotToggle.style.display = "none";
             }
         };
@@ -597,16 +723,11 @@
                 alert('กรุณากรอกอีเมลในช่อง Email ด้านบนก่อน แล้วกด "ลืมรหัสผ่าน?" อีกครั้งครับ');
                 return;
             }
-
             try {
                 await sendPasswordResetEmail(auth, email);
-                alert(`✅ ส่งลิงก์สำหรับตั้งรหัสผ่านใหม่ไปที่อีเมล ${email} แล้วครับ\n\n(หากไม่เจอ กรุณาตรวจสอบในโฟลเดอร์จดหมายขยะ/Junk mail ด้วยนะครับ)`);
+                alert(`✅ ส่งลิงก์สำหรับตั้งรหัสผ่านใหม่ไปที่อีเมล ${email} แล้วครับ`);
             } catch (error) {
-                if (error.code === 'auth/invalid-email') {
-                    alert('รูปแบบอีเมลไม่ถูกต้องครับ');
-                } else {
-                    alert('ไม่สามารถส่งอีเมลได้ กรุณาตรวจสอบว่าคุณพิมพ์อีเมลถูกต้อง และเคยสมัครสมาชิกแล้วจริงๆ');
-                }
+                alert('ไม่สามารถส่งอีเมลได้ กรุณาตรวจสอบว่าคุณพิมพ์อีเมลถูกต้อง และเคยสมัครสมาชิกแล้วจริงๆ');
             }
         };
 
@@ -615,9 +736,7 @@
             const p = document.getElementById('password').value.trim();
             const cp = document.getElementById('confirmPassword').value.trim();
             
-            if(!isLoginMode && p !== cp) {
-                return alert('❌ รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกันครับ');
-            }
+            if(!isLoginMode && p !== cp) return alert('❌ รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกันครับ');
 
             const btn = document.getElementById('authBtn');
             const originalText = btn.innerText;
@@ -634,8 +753,6 @@
             } catch (error) {
                 if (error.code === 'auth/email-already-in-use') alert('อีเมลนี้มีผู้ใช้งานแล้ว');
                 else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-                else if (error.code === 'auth/invalid-email') alert('รูปแบบอีเมลไม่ถูกต้อง');
-                else if (error.code === 'auth/weak-password') alert('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');
                 else alert('เกิดข้อผิดพลาด: ' + error.message);
             } finally {
                 btn.innerText = originalText;
@@ -643,14 +760,8 @@
             }
         };
 
-        window.logout = () => {
-            signOut(auth);
-        };
-
-        window.changeYear = () => { 
-            selectedYear = document.getElementById('displayYear').value; 
-            loadData(); 
-        };
+        window.logout = () => signOut(auth);
+        window.changeYear = () => { selectedYear = document.getElementById('displayYear').value; loadData(); };
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -663,30 +774,20 @@
                 document.getElementById('authSection').style.display = 'block';
                 document.getElementById('appSection').style.display = 'none';
                 currentUserUid = null;
-                
-                document.getElementById('password').value = '';
-                document.getElementById('confirmPassword').value = '';
             }
         });
 
         async function loadData() {
             if(!currentUserUid) return;
             document.getElementById('loadingOverlay').style.display = 'block';
-            
             try {
                 const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
                 const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    currentData = docSnap.data().monthsData || Array(12).fill(null);
-                } else {
-                    currentData = Array(12).fill(null);
-                }
-                renderTable(); 
-                updateUI();
+                if (docSnap.exists()) { currentData = docSnap.data().monthsData || Array(12).fill(null); } 
+                else { currentData = Array(12).fill(null); }
+                renderTable(); updateUI();
             } catch (error) {
-                console.error("Error loading document: ", error);
-                alert("มีปัญหาในการโหลดข้อมูลจาก Cloud");
+                console.error(error); alert("มีปัญหาในการโหลดข้อมูลจาก Cloud");
             } finally {
                 document.getElementById('loadingOverlay').style.display = 'none';
             }
@@ -708,7 +809,7 @@
             const totalH = h15 + h20 + h30;
             const netVal = (base + house + food + otVal) - leave - ss;
 
-            currentData[m] = { base, house, food, leave, ss, otTotal: otVal, totalOtHours: totalH, net: netVal };
+            currentData[m] = { base, house, food, leave, ss, otTotal: otVal, totalOtHours: totalH, net: netVal, ot15: h15, ot20: h20, ot30: h30 };
             
             document.getElementById('saveBtn').innerText = "⏳ กำลังบันทึก...";
             document.getElementById('saveBtn').disabled = true;
@@ -716,14 +817,11 @@
             try {
                 const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
                 await setDoc(docRef, { monthsData: currentData });
-                
                 document.querySelectorAll('.ot-row input').forEach(el => el.value = '');
-                renderTable(); 
-                updateUI();
-                alert('✅ บันทึกข้อมูลเดือน ' + months[m] + ' ขึ้น Cloud สำเร็จ!');
+                renderTable(); updateUI();
+                alert('✅ บันทึกข้อมูลเดือน ' + months[m] + ' สำเร็จ!');
             } catch (error) {
-                console.error("Error saving document: ", error);
-                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+                console.error(error); alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
             } finally {
                 document.getElementById('saveBtn').innerText = "💾 บันทึกข้อมูลขึ้น Cloud";
                 document.getElementById('saveBtn').disabled = false;
@@ -743,10 +841,7 @@
                         <td>${d.otTotal.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
                         <td class="income">${d.net.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
                     </tr>`;
-                    sB += (d.base + d.house + foodVal); 
-                    sO += d.otTotal; 
-                    sN += d.net; 
-                    sH += d.totalOtHours;
+                    sB += (d.base + d.house + foodVal); sO += d.otTotal; sN += d.net; sH += d.totalOtHours;
                 } else { 
                     body.innerHTML += `<tr><td style="text-align:center;">${months[i]}</td><td colspan="4" style="text-align:center; color: var(--text-muted);">-</td></tr>`; 
                 }
@@ -760,6 +855,11 @@
         function updateUI() {
             let ots = currentData.map(d => d ? d.totalOtHours : 0);
             
+            let sum15 = currentData.reduce((a,b) => a + (b ? (b.ot15 || 0) : 0), 0);
+            let sum20 = currentData.reduce((a,b) => a + (b ? (b.ot20 || 0) : 0), 0);
+            let sum30 = currentData.reduce((a,b) => a + (b ? (b.ot30 || 0) : 0), 0);
+            let totalOtSum = sum15 + sum20 + sum30;
+            
             let totalG = currentData.reduce((a,b) => a + (b ? (b.base + b.house + (b.food || 0) + b.otTotal - b.leave) : 0), 0);
             let totalSS = currentData.reduce((a,b) => a + (b ? b.ss : 0), 0);
 
@@ -769,21 +869,46 @@
             const gridColor = rootStyle.getPropertyValue('--border-color').trim();
 
             Chart.defaults.color = textColor;
+            Chart.defaults.font.family = "'Sarabun', sans-serif";
 
             if(myChart) myChart.destroy();
             myChart = new Chart(document.getElementById('otChart'), {
                 type: 'bar', 
-                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 6 }] },
+                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 8 }] },
                 options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { color: gridColor }, ticks: { color: textColor } },
-                        y: { grid: { color: gridColor }, ticks: { color: textColor } }
-                    }
+                    responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                    scales: { x: { grid: { color: gridColor }, ticks: { color: textColor } }, y: { grid: { color: gridColor }, ticks: { color: textColor } } }
                 }
             });
+
+            if(myPieChart) myPieChart.destroy();
+            if (totalOtSum === 0) {
+                document.getElementById('otPieChart').style.display = 'none';
+                document.getElementById('noOtMessage').style.display = 'block';
+            } else {
+                document.getElementById('otPieChart').style.display = 'block';
+                document.getElementById('noOtMessage').style.display = 'none';
+                myPieChart = new Chart(document.getElementById('otPieChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x'],
+                        datasets: [{
+                            data: [sum15, sum20, sum30],
+                            backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
+                            borderWidth: 0,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { color: textColor, padding: 20, font: { size: 13, family: "'Sarabun', sans-serif" } } },
+                            tooltip: { callbacks: { label: function(context) { let v = context.raw; return ' ' + v.toFixed(2) + ' ชม. (' + Math.round((v/totalOtSum)*100) + '%)'; } } }
+                        }
+                    }
+                });
+            }
 
             let exp = Math.min(totalG * 0.5, 100000);
             let netT = Math.max(totalG - exp - 60000 - totalSS, 0);
