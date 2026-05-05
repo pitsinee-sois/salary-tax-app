@@ -3,101 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Ultimate Aesthetic)</title>
+    <title>Salary & Tax System (Glassmorphism & Avenue)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
         
-        /* 🎨 ระบบตัวแปรสี (CSS Variables) สำหรับเปลี่ยน Theme */
+        /* 🎨 ระบบตัวแปรสีโปร่งแสง (Glassmorphism CSS Variables) */
         :root {
-            --bg-main: #f1f5f9; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #f8fafc;
-            --text-main: #1e293b; --text-muted: #64748b; --color-primary: #3b82f6;
-            --color-primary-hover: #2563eb; --color-header: #0f172a; --border-color: #e2e8f0; --chart-bar: #3b82f6;
+            --bg-main: #f1f5f9; 
+            --bg-card: rgba(255, 255, 255, 0.45); /* โปร่งแสงให้เห็นพื้นหลัง */
+            --bg-input: rgba(255, 255, 255, 0.55); 
+            --text-main: #0f172a; --text-muted: #475569; 
+            --color-primary: #3b82f6; --color-primary-hover: #2563eb; 
+            --color-header: #0f172a; --border-color: rgba(255, 255, 255, 0.5); --chart-bar: #3b82f6;
         }
         [data-theme="matcha"] {
-            --bg-main: #f0fdf4; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #f0fdf4;
+            --bg-main: #f0fdf4; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(240, 253, 244, 0.6);
             --text-main: #064e3b; --text-muted: #047857; --color-primary: #10b981;
-            --color-primary-hover: #059669; --color-header: #065f46; --border-color: #a7f3d0; --chart-bar: #10b981;
+            --color-primary-hover: #059669; --color-header: #065f46; --border-color: rgba(167, 243, 208, 0.5); --chart-bar: #10b981;
         }
         [data-theme="bamboo"] {
-            --bg-main: #f7fee7; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #ecfccb;
+            --bg-main: #f7fee7; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(236, 252, 203, 0.6);
             --text-main: #3f6212; --text-muted: #4d7c0f; --color-primary: #65a30d;
-            --color-primary-hover: #4d7c0f; --color-header: #3f6212; --border-color: #d9f99d; --chart-bar: #65a30d;
+            --color-primary-hover: #4d7c0f; --color-header: #3f6212; --border-color: rgba(217, 249, 157, 0.5); --chart-bar: #65a30d;
         }
         [data-theme="sakura"] {
-            --bg-main: #fdf2f8; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #fdf2f8;
+            --bg-main: #fdf2f8; --bg-card: rgba(255, 255, 255, 0.5); --bg-input: rgba(253, 242, 248, 0.6);
             --text-main: #831843; --text-muted: #be185d; --color-primary: #ec4899;
-            --color-primary-hover: #db2777; --color-header: #9d174d; --border-color: #fbcfe8; --chart-bar: #ec4899;
+            --color-primary-hover: #db2777; --color-header: #9d174d; --border-color: rgba(251, 207, 232, 0.5); --chart-bar: #ec4899;
         }
         [data-theme="ruby"] {
-            --bg-main: #fef2f2; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #fee2e2;
+            --bg-main: #fef2f2; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(254, 226, 226, 0.6);
             --text-main: #7f1d1d; --text-muted: #991b1b; --color-primary: #ef4444;
-            --color-primary-hover: #dc2626; --color-header: #991b1b; --border-color: #fecaca; --chart-bar: #ef4444;
+            --color-primary-hover: #dc2626; --color-header: #991b1b; --border-color: rgba(254, 202, 202, 0.5); --chart-bar: #ef4444;
         }
         [data-theme="purple"] {
-            --bg-main: #faf5ff; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #f3e8ff;
+            --bg-main: #faf5ff; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(243, 232, 255, 0.6);
             --text-main: #4c1d95; --text-muted: #6d28d9; --color-primary: #a855f7;
-            --color-primary-hover: #9333ea; --color-header: #5b21b6; --border-color: #e9d5ff; --chart-bar: #a855f7;
+            --color-primary-hover: #9333ea; --color-header: #5b21b6; --border-color: rgba(233, 213, 255, 0.5); --chart-bar: #a855f7;
         }
         [data-theme="orange"] {
-            --bg-main: #fff7ed; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #ffedd5;
+            --bg-main: #fff7ed; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(255, 237, 213, 0.6);
             --text-main: #7c2d12; --text-muted: #c2410c; --color-primary: #f97316;
-            --color-primary-hover: #ea580c; --color-header: #9a3412; --border-color: #fed7aa; --chart-bar: #f97316;
+            --color-primary-hover: #ea580c; --color-header: #9a3412; --border-color: rgba(254, 215, 170, 0.5); --chart-bar: #f97316;
         }
         [data-theme="ocean"] {
-            --bg-main: #f0fdfa; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #ccfbf1;
+            --bg-main: #f0fdfa; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(204, 251, 241, 0.6);
             --text-main: #134e4a; --text-muted: #0f766e; --color-primary: #14b8a6;
-            --color-primary-hover: #0d9488; --color-header: #115e59; --border-color: #99f6e4; --chart-bar: #14b8a6;
+            --color-primary-hover: #0d9488; --color-header: #115e59; --border-color: rgba(153, 246, 228, 0.5); --chart-bar: #14b8a6;
         }
         [data-theme="skyblue"] {
-            --bg-main: #f0f9ff; --bg-card: rgba(255, 255, 255, 0.95); --bg-input: #e0f2fe;
+            --bg-main: #f0f9ff; --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(224, 242, 254, 0.6);
             --text-main: #0c4a6e; --text-muted: #0369a1; --color-primary: #0ea5e9;
-            --color-primary-hover: #0284c7; --color-header: #075985; --border-color: #bae6fd; --chart-bar: #0ea5e9;
+            --color-primary-hover: #0284c7; --color-header: #075985; --border-color: rgba(186, 230, 253, 0.5); --chart-bar: #0ea5e9;
         }
         [data-theme="twotone"] {
             --bg-main: linear-gradient(135deg, #fbcfe8 0%, #bfdbfe 100%);
-            --bg-card: rgba(255, 255, 255, 0.85); --bg-input: rgba(255, 255, 255, 0.6);
+            --bg-card: rgba(255, 255, 255, 0.4); --bg-input: rgba(255, 255, 255, 0.5);
             --text-main: #1e3a8a; --text-muted: #4338ca; --color-primary: #8b5cf6;
-            --color-primary-hover: #6d28d9; --color-header: #312e81; --border-color: rgba(255, 255, 255, 0.5); --chart-bar: #8b5cf6;
+            --color-primary-hover: #6d28d9; --color-header: #312e81; --border-color: rgba(255, 255, 255, 0.4); --chart-bar: #8b5cf6;
         }
         [data-theme="fuji"] {
             --bg-main: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            --bg-card: rgba(255, 255, 255, 0.88); --bg-input: rgba(255, 255, 255, 0.7);
+            --bg-card: rgba(255, 255, 255, 0.45); --bg-input: rgba(255, 255, 255, 0.55);
             --text-main: #0c4a6e; --text-muted: #0284c7; --color-primary: #38bdf8;
-            --color-primary-hover: #0284c7; --color-header: #075985; --border-color: rgba(255, 255, 255, 0.6); --chart-bar: #38bdf8;
+            --color-primary-hover: #0284c7; --color-header: #075985; --border-color: rgba(255, 255, 255, 0.5); --chart-bar: #38bdf8;
         }
         [data-theme="tokyo"] {
-            --bg-main: #09090b; --bg-card: rgba(24, 24, 27, 0.92); --bg-input: #27272a;
+            --bg-main: #09090b; --bg-card: rgba(24, 24, 27, 0.6); --bg-input: rgba(39, 39, 42, 0.7);
             --text-main: #f4f4f5; --text-muted: #a1a1aa; --color-primary: #f43f5e;
-            --color-primary-hover: #e11d48; --color-header: #fb7185; --border-color: #3f3f46; --chart-bar: #f43f5e;
+            --color-primary-hover: #e11d48; --color-header: #fb7185; --border-color: rgba(63, 63, 70, 0.5); --chart-bar: #f43f5e;
         }
         [data-theme="dark"] {
-            --bg-main: #0f172a; --bg-card: #1e293b; --bg-input: #334155;
+            --bg-main: #0f172a; --bg-card: rgba(30, 41, 59, 0.6); --bg-input: rgba(51, 65, 85, 0.7);
             --text-main: #f8fafc; --text-muted: #cbd5e1; --color-primary: #60a5fa;
-            --color-primary-hover: #3b82f6; --color-header: #e2e8f0; --border-color: #475569; --chart-bar: #60a5fa;
+            --color-primary-hover: #3b82f6; --color-header: #e2e8f0; --border-color: rgba(71, 85, 105, 0.5); --chart-bar: #60a5fa;
         }
         
-        /* ✨ Core Animations */
+        /* ✨ Animations */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.9; } 90% { opacity: 0.9; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
         @keyframes floatUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 0.8; } }
         @keyframes drift { 0% { transform: translateX(-20vw) translateY(0); opacity: 0;} 15% {opacity: 1;} 85% {opacity: 1;} 100% { transform: translateX(120vw) translateY(50px); opacity: 0;} }
         @keyframes driftSlow { 0% { transform: translateX(-30vw); opacity: 0;} 15% {opacity: 0.9;} 85% {opacity: 0.9;} 100% { transform: translateX(120vw); opacity: 0;} }
         @keyframes blink { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
-        @keyframes sway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } }
-        @keyframes swing { 0% { transform: rotate(-10deg); } 100% { transform: rotate(10deg); } }
-        @keyframes petalWind { 0% { transform: translate(0, -10vh) rotate(0deg) scale(0.8); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translate(-50vw, 110vh) rotate(360deg) scale(1.2); opacity: 0; } }
+        @keyframes sway { 0% { transform: rotate(-1deg); } 100% { transform: rotate(2deg); } }
+        @keyframes petalWind { 0% { transform: translate(0, -10vh) rotate(0deg) scale(0.8); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translate(-40vw, 110vh) rotate(360deg) scale(1.2); opacity: 0; } }
         @keyframes bubbleUp { 0% { transform: translateY(110vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
         @keyframes floatRandom { 0% { transform: translate(0, 0) scale(1); opacity: 0;} 25% { opacity: 0.6; } 50% { transform: translate(30px, -40px) scale(1.1); } 75% { opacity: 0.6; } 100% { transform: translate(-30px, -60px) scale(1); opacity: 0;} }
         @keyframes shootingStar { 0% { transform: translate(120vw, -20vh) rotate(-45deg); opacity: 1; width: 0px; } 100% { transform: translate(-20vw, 120vh) rotate(-45deg); opacity: 0; width: 250px; } }
-        @keyframes rainDrop { 0% { transform: translateY(-10vh); opacity: 0;} 20% { opacity: 0.5; } 100% { transform: translateY(110vh); opacity: 0.5;} }
         
         /* 🐰 Cute Popup Styles */
         .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
-        .cute-popup-box { background: var(--bg-card); border: 2px solid var(--border-color); padding: 40px 30px; border-radius: 36px; text-align: center; max-width: 360px; width: 90%; transform: scale(0.6) translateY(50px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 50px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; }
+        .cute-popup-box { background: var(--bg-card); border: 2px solid var(--border-color); padding: 40px 30px; border-radius: 36px; text-align: center; max-width: 360px; width: 90%; transform: scale(0.6) translateY(50px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 25px 50px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); }
         .cute-popup-overlay.show .cute-popup-box { transform: scale(1) translateY(0); }
         .cute-popup-icon { font-size: 4rem; margin-bottom: 15px; animation: floatRandom 3s ease-in-out infinite alternate; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
         .cute-popup-msg { font-size: 1.15rem; color: var(--text-main); font-weight: 600; line-height: 1.6; margin-bottom: 30px; font-family: 'Sarabun', sans-serif; }
@@ -113,36 +114,37 @@
         .floating-blob { position: absolute; animation: floatRandom 8s ease-in-out infinite alternate; filter: blur(25px); border-radius: 50%; opacity: 0.4; z-index: -2;}
         .shooting-star { position: absolute; height: 3px; background: linear-gradient(to right, rgba(255,255,255,1), transparent); animation: shootingStar linear infinite; border-radius: 50%; box-shadow: 0 0 10px white; }
         
-        /* 🌸 SVG Scene Elements */
-        .bg-tree { position: fixed; background-repeat: no-repeat; background-size: contain; z-index: -2; opacity: 0.95; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15)); pointer-events: none; }
+        /* 🌸 SVG Scene Elements - อุโมงค์ต้นไม้ */
+        .avenue-tree {
+            position: fixed; top: -5vh; width: 45vw; max-width: 600px; height: 110vh;
+            background-size: contain; background-position: top center;
+            background-repeat: no-repeat; z-index: -2; opacity: 0.9;
+            filter: drop-shadow(0 0 20px rgba(0,0,0,0.2));
+            animation: sway 4s ease-in-out infinite alternate;
+        }
+        .tree-left { left: -10vw; transform-origin: bottom left; }
+        .tree-right { right: -10vw; transform: scaleX(-1); transform-origin: bottom right; animation-direction: alternate-reverse;}
         
-        /* 🌸 Sakura Trees */
-        .sakura-tl { top: -40px; left: -40px; width: 45vw; max-width: 450px; height: 45vw; max-height: 450px; transform-origin: top left; animation: sway 4s ease-in-out infinite alternate; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%235c4033'/%3E%3Ccircle cx='220' cy='180' r='30' fill='%23fbcfe8'/%3E%3Ccircle cx='180' cy='120' r='40' fill='%23f9a8d4'/%3E%3Ccircle cx='100' cy='60' r='45' fill='%23fbcfe8'/%3E%3Ccircle cx='140' cy='110' r='35' fill='%23fce7f3'/%3E%3Ccircle cx='240' cy='130' r='20' fill='%23fbcfe8'/%3E%3C/svg%3E"); }
-        .sakura-tr { top: -40px; right: -40px; width: 45vw; max-width: 450px; height: 45vw; max-height: 450px; transform-origin: top right; transform: scaleX(-1); animation: sway 5s ease-in-out infinite alternate-reverse; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%235c4033'/%3E%3Ccircle cx='220' cy='180' r='30' fill='%23fbcfe8'/%3E%3Ccircle cx='180' cy='120' r='40' fill='%23f9a8d4'/%3E%3Ccircle cx='100' cy='60' r='45' fill='%23fbcfe8'/%3E%3Ccircle cx='140' cy='110' r='35' fill='%23fce7f3'/%3E%3Ccircle cx='240' cy='130' r='20' fill='%23fbcfe8'/%3E%3C/svg%3E"); }
-        .sakura-bl { bottom: -40px; left: -40px; width: 35vw; max-width: 350px; height: 35vw; max-height: 350px; transform-origin: bottom left; transform: scaleY(-1); animation: sway 4.5s ease-in-out infinite alternate; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%235c4033'/%3E%3Ccircle cx='220' cy='180' r='30' fill='%23fbcfe8'/%3E%3Ccircle cx='180' cy='120' r='40' fill='%23f9a8d4'/%3E%3Ccircle cx='100' cy='60' r='45' fill='%23fbcfe8'/%3E%3Ccircle cx='140' cy='110' r='35' fill='%23fce7f3'/%3E%3Ccircle cx='240' cy='130' r='20' fill='%23fbcfe8'/%3E%3C/svg%3E"); }
-        .sakura-br { bottom: -40px; right: -40px; width: 35vw; max-width: 350px; height: 35vw; max-height: 350px; transform-origin: bottom right; transform: scaleX(-1) scaleY(-1); animation: sway 5.5s ease-in-out infinite alternate-reverse; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%235c4033'/%3E%3Ccircle cx='220' cy='180' r='30' fill='%23fbcfe8'/%3E%3Ccircle cx='180' cy='120' r='40' fill='%23f9a8d4'/%3E%3Ccircle cx='100' cy='60' r='45' fill='%23fbcfe8'/%3E%3Ccircle cx='140' cy='110' r='35' fill='%23fce7f3'/%3E%3Ccircle cx='240' cy='130' r='20' fill='%23fbcfe8'/%3E%3C/svg%3E"); }
-
-        /* 🍁 Maple Trees */
-        .maple-tl { top: -40px; left: -40px; width: 45vw; max-width: 450px; height: 45vw; max-height: 450px; transform-origin: top left; animation: sway 4s ease-in-out infinite alternate; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%23451a03'/%3E%3Ccircle cx='220' cy='180' r='35' fill='%23ea580c'/%3E%3Ccircle cx='180' cy='120' r='45' fill='%23f97316'/%3E%3Ccircle cx='100' cy='60' r='50' fill='%23ef4444'/%3E%3Ccircle cx='140' cy='110' r='40' fill='%23f59e0b'/%3E%3Ccircle cx='240' cy='130' r='25' fill='%23fbbf24'/%3E%3C/svg%3E"); }
-        .maple-tr { top: -40px; right: -40px; width: 45vw; max-width: 450px; height: 45vw; max-height: 450px; transform-origin: top right; transform: scaleX(-1); animation: sway 5s ease-in-out infinite alternate-reverse; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%23451a03'/%3E%3Ccircle cx='220' cy='180' r='35' fill='%23ea580c'/%3E%3Ccircle cx='180' cy='120' r='45' fill='%23f97316'/%3E%3Ccircle cx='100' cy='60' r='50' fill='%23ef4444'/%3E%3Ccircle cx='140' cy='110' r='40' fill='%23f59e0b'/%3E%3Ccircle cx='240' cy='130' r='25' fill='%23fbbf24'/%3E%3C/svg%3E"); }
-        .maple-bl { bottom: -40px; left: -40px; width: 35vw; max-width: 350px; height: 35vw; max-height: 350px; transform-origin: bottom left; transform: scaleY(-1); animation: sway 4.5s ease-in-out infinite alternate; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%23451a03'/%3E%3Ccircle cx='220' cy='180' r='35' fill='%23ea580c'/%3E%3Ccircle cx='180' cy='120' r='45' fill='%23f97316'/%3E%3Ccircle cx='100' cy='60' r='50' fill='%23ef4444'/%3E%3Ccircle cx='140' cy='110' r='40' fill='%23f59e0b'/%3E%3Ccircle cx='240' cy='130' r='25' fill='%23fbbf24'/%3E%3C/svg%3E"); }
-        .maple-br { bottom: -40px; right: -40px; width: 35vw; max-width: 350px; height: 35vw; max-height: 350px; transform-origin: bottom right; transform: scaleX(-1) scaleY(-1); animation: sway 5.5s ease-in-out infinite alternate-reverse; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M0,0 Q120,60 250,180 Q150,120 0,40 Z' fill='%23451a03'/%3E%3Ccircle cx='220' cy='180' r='35' fill='%23ea580c'/%3E%3Ccircle cx='180' cy='120' r='45' fill='%23f97316'/%3E%3Ccircle cx='100' cy='60' r='50' fill='%23ef4444'/%3E%3Ccircle cx='140' cy='110' r='40' fill='%23f59e0b'/%3E%3Ccircle cx='240' cy='130' r='25' fill='%23fbbf24'/%3E%3C/svg%3E"); }
-        
-        /* 🎋 Bamboo Trees */
-        .bamboo-tree { position: fixed; bottom: -20px; width: 250px; height: 600px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Crect x='40' y='0' width='14' height='300' fill='%2365a30d' rx='5'/%3E%3Crect x='38' y='50' width='18' height='5' fill='%233f6212'/%3E%3Crect x='38' y='120' width='18' height='5' fill='%233f6212'/%3E%3Crect x='38' y='190' width='18' height='5' fill='%233f6212'/%3E%3Crect x='38' y='260' width='18' height='5' fill='%233f6212'/%3E%3Cpath d='M50,50 Q80,10 110,40 Q80,50 50,50 Z' fill='%23a3e635'/%3E%3Cpath d='M50,120 Q20,80 -10,110 Q20,120 50,120 Z' fill='%23a3e635'/%3E%3Cpath d='M50,190 Q90,150 110,180 Q90,190 50,190 Z' fill='%23a3e635'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-size: contain; transform-origin: bottom center; filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.15)); z-index: -1;}
-
-        /* 🗻 Fuji & Others */
+        .sakura-petal { position: absolute; animation: petalWind linear infinite; filter: drop-shadow(0 2px 3px rgba(236,72,153,0.4)); font-size: 20px;}
         .fuji-bg { position: fixed; bottom: -20px; right: 2%; font-size: 350px; opacity: 0.9; animation: floatUp 2s ease-out forwards; filter: drop-shadow(0 -10px 25px rgba(255,255,255,0.8)); z-index: -3;}
         .fuji-sun { position: fixed; top: 10%; left: 10%; font-size: 150px; opacity: 0.95; animation: sway 4s ease-in-out infinite alternate; filter: drop-shadow(0 0 40px rgba(253, 186, 116, 0.9)); z-index: -4;}
-        .ocean-waves { position: fixed; bottom: 0; left: 0; width: 100vw; height: 250px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230ea5e9' fill-opacity='0.5' d='M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,149.3C672,139,768,149,864,170.7C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E"); background-size: cover; animation: sway 8s infinite alternate; z-index: -2;}
-        .lantern { position: absolute; font-size: 70px; top: -10px; transform-origin: top center; animation: swing 3s ease-in-out infinite alternate; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }
-        .raindrop { position: absolute; width: 2px; height: 30px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.8)); animation: rainDrop linear infinite; }
 
-        /* General Layout */
+        /* General Layout & Glassmorphism */
         body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); padding: 20px; margin: 0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; transition: background 0.5s ease, color 0.5s ease; background-attachment: fixed; }
-        .container { width: 100%; max-width: 1050px; background: var(--bg-card); padding: 35px 40px; border-radius: 36px; box-shadow: 0 25px 50px rgba(0,0,0,0.08); box-sizing: border-box; margin-bottom: 40px; transition: 0.5s ease; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 2px solid rgba(255,255,255,0.6); animation: fadeUp 0.8s ease-out forwards; position: relative; z-index: 1; }
         
-        h1 { text-align: center; color: var(--color-header); margin-bottom: 35px; font-size: 2.2rem; letter-spacing: -0.5px; font-weight: 700; }
+        /* กล่องหลักใช้ Backdrop-filter เบลอพื้นหลัง */
+        .container { 
+            width: 100%; max-width: 1050px; 
+            background: var(--bg-card); 
+            padding: 35px 40px; border-radius: 36px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1); box-sizing: border-box; 
+            margin-bottom: 40px; transition: 0.5s ease; 
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); /* เบลอให้ตัวหนังสือชัดขึ้น */
+            border: 2px solid var(--border-color); 
+            animation: fadeUp 0.8s ease-out forwards; position: relative; z-index: 1; 
+        }
+        
+        h1 { text-align: center; color: var(--color-header); margin-bottom: 35px; font-size: 2.2rem; letter-spacing: -0.5px; font-weight: 700; text-shadow: 0 2px 4px rgba(255,255,255,0.5); }
         
         /* Auth UI */
         #authSection { max-width: 460px; margin-top: 10vh; padding: 50px 40px; }
@@ -153,7 +155,7 @@
         
         .form-group { text-align: left; margin-bottom: 20px; }
         .form-group label { color: var(--text-muted); font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; display: block; padding-left: 5px; }
-        input, select { width: 100%; padding: 16px 20px; border: 2px solid var(--border-color); border-radius: 16px; box-sizing: border-box; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; background-color: var(--bg-input); color: var(--text-main); transition: all 0.3s ease; }
+        input, select { width: 100%; padding: 16px 20px; border: 2px solid var(--border-color); border-radius: 16px; box-sizing: border-box; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; background-color: var(--bg-input); color: var(--text-main); transition: all 0.3s ease; backdrop-filter: blur(10px); }
         input:focus, select:focus { border-color: var(--color-primary); background-color: var(--bg-card); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); transform: translateY(-2px); outline: none; }
         
         .btn { width: 100%; padding: 18px; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-size: 1.15rem; display: flex; justify-content: center; align-items: center; gap: 10px; letter-spacing: 0.5px; }
@@ -171,7 +173,7 @@
         
         /* Dashboard Layout */
         .dashboard-top { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-top: 30px; margin-bottom: 25px; }
-        .card { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 24px; padding: 30px; transition: all 0.4s ease; display: flex; flex-direction: column; }
+        .card { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 24px; padding: 30px; transition: all 0.4s ease; display: flex; flex-direction: column; backdrop-filter: blur(10px); }
         .card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); }
         .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
         .chart-wrapper { height: 260px; width: 100%; flex-grow: 1; }
@@ -184,12 +186,12 @@
         .tax-label { display: block; font-size: 1rem; color: var(--text-muted); margin-bottom: 8px; }
         .tax-value { display: block; font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
         .tax-value.deduct { color: #059669; }
-        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.08); border-color: rgba(225, 29, 72, 0.2); }
+        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.15); border-color: rgba(225, 29, 72, 0.3); }
         .tax-total-box .tax-value { color: #e11d48; font-size: 1.9rem; }
         
         /* Inputs & Tables */
         .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .section-box { background: var(--bg-input); padding: 30px; border-radius: 24px; border: 1px solid var(--border-color); transition: all 0.4s ease; margin-bottom: 20px; }
+        .section-box { background: var(--bg-input); padding: 30px; border-radius: 24px; border: 1px solid var(--border-color); transition: all 0.4s ease; margin-bottom: 20px; backdrop-filter: blur(10px); }
         .section-box:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
         .ot-row { display: flex; gap: 10px; }
         .ot-row input { text-align: center; }
@@ -199,15 +201,15 @@
         .btn-logout { background-color: transparent; color: #ef4444; border: 2px solid var(--border-color); max-width: 200px; margin: 40px auto 0; transition: 0.3s; padding: 15px; font-size: 1.05rem; border-radius: 16px; }
         .btn-logout:hover { background-color: rgba(239, 68, 68, 0.1); transform: translateY(-3px); border-color: #ef4444; }
         
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; border: 1px solid var(--border-color); margin-top: 20px; background: var(--bg-card); }
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; border: 1px solid var(--border-color); margin-top: 20px; background: var(--bg-card); backdrop-filter: blur(10px); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
         th, td { padding: 18px 20px; text-align: right; border-bottom: 1px solid var(--border-color); color: var(--text-main); font-size: 1.05rem;}
-        tbody tr:hover td { background-color: rgba(0,0,0,0.02); }
+        tbody tr:hover td { background-color: rgba(0,0,0,0.05); }
         th { background-color: var(--bg-input); color: var(--color-header); font-weight: 700; text-align: center; }
         .tfoot-bg { background: var(--bg-input); font-weight: bold; }
         .income { color: var(--color-primary); font-weight: 700; }
         
-        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px 30px; background: var(--bg-input); border-radius: 24px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
+        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px 30px; background: var(--bg-input); border-radius: 24px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); backdrop-filter: blur(10px); }
         .year-label { font-weight: 700; color: var(--text-muted); font-size: 1.05rem;}
         
         #appSection { display: none; animation: fadeUp 0.6s ease-out forwards; }
@@ -225,12 +227,13 @@
             .pie-wrapper { height: 240px; }
             .input-grid { grid-template-columns: 1fr; padding: 20px !important; }
             th, td { padding: 12px; font-size: 0.95rem; }
+            .avenue-tree { width: 60vw; } /* ให้ต้นไม้ใหญ่ขึ้นในมือถือ */
         }
     </style>
 </head>
 <body>
 
-    <!-- 🌟 เอฟเฟกต์แบคกราวด์สุดอลังการ -->
+    <!-- 🌟 เอฟเฟกต์แบคกราวด์ (ต้นไม้ & อนิเมชัน) -->
     <div id="themeEffectLayer"></div>
 
     <!-- 🐰 Cute Custom Popup -->
@@ -277,22 +280,22 @@
         <h1>💸 ระบบบันทึกเงินเดือน & ประเมินภาษี</h1>
         
         <div id="userBar">
-            <div style="font-size: 1.05rem;">👤 ผู้ใช้งาน: <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
+            <div style="font-size: 1.05rem; text-shadow: 0 1px 2px rgba(255,255,255,0.5);">👤 ผู้ใช้งาน: <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
             <div class="theme-controls" style="display:flex; align-items:center; gap:15px; flex-wrap: wrap; justify-content: center;">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span class="year-label">🎨 ธีม:</span>
                     <select id="themeSelect" onchange="changeTheme()" style="width:auto; min-width: 180px; padding:10px 15px; border-radius: 16px;">
-                        <option value="blue">💧 Cozy Blue</option>
-                        <option value="ruby">🍓 Berry Red</option>
+                        <option value="sakura">🌸 Sakura Bloom (ยอดฮิต)</option>
+                        <option value="orange">🍁 Autumn Maple</option>
+                        <option value="skyblue">☁️ Sunny Sky</option>
+                        <option value="fuji">🗻 Fuji Kawaii</option>
                         <option value="bamboo">🎋 Lucky Bamboo</option>
                         <option value="matcha">🍵 Matcha Latte</option>
                         <option value="ocean">🌊 Ocean Breeze</option>
-                        <option value="skyblue">☁️ Sunny Sky</option>
-                        <option value="sakura">🌸 Sakura Bloom</option>
+                        <option value="blue">💧 Cozy Blue</option>
+                        <option value="ruby">🍓 Berry Red</option>
                         <option value="purple">🔮 Lavender Dream</option>
-                        <option value="orange">🍁 Autumn Maple</option>
                         <option value="twotone">🦄 Pastel Magic</option>
-                        <option value="fuji">🗻 Fuji Kawaii</option>
                         <option value="tokyo">🌃 Tokyo Midnight</option>
                         <option value="dark">🌙 Starry Night</option>
                     </select>
@@ -441,20 +444,22 @@
             yearSelect.appendChild(opt);
         }
 
-        // --- 🌟 ระบบสร้าง Effects ลูกเล่นจัดเต็มอลังการทุกธีม ---
+        // --- 🌟 SVG รหัสวาดต้นไม้ ---
+        const sakuraTreeSVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 1000'%3E%3Cpath d='M50,1000 C100,800 150,500 200,300 C250,150 400,100 500,50 L500,0 L0,0 L0,1000 Z' fill='%234a2e1b'/%3E%3Ccircle cx='300' cy='150' r='180' fill='%23fbcfe8'/%3E%3Ccircle cx='450' cy='250' r='140' fill='%23f9a8d4'/%3E%3Ccircle cx='150' cy='300' r='160' fill='%23fce7f3'/%3E%3Ccircle cx='350' cy='400' r='150' fill='%23fbcfe8'/%3E%3Ccircle cx='100' cy='100' r='200' fill='%23fbcfe8'/%3E%3Ccircle cx='500' cy='100' r='150' fill='%23fce7f3'/%3E%3Crect x='300' y='330' width='40' height='60' fill='%23ef4444' rx='5'/%3E%3Crect x='295' y='330' width='50' height='10' fill='%231e293b'/%3E%3Crect x='295' y='380' width='50' height='10' fill='%231e293b'/%3E%3Cline x1='320' y1='300' x2='320' y2='330' stroke='%234a2e1b' stroke-width='4'/%3E%3C/svg%3E";
+        const mapleTreeSVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 1000'%3E%3Cpath d='M50,1000 C100,800 150,500 200,300 C250,150 400,100 500,50 L500,0 L0,0 L0,1000 Z' fill='%23291508'/%3E%3Ccircle cx='300' cy='150' r='180' fill='%23ea580c'/%3E%3Ccircle cx='450' cy='250' r='140' fill='%23f97316'/%3E%3Ccircle cx='150' cy='300' r='160' fill='%23ef4444'/%3E%3Ccircle cx='350' cy='400' r='150' fill='%23ea580c'/%3E%3Ccircle cx='100' cy='100' r='200' fill='%23fbbf24'/%3E%3Ccircle cx='500' cy='100' r='150' fill='%23f97316'/%3E%3C/svg%3E";
+
+        // --- 🌟 ระบบสร้าง Effects ฉากหลัง ---
         function renderThemeEffects(theme) {
             const effectLayer = document.getElementById('themeEffectLayer');
             effectLayer.innerHTML = ''; 
             
             if (theme === 'sakura') {
-                // ซากุระ 4 มุมจอ
-                let tl = document.createElement('div'); tl.className = 'bg-tree sakura-tl'; effectLayer.appendChild(tl);
-                let tr = document.createElement('div'); tr.className = 'bg-tree sakura-tr'; effectLayer.appendChild(tr);
-                let bl = document.createElement('div'); bl.className = 'bg-tree sakura-bl'; effectLayer.appendChild(bl);
-                let br = document.createElement('div'); br.className = 'bg-tree sakura-br'; effectLayer.appendChild(br);
+                // อุโมงค์ต้นซากุระ 2 ข้างทาง
+                let tl = document.createElement('div'); tl.className = 'avenue-tree tree-left'; tl.style.backgroundImage = `url("${sakuraTreeSVG}")`; effectLayer.appendChild(tl);
+                let tr = document.createElement('div'); tr.className = 'avenue-tree tree-right'; tr.style.backgroundImage = `url("${sakuraTreeSVG}")`; effectLayer.appendChild(tr);
                 
                 // พายุซากุระ
-                for(let i=0; i<45; i++) {
+                for(let i=0; i<40; i++) {
                     let petal = document.createElement('div');
                     petal.className = 'sakura-petal';
                     let types = ['🌸', '💮', '🌸', '🌸', '🍃']; 
@@ -462,20 +467,18 @@
                     petal.style.left = (Math.random() * 120 - 10) + 'vw';
                     petal.style.animationDuration = (Math.random() * 6 + 6) + 's';
                     petal.style.animationDelay = Math.random() * 5 + 's';
-                    petal.style.fontSize = (Math.random() * 18 + 12) + 'px';
+                    petal.style.fontSize = (Math.random() * 15 + 15) + 'px';
                     effectLayer.appendChild(petal);
                 }
             } else if (theme === 'orange') {
-                // ต้นเมเปิล 4 มุม
-                let tl = document.createElement('div'); tl.className = 'bg-tree maple-tl'; effectLayer.appendChild(tl);
-                let tr = document.createElement('div'); tr.className = 'bg-tree maple-tr'; effectLayer.appendChild(tr);
-                let bl = document.createElement('div'); bl.className = 'bg-tree maple-bl'; effectLayer.appendChild(bl);
-                let br = document.createElement('div'); br.className = 'bg-tree maple-br'; effectLayer.appendChild(br);
+                // อุโมงค์ต้นเมเปิล
+                let tl = document.createElement('div'); tl.className = 'avenue-tree tree-left'; tl.style.backgroundImage = `url("${mapleTreeSVG}")`; effectLayer.appendChild(tl);
+                let tr = document.createElement('div'); tr.className = 'avenue-tree tree-right'; tr.style.backgroundImage = `url("${mapleTreeSVG}")`; effectLayer.appendChild(tr);
                 
-                for(let i=0; i<35; i++) {
+                for(let i=0; i<30; i++) {
                     let leaf = document.createElement('div');
                     leaf.className = 'sakura-petal'; 
-                    let types = ['🍁', '🍂', '🍁', '✨']; 
+                    let types = ['🍁', '🍂', '🍁']; 
                     leaf.innerText = types[Math.floor(Math.random() * types.length)];
                     leaf.style.left = (Math.random() * 120 - 10) + 'vw';
                     leaf.style.animationDuration = (Math.random() * 6 + 6) + 's';
@@ -484,24 +487,19 @@
                     effectLayer.appendChild(leaf);
                 }
             } else if (theme === 'skyblue') {
-                let sun = document.createElement('div');
-                sun.className = 'fuji-sun'; sun.innerText = '☀️'; 
-                sun.style.left = '80%'; sun.style.top = '5%';
-                effectLayer.appendChild(sun);
-
                 // เมฆก้อนยักษ์
-                for(let i=0; i<8; i++) {
+                for(let i=0; i<6; i++) {
                     let cloud = document.createElement('div');
                     cloud.className = 'drifting-slow'; 
                     cloud.innerText = '☁️';
-                    cloud.style.top = (Math.random() * 60 - 10) + 'vh';
+                    cloud.style.top = (Math.random() * 50 - 10) + 'vh';
                     cloud.style.animationDuration = (Math.random() * 40 + 40) + 's';
                     cloud.style.animationDelay = '-' + (Math.random() * 20) + 's';
                     cloud.style.fontSize = (Math.random() * 150 + 150) + 'px';
                     effectLayer.appendChild(cloud);
                 }
                 // บอลลูนและนก
-                for(let i=0; i<6; i++) {
+                for(let i=0; i<8; i++) {
                     let obj = document.createElement('div');
                     obj.className = 'drifting-item'; 
                     obj.innerText = Math.random() > 0.5 ? '🕊️' : '🎈';
@@ -516,7 +514,7 @@
                 let fuji = document.createElement('div');
                 fuji.className = 'fuji-bg'; fuji.innerText = '🗻'; effectLayer.appendChild(fuji);
                 
-                // เมฆและซากุระปลิวผ่านหน้าฟูจิ
+                // เมฆลอยผ่านฟูจิ
                 for(let i=0; i<4; i++) {
                     let c = document.createElement('div');
                     c.className = 'drifting-slow'; c.innerText = '☁️';
@@ -525,18 +523,11 @@
                     c.style.fontSize = (Math.random() * 100 + 100) + 'px';
                     effectLayer.appendChild(c);
                 }
-                for(let i=0; i<20; i++) {
-                    let petal = document.createElement('div');
-                    petal.className = 'sakura-petal'; petal.innerText = '🌸';
-                    petal.style.left = (Math.random() * 120) + 'vw';
-                    petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                    effectLayer.appendChild(petal);
-                }
             } else if (theme === 'bamboo') {
-                let bambooLeft = document.createElement('div'); bambooLeft.className = 'bamboo-tree'; bambooLeft.style.left = '10px'; effectLayer.appendChild(bambooLeft);
-                let bambooRight = document.createElement('div'); bambooRight.className = 'bamboo-tree'; bambooRight.style.right = '10px'; bambooRight.style.left = 'auto'; bambooRight.style.transform = 'scaleX(-1)'; effectLayer.appendChild(bambooRight);
+                let tl = document.createElement('div'); tl.className = 'avenue-tree tree-left'; tl.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Crect x='40' y='0' width='20' height='300' fill='%2365a30d' rx='5'/%3E%3Crect x='38' y='50' width='24' height='6' fill='%233f6212'/%3E%3Crect x='38' y='120' width='24' height='6' fill='%233f6212'/%3E%3Crect x='38' y='190' width='24' height='6' fill='%233f6212'/%3E%3Cpath d='M50,50 Q90,0 120,50 Q90,60 50,50 Z' fill='%23a3e635'/%3E%3Cpath d='M50,120 Q10,70 -20,120 Q10,130 50,120 Z' fill='%23a3e635'/%3E%3Cpath d='M50,190 Q100,140 130,190 Q100,200 50,190 Z' fill='%23a3e635'/%3E%3C/svg%3E")`; effectLayer.appendChild(tl);
+                let tr = document.createElement('div'); tr.className = 'avenue-tree tree-right'; tr.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300'%3E%3Crect x='40' y='0' width='20' height='300' fill='%2365a30d' rx='5'/%3E%3Crect x='38' y='50' width='24' height='6' fill='%233f6212'/%3E%3Crect x='38' y='120' width='24' height='6' fill='%233f6212'/%3E%3Crect x='38' y='190' width='24' height='6' fill='%233f6212'/%3E%3Cpath d='M50,50 Q90,0 120,50 Q90,60 50,50 Z' fill='%23a3e635'/%3E%3Cpath d='M50,120 Q10,70 -20,120 Q10,130 50,120 Z' fill='%23a3e635'/%3E%3Cpath d='M50,190 Q100,140 130,190 Q100,200 50,190 Z' fill='%23a3e635'/%3E%3C/svg%3E")`; effectLayer.appendChild(tr);
                 
-                // หิ่งห้อยเรืองแสง
+                // หิ่งห้อย
                 for(let i=0; i<30; i++) {
                     let firefly = document.createElement('div');
                     firefly.className = 'floating-blob';
@@ -550,20 +541,13 @@
                     firefly.style.animationDuration = (Math.random() * 3 + 2) + 's';
                     effectLayer.appendChild(firefly);
                 }
-                for(let i=0; i<15; i++) {
-                    let leaf = document.createElement('div');
-                    leaf.className = 'falling-item'; leaf.innerText = '🌿';
-                    leaf.style.left = Math.random() * 100 + 'vw';
-                    leaf.style.animationDuration = (Math.random() * 4 + 6) + 's';
-                    effectLayer.appendChild(leaf);
-                }
             } else if (theme === 'ocean') {
                 let waves = document.createElement('div');
                 waves.className = 'ocean-waves'; effectLayer.appendChild(waves);
-                for(let i=0; i<8; i++) {
+                for(let i=0; i<6; i++) {
                     let fish = document.createElement('div');
                     fish.className = 'drifting-item'; 
-                    let types = ['🐠', '🐡', '🐢', '🦑'];
+                    let types = ['🐠', '🐡', '🐢', '🦑', '🐋'];
                     fish.innerText = types[Math.floor(Math.random() * types.length)];
                     fish.style.top = (Math.random() * 60 + 20) + 'vh';
                     fish.style.animationDuration = (Math.random() * 20 + 20) + 's';
@@ -589,7 +573,7 @@
                     magic.style.animationDuration = (Math.random() * 5 + 5) + 's';
                     effectLayer.appendChild(magic);
                 }
-                for(let i=0; i<8; i++) {
+                for(let i=0; i<6; i++) {
                     let blob = document.createElement('div');
                     blob.className = 'floating-blob';
                     blob.style.width = (Math.random() * 300 + 150) + 'px';
@@ -600,46 +584,30 @@
                     blob.style.animationDelay = '-' + Math.random() * 5 + 's';
                     effectLayer.appendChild(blob);
                 }
-            } else if (theme === 'tokyo') {
-                for(let i=0; i<40; i++) {
+            } else if (theme === 'tokyo' || theme === 'dark') {
+                let moon = document.createElement('div');
+                moon.className = 'fuji-sun'; moon.innerText = '🌙'; effectLayer.appendChild(moon);
+                
+                for(let i=0; i<50; i++) {
                     let neon = document.createElement('div');
                     neon.className = 'tokyo-neon'; 
-                    let types = ['✨', '⚡', '🏮', '👾', '⭐'];
+                    let types = theme === 'tokyo' ? ['✨', '⚡', '🏮', '👾', '⭐'] : ['⭐', '✨'];
                     neon.innerText = types[Math.floor(Math.random() * types.length)];
+                    neon.style.color = theme === 'dark' ? '#fde047' : 'inherit';
                     neon.style.left = Math.random() * 100 + 'vw';
                     neon.style.top = Math.random() * 100 + 'vh';
                     neon.style.animationDuration = (Math.random() * 2 + 1) + 's';
                     neon.style.animationDelay = Math.random() * 2 + 's';
-                    neon.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                    neon.style.fontSize = (Math.random() * 15 + 10) + 'px';
                     effectLayer.appendChild(neon);
                 }
-                // ดาวตกโตเกียว
-                for(let i=0; i<4; i++) {
+                // ดาวตก
+                for(let i=0; i<5; i++) {
                     let star = document.createElement('div');
                     star.className = 'shooting-star';
                     star.style.animationDelay = Math.random() * 10 + 's';
                     star.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
                     effectLayer.appendChild(star);
-                }
-            } else if (theme === 'dark') {
-                let moon = document.createElement('div');
-                moon.className = 'fuji-sun'; moon.innerText = '🌙'; effectLayer.appendChild(moon);
-                
-                for(let i=0; i<60; i++) {
-                    let star = document.createElement('div');
-                    star.className = 'tokyo-neon'; star.innerText = '⭐';
-                    star.style.color = '#fde047';
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
-                    star.style.animationDuration = (Math.random() * 3 + 1) + 's';
-                    star.style.fontSize = (Math.random() * 10 + 8) + 'px';
-                    effectLayer.appendChild(star);
-                }
-                for(let i=0; i<6; i++) {
-                    let shooting = document.createElement('div');
-                    shooting.className = 'shooting-star';
-                    shooting.style.animationDelay = Math.random() * 8 + 's';
-                    effectLayer.appendChild(shooting);
                 }
             } else if (theme === 'ruby') {
                 for(let i=0; i<30; i++) {
@@ -661,20 +629,7 @@
                     magic.style.animationDuration = (Math.random() * 5 + 4) + 's';
                     effectLayer.appendChild(magic);
                 }
-                for(let i=0; i<6; i++) {
-                    let blob = document.createElement('div');
-                    blob.className = 'floating-blob';
-                    blob.style.width = (Math.random() * 250 + 150) + 'px';
-                    blob.style.height = blob.style.width;
-                    blob.style.background = '#d8b4fe';
-                    blob.style.left = Math.random() * 100 + 'vw';
-                    blob.style.top = Math.random() * 100 + 'vh';
-                    effectLayer.appendChild(blob);
-                }
             } else if (theme === 'matcha') {
-                let l1 = document.createElement('div'); l1.className = 'lantern'; l1.innerText = '🏮'; l1.style.left = '5%'; effectLayer.appendChild(l1);
-                let l2 = document.createElement('div'); l2.className = 'lantern'; l2.innerText = '🏮'; l2.style.right = '5%'; l2.style.animationDelay = '1s'; effectLayer.appendChild(l2);
-                
                 for(let i=0; i<25; i++) {
                     let leaf = document.createElement('div');
                     leaf.className = 'falling-item'; 
@@ -685,14 +640,6 @@
                     effectLayer.appendChild(leaf);
                 }
             } else if (theme === 'blue') {
-                for(let i=0; i<30; i++) {
-                    let drop = document.createElement('div');
-                    drop.className = 'raindrop';
-                    drop.style.left = Math.random() * 100 + 'vw';
-                    drop.style.animationDuration = (Math.random() * 1 + 0.5) + 's';
-                    drop.style.animationDelay = Math.random() * 2 + 's';
-                    effectLayer.appendChild(drop);
-                }
                 for(let i=0; i<15; i++) {
                     let spark = document.createElement('div');
                     spark.className = 'floating-blob'; 
@@ -705,6 +652,10 @@
             }
         }
 
+        // โหลดธีมครั้งแรก
+        const savedTheme = localStorage.getItem('user_theme') || 'sakura';
+        document.getElementById('themeSelect').value = savedTheme;
+        
         window.changeTheme = () => {
             const theme = document.getElementById('themeSelect').value;
             document.documentElement.setAttribute('data-theme', theme);
@@ -713,8 +664,7 @@
             if(myChart) updateUI();
         };
 
-        const savedTheme = localStorage.getItem('user_theme') || 'blue';
-        document.getElementById('themeSelect').value = savedTheme;
+        // เรียกใช้งาน Effect ทันที
         document.documentElement.setAttribute('data-theme', savedTheme);
         renderThemeEffects(savedTheme);
 
@@ -965,7 +915,7 @@
             alertBox.innerText = maxH > 80 ? "🔴 คุณทำงานหนักเกินไปแล้วนะ!" : maxH > 60 ? "🟡 ทำโอทีเยอะไปนิด รักษาสุขภาพด้วย" : "🟢 สมดุลชีวิตและการทำงานดีเยี่ยม";
             
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'tokyo';
-            alertBox.style.background = maxH > 80 ? (isDark ? "#7f1d1d" : "#fee2e2") : maxH > 60 ? (isDark ? "#713f12" : "#fef9c3") : (isDark ? "#14532d" : "#dcfce7");
+            alertBox.style.background = maxH > 80 ? (isDark ? "#7f1d1d" : "rgba(254, 226, 226, 0.8)") : maxH > 60 ? (isDark ? "#713f12" : "rgba(254, 249, 195, 0.8)") : (isDark ? "#14532d" : "rgba(220, 252, 231, 0.8)");
             alertBox.style.color = maxH > 80 ? (isDark ? "#fca5a5" : "#991b1b") : maxH > 60 ? (isDark ? "#fde047" : "#854d0e") : (isDark ? "#86efac" : "#166534");
         }
     </script>
