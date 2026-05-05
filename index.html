@@ -10,29 +10,29 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
         
-        /* 🎨 ระบบตัวแปรสี & Glassmorphism (กระจกฝ้า) */
+        /* 🎨 ระบบตัวแปรสี & Glassmorphism */
         :root {
-            --bg-container: rgba(255, 255, 255, 0.85); /* ความใสของกล่องหลัก */
-            --bg-card: rgba(255, 255, 255, 0.6);      /* ความใสของการ์ดย่อย */
-            --bg-input: rgba(255, 255, 255, 0.8);
-            --text-main: #1e293b; --text-muted: #475569;
+            --bg-container: rgba(255, 255, 255, 0.85); 
+            --bg-card: rgba(255, 255, 255, 0.65); 
+            --bg-input: rgba(255, 255, 255, 0.9);
+            --text-main: #1e293b; --text-muted: #64748b;
             --color-primary: #3b82f6; --color-primary-hover: #2563eb;
-            --color-header: #0f172a; --border-color: rgba(255, 255, 255, 0.6);
+            --color-header: #0f172a; --border-color: rgba(255, 255, 255, 0.8);
             --chart-bar: #3b82f6;
         }
 
-        /* 🌙 โหมดกลางคืน (Dark Themes) จะเปลี่ยนกล่องเป็นกระจกสีเข้ม */
+        /* 🌙 โหมดกลางคืน */
         [data-theme="tokyo"], [data-theme="dark"], [data-theme="ocean"] {
             --bg-container: rgba(15, 23, 42, 0.85); 
-            --bg-card: rgba(30, 41, 59, 0.6); 
-            --bg-input: rgba(15, 23, 42, 0.8);
+            --bg-card: rgba(30, 41, 59, 0.65); 
+            --bg-input: rgba(15, 23, 42, 0.85);
             --text-main: #f8fafc; --text-muted: #cbd5e1;
             --color-primary: #60a5fa; --color-primary-hover: #3b82f6;
             --color-header: #f1f5f9; --border-color: rgba(255, 255, 255, 0.15);
             --chart-bar: #60a5fa;
         }
 
-        /* ปรับสีปุ่มและไฮไลต์ตามธีม */
+        /* 🎨 สีตามธีม */
         [data-theme="sakura"] { --color-primary: #ec4899; --color-primary-hover: #db2777; --chart-bar: #ec4899; }
         [data-theme="orange"] { --color-primary: #f97316; --color-primary-hover: #ea580c; --chart-bar: #f97316; }
         [data-theme="matcha"] { --color-primary: #10b981; --color-primary-hover: #059669; --chart-bar: #10b981; }
@@ -41,33 +41,14 @@
         [data-theme="purple"] { --color-primary: #a855f7; --color-primary-hover: #9333ea; --chart-bar: #a855f7; }
         [data-theme="fuji"] { --color-primary: #0ea5e9; --color-primary-hover: #0284c7; --chart-bar: #0ea5e9; }
         [data-theme="tokyo"] { --color-primary: #f43f5e; --color-primary-hover: #e11d48; --chart-bar: #f43f5e; }
+        [data-theme="twotone"] { --color-primary: #a78bfa; --color-primary-hover: #8b5cf6; --chart-bar: #a78bfa; }
         
-        /* 🖼️ ภาพพื้นหลังสมจริง (Realistic Background Layer) */
-        #bgImageLayer {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background-size: cover; background-position: center; background-repeat: no-repeat;
-            z-index: -10; transition: background-image 0.8s ease-in-out;
-        }
+        /* 🖼️ ภาพพื้นหลัง & Particles */
+        #bgImageLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -10; transition: background-image 0.8s ease-in-out; }
+        #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -5; overflow: hidden; }
 
-        /* 🌸 เลเยอร์อนุภาคตกแต่ง (Particle Effects) */
-        #themeEffectLayer {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: -5; overflow: hidden;
-        }
-
-        /* ✨ แอนิเมชันสำหรับ Particles */
-        @keyframes fallAndSway { 
-            0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; } 
-            20% { opacity: 0.9; } 
-            80% { opacity: 0.9; } 
-            100% { transform: translate(-20vw, 110vh) rotate(360deg); opacity: 0; } 
-        }
-        @keyframes floatCloud {
-            0% { transform: translateX(-10vw); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
-            100% { transform: translateX(110vw); opacity: 0; }
-        }
+        @keyframes fallAndSway { 0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; } 20% { opacity: 0.9; } 80% { opacity: 0.9; } 100% { transform: translate(-20vw, 110vh) rotate(360deg); opacity: 0; } }
+        @keyframes floatCloud { 0% { transform: translateX(-10vw); opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { transform: translateX(110vw); opacity: 0; } }
         @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
         @keyframes floatUp { 0% { transform: translateY(110vh) scale(0.5); opacity: 0; } 50% { opacity: 0.7; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
 
@@ -76,100 +57,90 @@
         .particle-star { position: absolute; animation: twinkle 2s infinite alternate; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
         .particle-bubble { position: absolute; animation: floatUp linear infinite; font-size: 15px; }
 
-        /* 📱 Layout & Glassmorphism UI */
+        /* 📱 Layout */
         body { font-family: 'Sarabun', sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; color: var(--text-main); }
+        .container { width: 100%; max-width: 1050px; background: var(--bg-container); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 2px solid var(--border-color); padding: 40px; border-radius: 36px; box-shadow: 0 25px 50px rgba(0,0,0,0.1); margin-bottom: 50px; position: relative; z-index: 1; transition: all 0.5s ease; animation: fadeUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         
-        .container { 
-            width: 100%; max-width: 1000px; 
-            background: var(--bg-container); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            border: 1px solid var(--border-color);
-            padding: 40px; border-radius: 32px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15); 
-            margin-bottom: 50px; position: relative; z-index: 1; 
-            transition: all 0.5s ease;
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes bounceIn { 0% { transform: scale(0.5) translateY(50px); opacity: 0; } 60% { transform: scale(1.05) translateY(-10px); opacity: 1; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
         
-        h1 { text-align: center; color: var(--color-header); margin-bottom: 30px; font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; }
+        h1 { text-align: center; color: var(--color-header); margin-bottom: 30px; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; }
         
         /* 🐰 Premium Popup */
-        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
-        .cute-popup-box { 
-            background: var(--bg-container); backdrop-filter: blur(25px); 
-            border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 32px; 
-            text-align: center; max-width: 360px; width: 90%; 
-            transform: scale(0.8) translateY(30px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2); 
-        }
-        .cute-popup-overlay.show .cute-popup-box { transform: scale(1) translateY(0); }
-        .cute-popup-icon { font-size: 4rem; margin-bottom: 15px; }
-        .cute-popup-msg { font-size: 1.15rem; color: var(--text-main); font-weight: 600; line-height: 1.5; margin-bottom: 25px; }
-        .cute-popup-btn { background: var(--color-primary); color: white; border: none; padding: 14px 35px; border-radius: 20px; font-size: 1.1rem; cursor: pointer; font-weight: 700; transition: 0.3s; width: 100%; }
+        .cute-popup-box { background: var(--bg-container); backdrop-filter: blur(25px); border: 2px solid var(--border-color); padding: 40px 30px; border-radius: 36px; text-align: center; max-width: 360px; width: 90%; transform: scale(0.8) translateY(30px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
+        .cute-popup-overlay.show .cute-popup-box { transform: scale(1) translateY(0); animation: bounceIn 0.5s forwards; }
+        .cute-popup-icon { font-size: 4.5rem; margin-bottom: 15px; }
+        .cute-popup-msg { font-size: 1.15rem; color: var(--text-main); font-weight: 700; line-height: 1.5; margin-bottom: 25px; }
+        .cute-popup-btn { background: var(--color-primary); color: white; border: none; padding: 14px 35px; border-radius: 20px; font-size: 1.1rem; cursor: pointer; font-weight: 700; transition: 0.3s; width: 100%; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
         .cute-popup-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); filter: brightness(1.1); }
 
         /* UI Elements */
         .auth-header { text-align: center; margin-bottom: 30px; }
         .form-group { margin-bottom: 20px; }
-        label { font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; display: block; color: var(--text-muted); }
+        label { font-weight: 700; font-size: 1rem; margin-bottom: 10px; display: block; color: var(--color-header); padding-left: 5px;}
         
-        input, select { 
-            width: 100%; padding: 15px 20px; border: 1px solid var(--border-color); 
-            border-radius: 16px; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; 
-            background-color: var(--bg-input); color: var(--text-main); transition: 0.3s; 
-        }
-        input:focus, select:focus { border-color: var(--color-primary); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); outline: none; transform: translateY(-2px); }
+        input, select { width: 100%; padding: 16px 20px; border: 2px solid transparent; border-radius: 16px; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; background-color: var(--bg-input); color: var(--text-main); transition: 0.3s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.02);}
+        input:focus, select:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.15); outline: none; transform: translateY(-2px); }
         
-        .btn { width: 100%; padding: 18px; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 1.15rem; color: white; margin-top: 15px; }
-        .btn-login-style { background: var(--color-primary); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .btn-login-style:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 15px 25px rgba(0,0,0,0.15); }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.15rem; color: white; margin-top: 15px; }
+        .btn-login-style { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
+        .btn-login-style:hover { transform: translateY(-4px); filter: brightness(1.1); box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3); }
         
-        .toggle-area { margin-top: 25px; text-align: center; }
-        .toggle-text span { color: var(--color-primary); font-weight: 700; cursor: pointer; text-decoration: underline; }
-        .forgot-text { font-size: 0.95rem; color: var(--text-muted); cursor: pointer; margin-top: 15px; display: inline-block; text-decoration: underline; }
+        .toggle-area { margin-top: 30px; text-align: center; }
+        .toggle-text span { color: var(--color-primary); font-weight: 800; cursor: pointer; padding: 5px 10px; border-radius: 10px; transition: 0.2s;}
+        .toggle-text span:hover { background: rgba(59,130,246,0.1); }
+        .forgot-text { font-size: 0.95rem; color: var(--text-muted); cursor: pointer; margin-top: 15px; display: inline-block; border-bottom: 2px dashed transparent; font-weight: 600;}
+        .forgot-text:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
         
-        /* Dashboard & Cards */
-        .dashboard-top { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-top: 20px; margin-bottom: 25px; }
-        .card, .section-box { 
-            background: var(--bg-card); border: 1px solid var(--border-color); 
-            border-radius: 24px; padding: 30px; transition: 0.3s; 
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        }
-        .card:hover, .section-box:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
-        h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; font-size: 1.2rem; }
+        /* 📊 Dashboard & Cards */
+        .dashboard-top { display: grid; grid-template-columns: 3fr 2fr; gap: 30px; margin-top: 25px; margin-bottom: 30px; }
+        .card, .section-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 32px; padding: 35px; transition: 0.3s; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.03);}
+        .card:hover, .section-box:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.06); }
         
-        .chart-wrapper { height: 260px; width: 100%; }
-        .pie-wrapper { position: relative; height: 220px; width: 100%; display: flex; justify-content: center; align-items: center; }
+        /* 🍩 New OT Card Design */
+        .ot-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+        .ot-card-header h3 { border: none; padding: 0; margin: 0; }
+        #otSummaryMonth { width: auto; padding: 8px 15px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: var(--bg-input); border: 2px solid transparent; cursor: pointer; transition: 0.2s;}
+        #otSummaryMonth:focus { border-color: var(--color-primary); }
         
-        /* Tax Grid */
+        .chart-wrapper { height: 280px; width: 100%; }
+        .pie-wrapper { position: relative; height: 180px; width: 100%; display: flex; justify-content: center; align-items: center; }
+        #pieCenterText { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+        
+        /* 🧾 Tax Grid */
         .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 10px; }
-        .tax-box { background: var(--bg-input); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); text-align: center; }
-        .tax-label { display: block; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px; }
-        .tax-value { display: block; font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
-        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.1); border-color: rgba(225, 29, 72, 0.2); }
-        .tax-total-box .tax-value { color: #e11d48; font-size: 1.8rem; }
+        .tax-box { background: var(--bg-input); padding: 20px; border-radius: 20px; border: 1px solid var(--border-color); text-align: center; transition: 0.3s;}
+        .tax-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.03);}
+        .tax-label { display: block; font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px; font-weight: 600;}
+        .tax-value { display: block; font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+        .tax-value.deduct { color: #10b981; }
+        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.08); border-color: rgba(225, 29, 72, 0.2); }
+        .tax-total-box .tax-value { color: #e11d48; font-size: 2rem; }
         
         /* Tables & Inputs */
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 25px; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 25px; }
         .ot-row { display: flex; gap: 10px; }
-        .ot-row input { text-align: center; font-weight: 600; color: var(--color-primary); }
+        .ot-row input { text-align: center; font-weight: 700; color: var(--color-primary); font-size: 1.15rem;}
         
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px; background: var(--bg-card); }
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; border: 1px solid var(--border-color); margin-top: 25px; background: var(--bg-card); backdrop-filter: blur(15px);}
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        th, td { padding: 15px 20px; text-align: right; border-bottom: 1px solid var(--border-color); }
-        th { color: var(--color-header); font-weight: 700; text-align: center; }
-        .tfoot-bg { background: rgba(0,0,0,0.05); font-weight: 700; }
-        .income { color: var(--color-primary); font-weight: 700; }
+        th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed var(--border-color); }
+        th { color: var(--color-header); font-weight: 800; text-align: center; font-size: 1.05rem; border-bottom: 2px solid var(--border-color);}
+        tbody tr:hover td { background-color: rgba(0,0,0,0.03); color: var(--color-primary); font-weight: 600;}
+        .tfoot-bg { background: rgba(0,0,0,0.05); font-weight: 800; }
+        .income { color: var(--color-primary); font-weight: 800; }
 
-        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px 25px; background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; }
+        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; padding: 25px 35px; background: var(--bg-card); border-radius: 28px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.02);}
         
         #appSection { display: none; }
-        #loadingOverlay { display: none; text-align: center; color: var(--color-primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; }
+        #loadingOverlay { display: none; text-align: center; color: var(--color-primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 20px; }
 
         @media (max-width: 768px) {
-            .container { padding: 25px; border-radius: 28px; }
+            .container { padding: 30px 20px; border-radius: 32px; }
             .dashboard-top { grid-template-columns: 1fr; }
-            .pie-wrapper { height: 240px; }
+            .ot-card-header { flex-direction: column; gap: 15px; align-items: flex-start;}
             #userBar { flex-direction: column; text-align: center; }
             #userBar div { justify-content: center; width: 100%; }
         }
@@ -177,10 +148,10 @@
 </head>
 <body>
 
-    <!-- 🖼️ เลเยอร์ภาพพื้นหลังสมจริง (High-Res Realistic Background) -->
+    <!-- 🖼️ เลเยอร์ภาพพื้นหลังสมจริง -->
     <div id="bgImageLayer"></div>
     
-    <!-- 🌸 เลเยอร์อนุภาคตกแต่ง (Particles: ซากุระ, หิมะ, ดาว) -->
+    <!-- 🌸 เลเยอร์อนุภาคตกแต่ง -->
     <div id="themeEffectLayer"></div>
 
     <!-- 🐰 Premium Popup -->
@@ -193,11 +164,11 @@
     </div>
 
     <!-- 🔐 หน้าเข้าสู่ระบบ -->
-    <div id="authSection" class="container" style="max-width: 460px; margin-top: 10vh;">
+    <div id="authSection" class="container" style="max-width: 480px; margin-top: 8vh;">
         <div class="auth-header">
             <div class="cute-popup-icon">👋</div>
-            <h2 style="color: var(--color-header); margin-bottom: 5px;">เข้าสู่ระบบ</h2>
-            <p style="color: var(--text-muted); margin-top: 0;">จัดการข้อมูลเงินเดือนอย่างปลอดภัย</p>
+            <h2 style="color: var(--color-header); margin-bottom: 8px; font-weight: 800; font-size: 2rem;">เข้าสู่ระบบ</h2>
+            <p style="color: var(--text-muted); margin-top: 0; font-size: 1.05rem;">จัดการข้อมูลเงินเดือนอย่างปลอดภัย</p>
         </div>
         
         <form onsubmit="event.preventDefault(); handleAuth();">
@@ -217,7 +188,7 @@
         </form>
         
         <div class="toggle-area">
-            <div id="authToggle" class="toggle-text" onclick="toggleAuth()" style="color: var(--text-muted);">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิก</span></div>
+            <div id="authToggle" class="toggle-text" onclick="toggleAuth()" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิก</span></div>
             <div id="forgotToggle" class="forgot-text" onclick="handleResetPassword()">ลืมรหัสผ่าน? คลิกเพื่อตั้งใหม่</div>
         </div>
     </div>
@@ -227,11 +198,11 @@
         <h1>💸 ระบบบันทึกเงินเดือน & ประเมินภาษี</h1>
         
         <div id="userBar">
-            <div style="font-size: 1.1rem; font-weight: 600;">👤 บัญชี: <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
+            <div style="font-size: 1.15rem; font-weight: 700;">👤 บัญชี: <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
             <div style="display:flex; align-items:center; gap:15px; flex-wrap: wrap; justify-content: center;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="font-weight: 600; color: var(--text-muted);">🎨 ธีม:</span>
-                    <select id="themeSelect" onchange="changeTheme()" style="width:auto; padding:10px 15px; border-radius: 12px; font-weight: 600;">
+                    <span style="font-weight: 700; color: var(--text-muted);">🎨 ธีม:</span>
+                    <select id="themeSelect" onchange="changeTheme()" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 700;">
                         <option value="sakura">🌸 Sakura Avenue</option>
                         <option value="fuji">🗻 Mt. Fuji View</option>
                         <option value="tokyo">🌃 Tokyo Night</option>
@@ -244,8 +215,8 @@
                     </select>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="font-weight: 600; color: var(--text-muted);">🗓️ ปี:</span>
-                    <select id="displayYear" onchange="changeYear()" style="width:auto; padding:10px 15px; border-radius: 12px; font-weight: 600;"></select>
+                    <span style="font-weight: 700; color: var(--text-muted);">🗓️ ปี:</span>
+                    <select id="displayYear" onchange="changeYear()" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 700;"></select>
                 </div>
             </div>
         </div>
@@ -253,23 +224,53 @@
         <div id="loadingOverlay">กำลังโหลดข้อมูล... ⏳</div>
 
         <div class="dashboard-top">
+            <!-- กราฟแท่ง -->
             <div class="card">
-                <h3>📊 สรุปชั่วโมงโอทีรายเดือน</h3>
+                <h3 style="border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">📊 สรุปชั่วโมงโอทีรายเดือน</h3>
                 <div class="chart-wrapper"><canvas id="otChart"></canvas></div>
-                <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:700; padding:12px; border-radius:16px;"></div>
+                <div id="overworkAlert" style="margin-top:25px; text-align:center; font-weight:800; padding:15px; border-radius:16px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);"></div>
             </div>
 
+            <!-- 🍩 กราฟวงกลมโอทีแบบใหม่ -->
             <div class="card">
-                <h3>🍩 สัดส่วนโอที (1.5 / 2.0 / 3.0)</h3>
+                <div class="ot-card-header">
+                    <h3 style="margin: 0; padding: 0; border: none;">⏱️ ข้อมูลโอที</h3>
+                    <select id="otSummaryMonth" onchange="updateOTSummaryCard()" title="เลือกเดือนเพื่อดูสรุปโอที">
+                        <option value="all">รวมทั้งปี</option>
+                        <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
+                        <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
+                        <option value="6">ก.ค.</option><option value="7">ส.ค.</option><option value="8">ก.ย.</option>
+                        <option value="9">ต.ค.</option><option value="10">พ.ย.</option><option value="11">ธ.ค.</option>
+                    </select>
+                </div>
+                
                 <div class="pie-wrapper">
                     <canvas id="otPieChart"></canvas>
-                    <div id="noOtMessage" style="position: absolute; text-align: center; color: var(--text-muted); display: none;">ยังไม่มีข้อมูลโอทีในปีนี้<br><small>(เพิ่มข้อมูลที่ด้านล่างได้เลย)</small></div>
+                    <div id="pieCenterText">
+                        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 700;">รวมเวลา</div>
+                        <div id="pieTotalHours" style="font-size: 2rem; font-weight: 800; color: var(--color-primary); line-height: 1;">0</div>
+                        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 700;">ชม.</div>
+                    </div>
+                    <div id="noOtMessage" style="position: absolute; text-align: center; color: var(--text-muted); display: none; font-size: 1.1rem; font-weight: 600;">ไม่มีข้อมูลโอที<br><small style="font-weight:normal; font-size: 0.9rem;">(กรุณาเลือกเดือนอื่น)</small></div>
+                </div>
+
+                <!-- Custom Legend -->
+                <div id="otCustomLegend" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; transition: 0.3s;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.95rem; font-weight: 700; padding: 0 10px;">
+                        <span style="color: #3b82f6; display: flex; flex-direction: column; align-items: center;"><span>🔵 1.5x</span><span id="leg15" style="font-size: 1.1rem;">0</span></span>
+                        <span style="color: #f59e0b; display: flex; flex-direction: column; align-items: center;"><span>🟠 2.0x</span><span id="leg20" style="font-size: 1.1rem;">0</span></span>
+                        <span style="color: #ef4444; display: flex; flex-direction: column; align-items: center;"><span>🔴 3.0x</span><span id="leg30" style="font-size: 1.1rem;">0</span></span>
+                    </div>
+                    <div style="text-align: center; background: rgba(59, 130, 246, 0.1); padding: 12px; border-radius: 16px; margin-top: 5px; border: 1px dashed rgba(59, 130, 246, 0.3);">
+                        <span style="font-weight: 700; color: var(--text-muted); font-size: 0.95rem;">💸 รับเงินโอทีรวม<br></span>
+                        <span id="legTotalMoney" style="font-weight: 800; font-size: 1.4rem; color: var(--color-primary);">0.00 บาท</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card" style="margin-bottom: 30px;">
-            <h3>🧾 ประเมินภาษีประจำปี (ภ.ง.ด. 91)</h3>
+            <h3 style="border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 10px;">🧾 ประเมินภาษีประจำปี (ภ.ง.ด. 91)</h3>
             <div class="tax-grid">
                 <div class="tax-box">
                     <span class="tax-label">รายได้รวมทั้งปี</span>
@@ -288,14 +289,14 @@
                     <span class="tax-value deduct">- <span id="taxSS">0.00</span></span>
                 </div>
                 <div class="tax-box tax-total-box">
-                    <span class="tax-label" style="color: #be123c; font-weight: 700;">ภาษีที่ต้องชำระ</span>
+                    <span class="tax-label" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระ</span>
                     <span class="tax-value" id="taxAmount">0.00 บาท</span>
                 </div>
             </div>
         </div>
 
         <div class="section-box">
-            <h3 style="margin-bottom: 20px;">📝 บันทึกรายได้และรายการหัก</h3>
+            <h3 style="border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 25px;">📝 บันทึกรายได้และรายการหัก</h3>
             <div class="input-grid">
                 <div class="form-group">
                     <label>📅 เลือกเดือน</label>
@@ -315,7 +316,7 @@
         </div>
 
         <div class="section-box">
-            <h3 style="margin-bottom: 20px;">⏱️ บันทึกชั่วโมงโอที (ชั่วโมง / นาที)</h3>
+            <h3 style="border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 25px;">⏱️ บันทึกชั่วโมงโอที (ชั่วโมง / นาที)</h3>
             <div class="input-grid">
                 <div class="form-group"><label>OT 1.5</label><div class="ot-row"><input type="number" id="ot15h" step="any" placeholder="ชม."><input type="number" id="ot15m" step="any" placeholder="นาที"></div></div>
                 <div class="form-group"><label>OT 2.0</label><div class="ot-row"><input type="number" id="ot20h" step="any" placeholder="ชม."><input type="number" id="ot20m" step="any" placeholder="นาที"></div></div>
@@ -323,7 +324,7 @@
             </div>
         </div>
 
-        <button id="saveBtn" class="btn btn-login-style" style="margin-bottom: 30px;" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้นระบบ</button>
+        <button id="saveBtn" class="btn btn-login-style" style="margin-bottom: 30px; padding: 22px; font-size: 1.3rem;" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้นระบบ</button>
 
         <div class="table-responsive">
             <table>
@@ -337,7 +338,7 @@
             </table>
         </div>
         <div style="text-align: center;">
-            <button class="btn" style="background: transparent; color: #ef4444; border: 1px solid #fca5a5; max-width: 200px; margin-top: 40px;" onclick="logout()">ออกจากระบบ</button>
+            <button class="btn" style="background: var(--bg-card); color: #ef4444; border: 2px solid #fca5a5; max-width: 220px; margin-top: 40px; padding: 15px;" onclick="logout()">ออกจากระบบ</button>
         </div>
     </div>
 
@@ -389,33 +390,31 @@
             yearSelect.appendChild(opt);
         }
 
-        // --- 🖼️ ภาพพื้นหลังความละเอียดสูง (Realistic Unsplash Backgrounds) ---
+        // --- 🖼️ ภาพพื้นหลังความละเอียดสูง (Realistic Backgrounds) ---
         const themeBackgrounds = {
-            sakura: 'https://images.unsplash.com/photo-1493957988430-a5f2e15f39a3?q=80&w=1920&auto=format&fit=crop', // ถนนซากุระ
-            tokyo: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1920&auto=format&fit=crop', // แสงไฟนีออนโตเกียว
-            dark: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1920&auto=format&fit=crop', // ท้องฟ้ากลางคืนเต็มไปด้วยดาว
-            fuji: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=1920&auto=format&fit=crop', // ภูเขาไฟฟูจิ
-            ocean: 'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?q=80&w=1920&auto=format&fit=crop', // ทะเล/ใต้น้ำ
-            orange: 'https://images.unsplash.com/photo-1507371341162-763b5e419408?q=80&w=1920&auto=format&fit=crop', // ใบไม้เปลี่ยนสี
-            matcha: 'https://images.unsplash.com/photo-1536319114681-3094c8e76319?q=80&w=1920&auto=format&fit=crop', // ป่าไผ่/สวนญี่ปุ่น
-            blue: 'https://images.unsplash.com/photo-1551244072-5d12893278ab?q=80&w=1920&auto=format&fit=crop', // หน้าต่างหยดน้ำฝน
-            skyblue: 'https://images.unsplash.com/photo-1495932574959-1fa32fb170c9?q=80&w=1920&auto=format&fit=crop', // ท้องฟ้าและเมฆ
+            sakura: 'https://images.unsplash.com/photo-1493957988430-a5f2e15f39a3?q=80&w=1920&auto=format&fit=crop',
+            tokyo: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=1920&auto=format&fit=crop',
+            dark: 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1920&auto=format&fit=crop',
+            fuji: 'https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?q=80&w=1920&auto=format&fit=crop',
+            ocean: 'https://images.unsplash.com/photo-1582967788606-a171c1080cb0?q=80&w=1920&auto=format&fit=crop',
+            orange: 'https://images.unsplash.com/photo-1507371341162-763b5e419408?q=80&w=1920&auto=format&fit=crop',
+            matcha: 'https://images.unsplash.com/photo-1536319114681-3094c8e76319?q=80&w=1920&auto=format&fit=crop',
+            blue: 'https://images.unsplash.com/photo-1551244072-5d12893278ab?q=80&w=1920&auto=format&fit=crop',
+            skyblue: 'https://images.unsplash.com/photo-1495932574959-1fa32fb170c9?q=80&w=1920&auto=format&fit=crop',
+            twotone: 'https://images.unsplash.com/photo-1557683311-eac922347aa1?q=80&w=1920&auto=format&fit=crop'
         };
 
-        // --- 🌸 ระบบใส่ลูกเล่น (Particles) ทับภาพพื้นหลัง ---
         function renderThemeEffects(theme) {
             const bgLayer = document.getElementById('bgImageLayer');
             const effectLayer = document.getElementById('themeEffectLayer');
             effectLayer.innerHTML = ''; 
             
-            // ตั้งค่าภาพพื้นหลัง
             if (themeBackgrounds[theme]) {
                 bgLayer.style.backgroundImage = `url('${themeBackgrounds[theme]}')`;
             } else {
-                bgLayer.style.backgroundImage = 'none'; // ธีมอื่นๆ ใช้สีพื้นหลังปกติ
+                bgLayer.style.backgroundImage = 'none'; 
             }
             
-            // ใส่ Particles ตกแต่ง
             if (theme === 'sakura') {
                 for(let i=0; i<35; i++) {
                     let petal = document.createElement('div');
@@ -468,6 +467,16 @@
                     cloud.style.top = (Math.random() * 40) + 'vh';
                     cloud.style.animationDuration = (Math.random() * 30 + 30) + 's';
                     effectLayer.appendChild(cloud);
+                }
+            } else if (theme === 'twotone' || theme === 'purple') {
+                 for(let i=0; i<20; i++) {
+                    let star = document.createElement('div');
+                    star.className = 'particle-star';
+                    star.innerText = '✨';
+                    star.style.left = Math.random() * 100 + 'vw';
+                    star.style.top = Math.random() * 100 + 'vh';
+                    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    effectLayer.appendChild(star);
                 }
             }
         }
@@ -629,6 +638,81 @@
             }
         };
 
+        // --- 🍩 ฟังก์ชันอัปเดตข้อมูลกล่องโอทีรายเดือน (NEW) ---
+        window.updateOTSummaryCard = () => {
+            const val = document.getElementById('otSummaryMonth').value;
+            let sum15 = 0, sum20 = 0, sum30 = 0, totalMoney = 0;
+            
+            if (val === 'all') {
+                sum15 = currentData.reduce((a,b) => a + (b ? (b.ot15 || 0) : 0), 0);
+                sum20 = currentData.reduce((a,b) => a + (b ? (b.ot20 || 0) : 0), 0);
+                sum30 = currentData.reduce((a,b) => a + (b ? (b.ot30 || 0) : 0), 0);
+                totalMoney = currentData.reduce((a,b) => a + (b ? (b.otTotal || 0) : 0), 0);
+            } else {
+                const d = currentData[parseInt(val)];
+                if (d) {
+                    sum15 = d.ot15 || 0;
+                    sum20 = d.ot20 || 0;
+                    sum30 = d.ot30 || 0;
+                    totalMoney = d.otTotal || 0;
+                }
+            }
+            
+            let totalOtSum = sum15 + sum20 + sum30;
+
+            // อัปเดตตัวหนังสือ
+            document.getElementById('pieTotalHours').innerText = totalOtSum.toFixed(2);
+            document.getElementById('leg15').innerText = sum15.toFixed(2);
+            document.getElementById('leg20').innerText = sum20.toFixed(2);
+            document.getElementById('leg30').innerText = sum30.toFixed(2);
+            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits: 2}) + ' บาท';
+
+            // จัดการแสดงผลกราฟ
+            if(myPieChart) myPieChart.destroy();
+            if (totalOtSum === 0) {
+                document.getElementById('otPieChart').style.display = 'none';
+                document.getElementById('noOtMessage').style.display = 'block';
+                document.getElementById('pieCenterText').style.display = 'none';
+                document.getElementById('otCustomLegend').style.opacity = '0.4';
+            } else {
+                document.getElementById('otPieChart').style.display = 'block';
+                document.getElementById('noOtMessage').style.display = 'none';
+                document.getElementById('pieCenterText').style.display = 'flex';
+                document.getElementById('otCustomLegend').style.opacity = '1';
+
+                const rootStyle = getComputedStyle(document.documentElement);
+                const textColor = rootStyle.getPropertyValue('--text-main').trim();
+
+                myPieChart = new Chart(document.getElementById('otPieChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x'],
+                        datasets: [{
+                            data: [sum15, sum20, sum30],
+                            backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
+                            borderWidth: 0,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        cutout: '80%', // ทำให้วงแหวนบางลง
+                        plugins: {
+                            legend: { display: false }, // ซ่อน Legend มาตรฐานทิ้ง
+                            tooltip: { 
+                                callbacks: { 
+                                    label: function(context) { 
+                                        let v = context.raw; 
+                                        return ' ' + v.toFixed(2) + ' ชม. (' + Math.round((v/totalOtSum)*100) + '%)'; 
+                                    } 
+                                } 
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
         function renderTable() {
             const body = document.getElementById('tableBody'); body.innerHTML = '';
             let sB=0, sO=0, sN=0, sH=0;
@@ -656,11 +740,6 @@
         function updateUI() {
             let ots = currentData.map(d => d ? d.totalOtHours : 0);
             
-            let sum15 = currentData.reduce((a,b) => a + (b ? (b.ot15 || 0) : 0), 0);
-            let sum20 = currentData.reduce((a,b) => a + (b ? (b.ot20 || 0) : 0), 0);
-            let sum30 = currentData.reduce((a,b) => a + (b ? (b.ot30 || 0) : 0), 0);
-            let totalOtSum = sum15 + sum20 + sum30;
-            
             let totalG = currentData.reduce((a,b) => a + (b ? (b.base + b.house + (b.food || 0) + b.otTotal - b.leave) : 0), 0);
             let totalSS = currentData.reduce((a,b) => a + (b ? b.ss : 0), 0);
 
@@ -672,45 +751,21 @@
             Chart.defaults.color = textColor;
             Chart.defaults.font.family = "'Sarabun', sans-serif";
 
+            // กราฟแท่ง
             if(myChart) myChart.destroy();
             myChart = new Chart(document.getElementById('otChart'), {
                 type: 'bar', 
-                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 8 }] },
+                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 12 }] },
                 options: { 
                     responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
-                    scales: { x: { grid: { color: gridColor }, ticks: { color: textColor } }, y: { grid: { color: gridColor }, ticks: { color: textColor } } }
+                    scales: { x: { grid: { color: gridColor }, ticks: { color: textColor, font: {weight: 'bold'} } }, y: { grid: { color: gridColor }, ticks: { color: textColor } } }
                 }
             });
 
-            if(myPieChart) myPieChart.destroy();
-            if (totalOtSum === 0) {
-                document.getElementById('otPieChart').style.display = 'none';
-                document.getElementById('noOtMessage').style.display = 'block';
-            } else {
-                document.getElementById('otPieChart').style.display = 'block';
-                document.getElementById('noOtMessage').style.display = 'none';
-                myPieChart = new Chart(document.getElementById('otPieChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x'],
-                        datasets: [{
-                            data: [sum15, sum20, sum30],
-                            backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
-                            borderWidth: 0,
-                            hoverOffset: 10
-                        }]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        cutout: '75%',
-                        plugins: {
-                            legend: { position: 'bottom', labels: { color: textColor, padding: 20, font: { size: 14, family: "'Sarabun', sans-serif", weight: 'bold' } } },
-                            tooltip: { callbacks: { label: function(context) { let v = context.raw; return ' ' + v.toFixed(2) + ' ชม. (' + Math.round((v/totalOtSum)*100) + '%)'; } } }
-                        }
-                    }
-                });
-            }
+            // อัปเดตกล่องโอที (เรียกใช้ฟังก์ชันใหม่)
+            window.updateOTSummaryCard();
 
+            // คำนวณภาษี
             let exp = Math.min(totalG * 0.5, 100000);
             let netT = Math.max(totalG - exp - 60000 - totalSS, 0);
             let tax = 0;
