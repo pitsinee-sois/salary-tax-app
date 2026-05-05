@@ -2,169 +2,864 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salary & Tax System - Customized Themes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Salary & Tax System (Perfect Animated Edition)</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
+        
+        * { box-sizing: border-box; }
 
+        /* 🎨 ระบบตัวแปรสีสุดละมุน (Soft Pastel Colors) */
         :root {
-            --bg-main: #fdf2f8; --color-primary: #f472b6; --text-main: #831843;
+            --bg-main: #f8fafc; --bg-card: rgba(255, 255, 255, 0.85); --bg-input: #ffffff;
+            --text-main: #334155; --text-muted: #64748b; --color-primary: #60a5fa;
+            --color-primary-hover: #3b82f6; --color-header: #1e293b; --border-color: rgba(255,255,255,0.9);
+            --chart-bar: #60a5fa;
+        }
+        [data-theme="sakura"] {
+            --bg-main: #fdf2f8; --color-primary: #f472b6; --color-primary-hover: #ec4899; 
+            --color-header: #9d174d; --text-main: #831843; --text-muted: #be185d; --chart-bar: #f472b6;
+        }
+        [data-theme="orange"] {
+            --bg-main: #fff7ed; --color-primary: #fb923c; --color-primary-hover: #f97316; 
+            --color-header: #9a3412; --text-main: #7c2d12; --text-muted: #c2410c; --chart-bar: #fb923c;
+        }
+        [data-theme="fuji"] {
+            --bg-main: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 100%); --color-primary: #38bdf8; 
+            --color-primary-hover: #0ea5e9; --color-header: #075985; --text-main: #0c4a6e; --text-muted: #0369a1; --chart-bar: #38bdf8;
+        }
+        [data-theme="bamboo"] {
+            --bg-main: #f7fee7; --color-primary: #84cc16; --color-primary-hover: #65a30d; 
+            --color-header: #3f6212; --text-main: #3f6212; --text-muted: #4d7c0f; --chart-bar: #84cc16;
+        }
+        [data-theme="skyblue"] {
+            --bg-main: #f0f9ff; --color-primary: #38bdf8; --color-primary-hover: #0ea5e9; 
+            --color-header: #075985; --text-main: #0c4a6e; --text-muted: #0369a1; --chart-bar: #38bdf8;
+        }
+        [data-theme="matcha"] {
+            --bg-main: #f0fdf4; --color-primary: #34d399; --color-primary-hover: #10b981; 
+            --color-header: #065f46; --text-main: #064e3b; --text-muted: #047857; --chart-bar: #34d399;
+        }
+        [data-theme="ocean"] {
+            --bg-main: #f0fdfa; --color-primary: #2dd4bf; --color-primary-hover: #14b8a6; 
+            --color-header: #115e59; --text-main: #134e4a; --text-muted: #0f766e; --chart-bar: #2dd4bf;
+        }
+        [data-theme="purple"] {
+            --bg-main: #faf5ff; --color-primary: #c084fc; --color-primary-hover: #a855f7; 
+            --color-header: #5b21b6; --text-main: #4c1d95; --text-muted: #6d28d9; --chart-bar: #c084fc;
+        }
+        [data-theme="twotone"] {
+            --bg-main: linear-gradient(135deg, #fbcfe8 0%, #bfdbfe 100%); --color-primary: #a78bfa; 
+            --color-primary-hover: #8b5cf6; --color-header: #312e81; --text-main: #1e3a8a; --text-muted: #4338ca; --chart-bar: #a78bfa;
+            --bg-card: rgba(255, 255, 255, 0.7); --bg-input: rgba(255, 255, 255, 0.9);
+        }
+        [data-theme="dark"] {
+            --bg-main: #0f172a; --bg-card: rgba(30, 41, 59, 0.85); --bg-input: #1e293b;
+            --text-main: #f8fafc; --text-muted: #e2e8f0; --color-primary: #93c5fd;
+            --color-primary-hover: #60a5fa; --color-header: #bfdbfe; --border-color: rgba(71, 85, 105, 0.5); --chart-bar: #93c5fd;
+        }
+        [data-theme="ruby"] {
+            --bg-main: #fef2f2; --color-primary: #f87171; --color-primary-hover: #ef4444; 
+            --color-header: #991b1b; --text-main: #7f1d1d; --text-muted: #991b1b; --chart-bar: #f87171;
+        }
+        [data-theme="tokyo"] {
+            --bg-main: #09090b; --bg-card: rgba(39, 39, 42, 0.85); --bg-input: #18181b;
+            --text-main: #f4f4f5; --text-muted: #d4d4d8; --color-primary: #fb7185;
+            --color-primary-hover: #f43f5e; --color-header: #fda4af; --border-color: rgba(63, 63, 70, 0.5); --chart-bar: #fb7185;
         }
 
-        /* --- 🎨 Theme Definitions --- */
-        [data-theme="sakura"] { --bg-main: #fff5f7; --color-primary: #f472b6; }
-        [data-theme="orange"] { --bg-main: #fff7ed; --color-primary: #fb923c; }
-        [data-theme="fuji"] { --bg-main: #e0f2fe; --color-primary: #38bdf8; }
-        [data-theme="bamboo"] { --bg-main: #f7fee7; --color-primary: #84cc16; }
-        [data-theme="matcha"] { --bg-main: #f0fdf4; --color-primary: #34d399; }
-        [data-theme="ocean"] { --bg-main: #0c4a6e; --color-primary: #2dd4bf; }
-        [data-theme="purple"] { --bg-main: #faf5ff; --color-primary: #c084fc; }
-        [data-theme="pastel"] { --bg-main: linear-gradient(135deg, #fbcfe8, #bfdbfe); --color-primary: #a78bfa; }
-        [data-theme="dark"] { --bg-main: #0f172a; --color-primary: #93c5fd; }
-
-        body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); margin: 0; min-height: 100vh; transition: background 0.5s; overflow-x: hidden; }
-
-        /* --- 🌳 Scenery & Animation Layers --- */
-        #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; }
+        /* 🌳 SCENERY LAYER (ฉากหลังที่แก้บัคแล้ว) */
+        #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
         
-        @keyframes fall { 0% { transform: translate(0, -10vh) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(-10vw, 110vh) rotate(360deg); opacity: 0; } }
-        @keyframes drift { 0% { transform: translateX(-10vw); } 100% { transform: translateX(110vw); } }
-        @keyframes bubbleRise { 0% { transform: translateY(110vh); opacity: 0; } 50% { opacity: 0.7; } 100% { transform: translateY(-10vh); opacity: 0; } }
-        @keyframes twinkle { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
-        @keyframes shootingStar { 0% { transform: translate(100vw, -10vh) rotate(-45deg); width: 0; } 100% { transform: translate(-20vw, 110vh) rotate(-45deg); width: 200px; opacity: 0; } }
+        .scenery-element { position: absolute; background-repeat: no-repeat; opacity: 0.9; }
+        
+        .tree-avenue {
+            bottom: -5vh; width: 40vh; height: 75vh; max-width: 400px;
+            background-size: contain; background-position: bottom left;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
+            animation: sway 5s ease-in-out infinite alternate;
+        }
+        .tree-left { left: -5vw; transform-origin: bottom left; }
+        .tree-right { right: -5vw; transform: scaleX(-1); transform-origin: bottom right; animation-direction: alternate-reverse;}
 
-        .scenery-element { position: absolute; background-size: contain; background-repeat: no-repeat; }
-        .particle { position: absolute; }
+        /* ✨ Keyframes แอนิเมชันสุดสมูท */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes sway { 0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); } }
+        @keyframes swayPlant { 0% { transform: skewX(-2deg); } 100% { transform: skewX(2deg); } }
+        @keyframes pulseSun { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+        
+        /* แก้บัคการร่วงหล่น ให้ทำงานได้ 100% */
+        @keyframes fallAnim { 
+            0% { transform: translate(0, -15vh) rotate(0deg); opacity: 0; } 
+            10% { opacity: 1; } 
+            90% { opacity: 1; } 
+            100% { transform: translate(-10vw, 115vh) rotate(360deg); opacity: 0; } 
+        }
+        @keyframes driftRightAnim { 
+            0% { transform: translateX(-15vw); opacity: 0; } 
+            10% { opacity: 1; } 
+            90% { opacity: 1; } 
+            100% { transform: translateX(115vw); opacity: 0; } 
+        }
+        @keyframes driftLeftAnim { 
+            0% { transform: translateX(115vw) scaleX(-1); opacity: 0; } 
+            10% { opacity: 1; } 
+            90% { opacity: 1; } 
+            100% { transform: translateX(-15vw) scaleX(-1); opacity: 0; } 
+        }
+        @keyframes floatUpAnim { from { transform: translateY(15vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes bubbleRiseAnim { 0% { transform: translateY(115vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-15vh) scale(1.2); opacity: 0; } }
+        @keyframes twinkleAnim { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
+        @keyframes floatRandomAnim { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
+        @keyframes shootingStarAnim { 0% { transform: translate(110vw, -10vh) rotate(-45deg); width: 0; opacity: 1; } 100% { transform: translate(-20vw, 110vh) rotate(-45deg); width: 250px; opacity: 0; } }
 
-        /* 🌸 Sakura & Maple Trees */
-        .tree-side { width: 400px; height: 100vh; bottom: 0; }
-        .tree-left { left: -50px; transform: scaleX(1); }
-        .tree-right { right: -50px; transform: scaleX(-1); }
+        .particle { position: absolute; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
 
-        /* 🗻 Fuji */
-        .fuji-mt { bottom: 0; left: 50%; transform: translateX(-50%); width: 100vw; height: 60vh; background-position: bottom center; }
+        /* 📱 MAIN LAYOUT */
+        body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 4vh 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; overflow-x: hidden; transition: background 0.5s ease; }
+        
+        .container { 
+            width: 100%; max-width: 900px; 
+            background: var(--bg-card); 
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--border-color); 
+            padding: 40px; border-radius: 40px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08); 
+            margin-bottom: 50px; position: relative; z-index: 10; 
+            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+        }
+        
+        h1 { text-align: center; color: var(--color-header); margin-top: 0; margin-bottom: 35px; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; }
 
-        /* 📱 UI Box (Centered) */
-        .container { position: relative; z-index: 10; max-width: 600px; margin: 100px auto; background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); padding: 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
-        select { padding: 10px 20px; border-radius: 15px; border: 2px solid var(--color-primary); font-size: 1rem; }
+        /* 🐰 Cute Popup */
+        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
+        .cute-popup-box { background: var(--bg-input); border: 4px solid var(--color-primary); padding: 40px 30px; border-radius: 36px; text-align: center; max-width: 360px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .cute-popup-overlay.show .cute-popup-box { transform: scale(1); animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .cute-popup-icon { font-size: 4.5rem; margin-bottom: 15px; animation: pulseSun 2s infinite alternate; }
+        .cute-popup-msg { font-size: 1.15rem; font-weight: 700; line-height: 1.5; margin-bottom: 25px; color: var(--text-main); }
+        
+        /* 🎛️ Form Elements */
+        .form-group { margin-bottom: 22px; text-align: left; width: 100%; }
+        label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); padding-left: 5px; }
+        input, select { 
+            width: 100%; padding: 16px 20px; border: 2px solid transparent; 
+            border-radius: 20px; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; 
+            background-color: var(--bg-input); color: var(--text-main); font-weight: 600;
+            transition: 0.3s; box-shadow: inset 0 2px 6px rgba(0,0,0,0.02); 
+        }
+        input:focus, select:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); outline: none; transform: translateY(-2px); }
+        
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.15rem; color: white; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px;}
+        .btn-primary { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); box-shadow: 0 10px 20px rgba(var(--color-primary), 0.3); }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(var(--color-primary), 0.4); filter: brightness(1.05); }
+        
+        .toggle-area { margin-top: 30px; text-align: center; }
+        .toggle-text span { color: var(--color-primary); font-weight: 800; cursor: pointer; background: var(--bg-input); padding: 8px 15px; border-radius: 12px; transition: 0.2s;}
+        .toggle-text span:hover { filter: brightness(0.9); }
+        .forgot-text { font-size: 0.95rem; color: var(--text-muted); cursor: pointer; margin-top: 20px; display: inline-block; font-weight: 600; text-decoration: underline;}
+        
+        /* 📊 Dashboard Cards */
+        .dashboard-top { display: grid; grid-template-columns: 1.3fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .card, .section-box { 
+            background: var(--bg-input); border: 2px solid transparent; 
+            border-radius: 32px; padding: 30px; transition: 0.3s; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.03);
+        }
+        .card:hover, .section-box:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); border-color: var(--border-color); }
+        h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; justify-content: space-between; font-weight: 800; }
+        
+        .chart-wrapper { height: 260px; width: 100%; margin-top: 15px;}
+        .pie-container { position: relative; height: 180px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; margin-top: 10px;}
+        .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
+        
+        .ot-custom-legend { display: flex; justify-content: space-around; background: var(--bg-card); padding: 15px; border-radius: 20px; }
+        .legend-item { display: flex; flex-direction: column; align-items: center; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); }
+        .legend-val { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-top: 5px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
+        #otSummaryMonth { width: auto; padding: 8px 15px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: var(--bg-card); border: 2px solid transparent; cursor: pointer; transition: 0.2s;}
+        
+        /* 🧾 Tax Grid */
+        .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .tax-box { background: var(--bg-card); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; }
+        .tax-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.04); background: #fff;}
+        .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
+        .tax-value { display: block; font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
+        .tax-value.deduct { color: #10b981; }
+        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.08); border: 2px solid rgba(225, 29, 72, 0.15); }
+        .tax-total-box .tax-value { color: #e11d48; font-size: 2rem; }
+        
+        /* Tables & Inputs */
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .ot-row { display: flex; gap: 10px; }
+        .ot-row input { text-align: center; font-weight: 800; color: var(--color-primary); font-size: 1.15rem; }
+        
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: var(--bg-input); }
+        table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+        th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed var(--border-color); font-size: 1.05rem;}
+        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid var(--border-color); }
+        tbody tr:hover td { background: rgba(0,0,0,0.02); color: var(--color-primary); font-weight: 700; }
+        .tfoot-bg { background: rgba(0,0,0,0.04); font-weight: 800; }
+
+        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px 30px; background: var(--bg-input); border-radius: 28px; flex-wrap: wrap; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
+        
+        .btn-logout {
+            background-color: #fff1f2; color: #e11d48; border: 2px solid #fecdd3;
+            border-radius: 25px; padding: 15px 30px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(225, 29, 72, 0.1); width: auto; min-width: 200px;
+        }
+        .btn-logout:hover { background-color: #ffe4e6; border-color: #fda4af; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(225, 29, 72, 0.2); }
+        
+        #appSection { display: none; }
+        #loadingOverlay { display: none; text-align: center; color: var(--color-primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 20px; }
+
+        @media (max-width: 768px) {
+            body { padding: 2vh 10px; }
+            .container { padding: 30px 20px; border-radius: 32px; }
+            .dashboard-top { grid-template-columns: 1fr; }
+            #userBar { flex-direction: column; text-align: center; }
+            #userBar div { justify-content: center; width: 100%; }
+            h3 { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
     </style>
 </head>
-<body data-theme="sakura">
+<body>
 
+    <!-- 🌸 เลเยอร์วาดทิวทัศน์ (Vector Scenery Layer) -->
     <div id="themeEffectLayer"></div>
 
-    <div class="container">
-        <h2>✨ เลือกธีมที่คุณต้องการ ✨</h2>
-        <select id="themeSelect" onchange="applyTheme()">
-            <option value="sakura">🌸 Sakura</option>
-            <option value="orange">🍁 Maple</option>
-            <option value="fuji">🗻 Fuji View</option>
-            <option value="bamboo">🎋 Bamboo Forest</option>
-            <option value="skyblue">☁️ Sky (Default)</option>
-            <option value="matcha">🍵 Matcha Tea</option>
-            <option value="ocean">🌊 Under the Ocean</option>
-            <option value="purple">🪻 Lavender</option>
-            <option value="pastel">🌈 Pastel Bubbles</option>
-            <option value="dark">🌙 Starry Shooting Star</option>
-        </select>
-        <p>ลองเปลี่ยนธีมเพื่อดูเอฟเฟกต์สุดพิเศษ!</p>
+    <!-- 🐰 Cute Popup (หน้าต่างเด้งดึ๋ง น่ารักๆ) -->
+    <div id="customPopup" class="cute-popup-overlay">
+        <div class="cute-popup-box">
+            <div class="cute-popup-icon" id="popupIcon">✨</div>
+            <div class="cute-popup-msg" id="popupMsg">ข้อความแจ้งเตือน</div>
+            <button class="btn btn-primary" style="margin: 0; box-shadow: none;" onclick="closePopup()">โอเค เข้าใจแล้ว!</button>
+        </div>
     </div>
 
-    <script>
-        const svgAssets = {
-            sakuraTree: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 800'%3E%3Cpath d='M50,800 Q100,400 50,0' stroke='%234a2e1b' stroke-width='40' fill='none'/%3E%3Cpath d='M60,500 Q200,450 350,300' stroke='%234a2e1b' stroke-width='20' fill='none'/%3E%3Ccircle cx='300' cy='300' r='80' fill='%23fbcfe8' opacity='0.8'/%3E%3Ccircle cx='350' cy='250' r='60' fill='%23f9a8d4' opacity='0.8'/%3E%3C/svg%3E",
-            mapleTree: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 800'%3E%3Cpath d='M50,800 Q100,400 50,0' stroke='%233e2723' stroke-width='40' fill='none'/%3E%3Cpath d='M60,500 Q200,450 350,300' stroke='%233e2723' stroke-width='20' fill='none'/%3E%3Ccircle cx='300' cy='300' r='80' fill='%23ea580c' opacity='0.8'/%3E%3Ccircle cx='350' cy='250' r='60' fill='%23f97316' opacity='0.8'/%3E%3C/svg%3E",
-            fuji: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cpath d='M400,50 L750,400 L50,400 Z' fill='%2338bdf8'/%3E%3Cpath d='M400,50 L480,150 Q400,180 320,150 Z' fill='white'/%3E%3C/svg%3E",
-            bamboo: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 800'%3E%3Crect x='40' y='0' width='20' height='800' fill='%2365a30d' rx='10'/%3E%3Cpath d='M50,100 L90,80 M50,300 L10,280' stroke='%234d7c0f' stroke-width='5'/%3E%3C/svg%3E"
+    <!-- 🔐 หน้าเข้าสู่ระบบ (สมมาตร เป๊ะ) -->
+    <div id="authSection" class="container" style="max-width: 440px; margin-top: 8vh;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <div style="width: 80px; height: 80px; background: var(--bg-input); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 3rem; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" id="authEmoji">👋</div>
+            <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin-bottom: 5px; font-size: 1.8rem;">ยินดีต้อนรับ! ✨</h2>
+            <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">มาบันทึกเงินเดือนและโอทีกันเถอะ ~</p>
+        </div>
+        
+        <form onsubmit="event.preventDefault(); handleAuth();">
+            <div class="form-group">
+                <label>อีเมล (Email)</label>
+                <input type="email" id="email" placeholder="name@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน (Password)</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                <label>ยืนยันรหัสผ่าน</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••">
+            </div>
+            <button type="submit" id="authBtn" class="btn btn-primary">เข้าสู่ระบบ</button>
+        </form>
+        
+        <div class="toggle-area">
+            <div id="authToggle" class="toggle-text" onclick="toggleAuth()" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span></div>
+            <div id="forgotToggle" class="forgot-text" onclick="handleResetPassword()">ลืมรหัสผ่าน? คลิกตั้งใหม่</div>
+        </div>
+    </div>
+
+    <!-- 💻 หน้าหลัก Dashboard -->
+    <div id="appSection" class="container">
+        <h1>💸 ระบบบันทึกเงินเดือน & ประเมินภาษี</h1>
+        
+        <div id="userBar">
+            <div style="font-size: 1.15rem; font-weight: 800;">👤 <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap;">
+                <span style="font-weight: 800; color: var(--text-muted);">🎨 ธีม:</span>
+                <select id="themeSelect" onchange="changeTheme()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);">
+                    <option value="sakura">🌸 Sakura Bloom (แนะนำ)</option>
+                    <option value="orange">🍁 Autumn Maple</option>
+                    <option value="fuji">🗻 Mt. Fuji View</option>
+                    <option value="bamboo">🎋 Zen Bamboo</option>
+                    <option value="skyblue">☁️ Sunny Sky</option>
+                    <option value="matcha">🍵 Matcha Garden</option>
+                    <option value="ocean">🌊 Deep Ocean</option>
+                    <option value="ruby">🍓 Berry Sweet</option>
+                    <option value="purple">🔮 Magic Lavender</option>
+                    <option value="twotone">🦄 Pastel Magic</option>
+                    <option value="tokyo">🌃 Tokyo Neon</option>
+                    <option value="dark">🌙 Starry Night</option>
+                </select>
+                <select id="displayYear" onchange="changeYear()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);"></select>
+            </div>
+        </div>
+        
+        <div id="loadingOverlay">กำลังซิงค์ข้อมูล... ⏳</div>
+
+        <div class="dashboard-top">
+            <div class="card">
+                <h3>📊 สรุปชั่วโมงโอทีรายเดือน</h3>
+                <div class="chart-wrapper"><canvas id="otChart"></canvas></div>
+                <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:800; padding:12px; border-radius:16px; border: 2px dashed var(--border-color);"></div>
+            </div>
+
+            <div class="card">
+                <h3 style="border:none;">
+                    <span>🍩 สัดส่วนโอที</span>
+                    <select id="otSummaryMonth" onchange="updateOTSummaryCard()">
+                        <option value="all">🌟 รวมทั้งปี</option>
+                        <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
+                        <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
+                        <option value="6">ก.ค.</option><option value="7">ส.ค.</option><option value="8">ก.ย.</option>
+                        <option value="9">ต.ค.</option><option value="10">พ.ย.</option><option value="11">ธ.ค.</option>
+                    </select>
+                </h3>
+                
+                <div class="pie-container">
+                    <canvas id="otPieChart"></canvas>
+                    <div id="pieCenterText" class="pie-center-label">
+                        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 800;">รวมเวลา</div>
+                        <div id="pieTotalHours" style="font-size: 2.4rem; font-weight: 800; color: var(--color-primary); line-height: 1.1;">0</div>
+                        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 800;">ชั่วโมง</div>
+                    </div>
+                    <div id="noOtMessage" style="position: absolute; text-align: center; color: var(--text-muted); display: none; font-size: 1.15rem; font-weight: 700;">ไม่มีข้อมูลโอทีจ้า<br><small style="font-weight:600; font-size: 0.95rem;">(เลือกเดือนใหม่ดูนะ)</small></div>
+                </div>
+
+                <div id="otCustomLegend" class="ot-custom-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background: #3b82f6;"></div><span>1.5x</span><span class="legend-val" id="leg15">0</span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #f59e0b;"></div><span>2.0x</span><span class="legend-val" id="leg20">0</span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>3.0x</span><span class="legend-val" id="leg30">0</span></div>
+                </div>
+                
+                <div style="text-align: center; background: var(--bg-card); padding: 15px; border-radius: 20px; margin-top: 15px; border: 2px dashed var(--color-primary);">
+                    <span style="font-weight: 800; color: var(--text-muted); font-size: 1rem;">💸 ยอดเงินโอทีที่ได้รับ<br></span>
+                    <span id="legTotalMoney" style="font-weight: 800; font-size: 1.6rem; color: var(--color-primary);">0.00 บาท</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 30px;">
+            <h3>🧾 ประเมินภาษีประจำปี (ภ.ง.ด. 91)</h3>
+            <div class="tax-grid">
+                <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
+                <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
+                <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
+                <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
+                <div class="tax-box tax-total-box"><span class="tax-label" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
+            </div>
+        </div>
+
+        <div class="input-grid section-box">
+            <div class="form-group" style="grid-column: 1 / -1;">
+                <label style="color: var(--color-header); font-size:1.3rem; border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">📝 บันทึกรายได้และรายการหัก</label>
+            </div>
+            
+            <div class="form-group">
+                <label>📅 เลือกเดือน</label>
+                <select id="monthSelect">
+                    <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
+                    <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
+                    <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
+                    <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
+                </select>
+            </div>
+            <div class="form-group"><label>💰 ฐานเงินเดือน</label><input type="number" id="baseIn" value="18000" step="any"></div>
+            <div class="form-group"><label>🏠 ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000" step="any"></div>
+            <div class="form-group"><label>🍲 ค่าอาหาร</label><input type="number" id="foodIn" value="0" step="any"></div>
+            <div class="form-group"><label>❌ หักลางาน/หักอื่น</label><input type="number" id="leaveIn" value="0" step="any"></div>
+            <div class="form-group"><label>🏥 หักประกันสังคม</label><input type="number" id="ssIn" value="875" step="any"></div>
+        </div>
+
+        <div class="input-grid section-box">
+            <div class="ot-header" style="grid-column: 1 / -1; margin-top: 10px; font-size: 1.3rem; color: var(--color-header); font-weight: 800; border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">⏱️ บันทึกชั่วโมงโอที (ชั่วโมง / นาที)</div>
+            <div class="form-group"><label>OT 1.5</label><div class="ot-row"><input type="number" id="ot15h" step="any" placeholder="ชม."><input type="number" id="ot15m" step="any" placeholder="นาที"></div></div>
+            <div class="form-group"><label>OT 2.0</label><div class="ot-row"><input type="number" id="ot20h" step="any" placeholder="ชม."><input type="number" id="ot20m" step="any" placeholder="นาที"></div></div>
+            <div class="form-group"><label>OT 3.0</label><div class="ot-row"><input type="number" id="ot30h" step="any" placeholder="ชม."><input type="number" id="ot30m" step="any" placeholder="นาที"></div></div>
+        </div>
+
+        <button id="saveBtn" class="btn btn-primary" style="padding: 22px; font-size: 1.3rem; margin-bottom: 15px;" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้นระบบ</button>
+
+        <div class="table-responsive">
+            <table>
+                <thead><tr><th>เดือน</th><th>รายได้รวม</th><th>ชั่วโมง OT</th><th>เงิน OT</th><th>รับสุทธิ</th></tr></thead>
+                <tbody id="tableBody"></tbody>
+                <tfoot>
+                    <tr class="tfoot-bg">
+                        <td style="text-align:center;">รวมทั้งปี</td><td id="totalBase">0.00</td><td id="totalHoursText">0 ชม.</td><td id="totalOt">0.00</td><td id="totalNet" class="income">0.00</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <!-- ปุ่มออกจากระบบ -->
+        <div style="text-align: center; margin-top: 40px; padding-bottom: 10px;">
+            <button class="btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZcICrO4tzSzSOs3N9iMaZhYdRTfrX98I",
+            authDomain: "salary-tax-app.firebaseapp.com",
+            projectId: "salary-tax-app",
+            storageBucket: "salary-tax-app.firebasestorage.app",
+            messagingSenderId: "212143318700",
+            appId: "1:212143318700:web:6660d9e73c08050ecfa109",
+            measurementId: "G-3K4NH8MFK4"
         };
 
-        function applyTheme() {
-            const theme = document.getElementById('themeSelect').value;
-            document.body.setAttribute('data-theme', theme);
-            const layer = document.getElementById('themeEffectLayer');
-            layer.innerHTML = '';
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-            // 1 & 2: Sakura & Maple
-            if (theme === 'sakura' || theme === 'orange') {
-                const img = theme === 'sakura' ? svgAssets.sakuraTree : svgAssets.mapleTree;
-                layer.innerHTML += `<div class="scenery-element tree-side tree-left" style="background-image:url('${img}')"></div>`;
-                layer.innerHTML += `<div class="scenery-element tree-side tree-right" style="background-image:url('${img}')"></div>`;
-                createParticles(theme === 'sakura' ? '🌸' : '🍁', 30, 'fall');
-            }
+        let isLoginMode = true;
+        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
+        let currentData = Array(12).fill(null);
+        let currentUserUid = null;
+        let selectedYear = new Date().getFullYear().toString();
+        
+        let myChart = null;
+        let myPieChart = null;
 
-            // 3: Fuji (Expanded)
-            if (theme === 'fuji') {
-                layer.innerHTML += `<div class="scenery-element fuji-mt" style="background-image:url('${svgAssets.fuji}')"></div>`;
-                createParticles('☁️', 10, 'drift', 40); // เพิ่มเมฆ
-                createParticles('🦅', 3, 'drift', 15); // เพิ่มนก
-                layer.innerHTML += `<div class="scenery-element" style="top:0; right:0; width:300px; height:300px; background-image:url('${svgAssets.sakuraTree}'); transform:rotate(150deg)"></div>`;
-            }
+        window.showPopup = (msg, icon = '✨') => {
+            document.getElementById('popupIcon').innerText = icon;
+            document.getElementById('popupMsg').innerHTML = msg.replace(/\n/g, '<br>');
+            document.getElementById('customPopup').classList.add('show');
+        };
+        window.closePopup = () => { document.getElementById('customPopup').classList.remove('show'); };
 
-            // 4: Bamboo (Thicker)
-            if (theme === 'bamboo') {
-                for(let i=0; i<6; i++) {
-                    layer.innerHTML += `<div class="scenery-element" style="bottom:0; left:${i*5}vw; width:80px; height:100vh; background-image:url('${svgAssets.bamboo}')"></div>`;
-                    layer.innerHTML += `<div class="scenery-element" style="bottom:0; right:${i*5}vw; width:80px; height:100vh; background-image:url('${svgAssets.bamboo}')"></div>`;
+        const yearSelect = document.getElementById('displayYear');
+        const currentYear = new Date().getFullYear();
+        for(let y = 2024; y <= currentYear + 50; y++) {
+            let opt = document.createElement('option');
+            opt.value = y; opt.text = `${y} (พ.ศ. ${y + 543})`;
+            if(y === currentYear) opt.selected = true;
+            yearSelect.appendChild(opt);
+        }
+
+        // --- 🌳 โค้ดวาดฉากหลังแบบ Vector เวกเตอร์สมจริง และน่ารัก ---
+        const svgSakura = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 800'%3E%3Cpath d='M-10,800 Q30,400 100,50' stroke='%234a2e1b' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M0,500 Q150,450 250,250' stroke='%234a2e1b' stroke-width='25' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='50' r='80' fill='%23fbcfe8'/%3E%3Ccircle cx='150' cy='100' r='60' fill='%23f9a8d4'/%3E%3Ccircle cx='50' cy='120' r='90' fill='%23fce7f3'/%3E%3Ccircle cx='250' cy='250' r='80' fill='%23fbcfe8'/%3E%3Ccircle cx='200' cy='320' r='60' fill='%23f9a8d4'/%3E%3C/svg%3E";
+        const svgMaple = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 800'%3E%3Cpath d='M-10,800 Q30,400 100,50' stroke='%233e2723' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M0,500 Q150,450 250,250' stroke='%233e2723' stroke-width='25' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='50' r='80' fill='%23ea580c'/%3E%3Ccircle cx='150' cy='100' r='60' fill='%23f97316'/%3E%3Ccircle cx='50' cy='120' r='90' fill='%23ef4444'/%3E%3Ccircle cx='250' cy='250' r='80' fill='%23ea580c'/%3E%3Ccircle cx='200' cy='320' r='60' fill='%23fbbf24'/%3E%3C/svg%3E";
+        const svgFuji = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 300'%3E%3Cpath d='M400,50 Q480,150 750,300 L50,300 Q320,150 400,50 Z' fill='%2338bdf8'/%3E%3Cpath d='M400,50 Q440,90 470,110 Q430,130 400,110 Q370,130 330,110 Q360,90 400,50 Z' fill='white'/%3E%3C/svg%3E";
+        const svgBamboo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 800'%3E%3Crect x='20' y='0' width='16' height='800' fill='%2365a30d' rx='8'/%3E%3Crect x='60' y='0' width='12' height='800' fill='%234d7c0f' rx='6'/%3E%3Crect x='100' y='0' width='18' height='800' fill='%2384cc16' rx='9'/%3E%3Crect x='150' y='0' width='15' height='800' fill='%234d7c0f' rx='7'/%3E%3Cpath d='M100,150 Q150,100 180,150 Q150,165 100,150 Z' fill='%23a3e635'/%3E%3Cpath d='M60,300 Q10,250 -20,300 Q10,315 60,300 Z' fill='%23a3e635'/%3E%3Cpath d='M150,450 Q190,400 220,450 Q190,465 150,450 Z' fill='%23a3e635'/%3E%3C/svg%3E";
+        const svgPine = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 600'%3E%3Crect x='90' y='450' width='20' height='150' fill='%231e1b4b'/%3E%3Cpath d='M100,100 L180,300 L120,300 L190,450 L10,450 L80,300 L20,300 Z' fill='%23064e3b' stroke='%23047857' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E";
+
+        function renderThemeEffects(theme) {
+            const effectLayer = document.getElementById('themeEffectLayer');
+            effectLayer.innerHTML = ''; 
+            
+            // วาดต้นไม้ 2 ข้างทาง
+            if(theme === 'sakura' || theme === 'orange' || theme === 'bamboo' || theme === 'dark') {
+                let tl = document.createElement('div'); tl.className = 'scenery-element tree-avenue tree-left';
+                let tr = document.createElement('div'); tr.className = 'scenery-element tree-avenue tree-right';
+                
+                if(theme === 'sakura') { tl.style.backgroundImage = `url("${svgSakura}")`; tr.style.backgroundImage = `url("${svgSakura}")`; }
+                else if(theme === 'orange') { tl.style.backgroundImage = `url("${svgMaple}")`; tr.style.backgroundImage = `url("${svgMaple}")`; }
+                else if(theme === 'bamboo') { 
+                    tl.style.backgroundImage = `url("${svgBamboo}")`; tr.style.backgroundImage = `url("${svgBamboo}")`; 
+                    let panda = document.createElement('div'); panda.className = 'scenery-element'; panda.innerText = '🐼';
+                    panda.style.bottom = '-10px'; panda.style.left = '10vw'; panda.style.fontSize = '80px';
+                    panda.style.animation = 'swayPlant 3s infinite alternate';
+                    effectLayer.appendChild(panda);
                 }
-                layer.innerHTML += `<div class="scenery-element" style="bottom:20px; left:20vw; font-size:80px;">🐼</div>`;
+                else if(theme === 'dark') { 
+                    tl.style.backgroundImage = `url("${svgPine}")`; tr.style.backgroundImage = `url("${svgPine}")`; 
+                    tl.style.height = '60vh'; tl.style.width = '30vh'; tr.style.height = '60vh'; tr.style.width = '30vh';
+                }
+
+                effectLayer.appendChild(tl); effectLayer.appendChild(tr);
             }
 
-            // 6: Matcha
+            // ภูเขาและท้องฟ้า
+            if (theme === 'fuji') {
+                let fuji = document.createElement('div'); fuji.className = 'scenery-element fuji-mountain'; fuji.style.backgroundImage = `url("${svgFuji}")`; effectLayer.appendChild(fuji);
+                let branch = document.createElement('div'); branch.className = 'scenery-element';
+                branch.style.top = '-5vh'; branch.style.right = '-5vw'; branch.style.width = '40vh'; branch.style.height = '40vh';
+                branch.style.backgroundImage = `url("${svgSakura}")`; branch.style.transform = 'rotate(135deg)';
+                effectLayer.appendChild(branch);
+            } 
+            if (theme === 'fuji' || theme === 'skyblue') {
+                let sun = document.createElement('div'); sun.className = 'cute-sun'; 
+                if(theme==='skyblue') { sun.style.left = 'auto'; sun.style.right = '10vw'; }
+                effectLayer.appendChild(sun);
+            }
+
+            // ชามัทฉะ
             if (theme === 'matcha') {
-                layer.innerHTML += `<div class="scenery-element" style="bottom:50px; left:50%; transform:translateX(-50%); font-size:150px;">🍵</div>`;
-                createParticles('🍃', 20, 'fall');
+                let matchaCup = document.createElement('div'); matchaCup.className = 'scenery-element'; matchaCup.innerText = '🍵';
+                matchaCup.style.bottom = '10px'; matchaCup.style.left = '5vw'; matchaCup.style.fontSize = '120px';
+                effectLayer.appendChild(matchaCup);
             }
 
-            // 7: Ocean
+            // คลื่นทะเลและปะการัง
             if (theme === 'ocean') {
-                layer.innerHTML += `<div class="scenery-element" style="bottom:0; left:0; font-size:100px;">🪸</div>`;
-                layer.innerHTML += `<div class="scenery-element" style="bottom:0; right:0; font-size:100px;">🪸</div>`;
-                createParticles('🫧', 40, 'bubbleRise');
-                createParticles('🐠', 10, 'drift');
-                createParticles('🦈', 1, 'drift', 15);
+                let waves = document.createElement('div'); waves.className = 'scenery-element ocean-waves';
+                waves.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230ea5e9' fill-opacity='0.4' d='M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,149.3C672,139,768,149,864,170.7C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`;
+                effectLayer.appendChild(waves);
+
+                let coralL = document.createElement('div'); coralL.className = 'scenery-element'; coralL.innerText = '🪸'; coralL.style.bottom='20px'; coralL.style.left='5vw'; coralL.style.fontSize='100px'; coralL.style.animation='swayPlant 3s infinite alternate'; effectLayer.appendChild(coralL);
+                let coralR = document.createElement('div'); coralR.className = 'scenery-element'; coralR.innerText = '🪸'; coralR.style.bottom='20px'; coralR.style.right='5vw'; coralR.style.fontSize='100px'; coralR.style.animation='swayPlant 4s infinite alternate-reverse'; effectLayer.appendChild(coralR);
             }
 
-            // 9: Lavender
+            // ลาเวนเดอร์
             if (theme === 'purple') {
-                createParticles('🪻', 15, 'bubbleRise', 40); // Lavender Swaying
-                createParticles('✨', 20, 'twinkle');
+                let lavL = document.createElement('div'); lavL.className = 'scenery-element'; lavL.innerText = '🪻'; lavL.style.bottom='-20px'; lavL.style.left='5vw'; lavL.style.fontSize='150px'; lavL.style.animation='swayPlant 3s infinite alternate'; effectLayer.appendChild(lavL);
+                let lavR = document.createElement('div'); lavR.className = 'scenery-element'; lavR.innerText = '🪻'; lavR.style.bottom='-20px'; lavR.style.right='5vw'; lavR.style.fontSize='150px'; lavR.style.animation='swayPlant 4s infinite alternate-reverse'; effectLayer.appendChild(lavR);
             }
 
-            // 10: Pastel
-            if (theme === 'pastel') {
-                createParticles('🫧', 25, 'bubbleRise');
+            // --- จัดการ Particles ตกแต่ง (✅ แก้แอนิเมชันให้ร่วงหล่น/ลอย ทำงานได้ 100%) ---
+            if (theme === 'sakura' || theme === 'orange' || theme === 'ruby' || theme === 'matcha' || theme === 'twotone') {
+                let types = ['🌸', '💮'];
+                if(theme === 'orange') types = ['🍁', '🍂', '✨'];
+                if(theme === 'ruby') types = ['🍎', '🍓', '✨'];
+                if(theme === 'matcha') types = ['🍃', '🍵', '✨'];
+                if(theme === 'twotone') types = ['🦄', '💖', '✨', '🍭'];
+
+                for(let i=0; i<30; i++) {
+                    let p = document.createElement('div'); 
+                    p.style.position = 'fixed';
+                    p.innerText = types[Math.floor(Math.random() * types.length)];
+                    p.style.left = (Math.random() * 100) + 'vw';
+                    p.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                    p.style.opacity = '0.9';
+                    p.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))';
+                    // บังคับยัด Animation ลง inline style ให้มันร่วงลงมาแน่นอน
+                    p.style.animation = `fallAnim ${Math.random() * 6 + 4}s linear infinite`;
+                    p.style.animationDelay = `-${Math.random() * 10}s`; 
+                    effectLayer.appendChild(p);
+                }
+            } else if (theme === 'skyblue' || theme === 'fuji') {
+                for(let i=0; i<6; i++) {
+                    let cloud = document.createElement('div'); cloud.className = 'giant-cloud'; cloud.innerText = '☁️';
+                    cloud.style.top = (Math.random() * 40) + 'vh';
+                    cloud.style.fontSize = (Math.random() * 100 + 100) + 'px';
+                    cloud.style.animation = `driftRightAnim ${Math.random() * 40 + 30}s linear infinite`;
+                    cloud.style.animationDelay = `-${Math.random() * 30}s`; 
+                    effectLayer.appendChild(cloud);
+                }
+                if (theme === 'skyblue') {
+                    for(let i=0; i<5; i++) {
+                        let bird = document.createElement('div'); bird.style.position = 'fixed'; bird.innerText = '🕊️';
+                        bird.style.top = (Math.random() * 40) + 'vh'; bird.style.fontSize = '30px';
+                        bird.style.animation = `driftRightAnim ${Math.random() * 15 + 10}s linear infinite`;
+                        bird.style.animationDelay = `-${Math.random() * 15}s`;
+                        effectLayer.appendChild(bird);
+                    }
+                } else {
+                    for(let i=0; i<15; i++) {
+                        let p = document.createElement('div'); p.style.position = 'fixed'; p.innerText = '🌸';
+                        p.style.left = (Math.random() * 100) + 'vw'; p.style.fontSize = '20px';
+                        p.style.animation = `fallAnim ${Math.random() * 5 + 5}s linear infinite`;
+                        p.style.animationDelay = `-${Math.random() * 10}s`;
+                        effectLayer.appendChild(p);
+                    }
+                }
+            } else if (theme === 'tokyo' || theme === 'dark' || theme === 'purple') {
+                if(theme === 'dark' || theme === 'purple') {
+                    let moon = document.createElement('div'); moon.className = 'cute-sun'; moon.style.background = '#fde047'; moon.style.boxShadow = '0 0 40px #fef08a'; effectLayer.appendChild(moon);
+                }
+                let types = theme === 'tokyo' ? ['✨', '⚡', '🏮'] : ['⭐', '✨'];
+                for(let i=0; i<40; i++) {
+                    let s = document.createElement('div'); s.style.position = 'fixed';
+                    s.innerText = types[Math.floor(Math.random() * types.length)];
+                    s.style.color = theme === 'dark' ? '#fde047' : 'inherit';
+                    s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
+                    s.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                    s.style.animation = `blink ${Math.random() * 2 + 1}s infinite alternate`;
+                    s.style.animationDelay = `-${Math.random() * 2}s`;
+                    effectLayer.appendChild(s);
+                }
+                for(let i=0; i<5; i++) {
+                    let star = document.createElement('div'); star.style.position = 'fixed';
+                    star.style.height = '3px'; star.style.background = 'linear-gradient(to right, white, transparent)'; star.style.borderRadius = '50%';
+                    star.style.animation = `shootingStarAnim ${Math.random() * 1 + 1.5}s linear infinite`;
+                    star.style.animationDelay = `-${Math.random() * 8}s`;
+                    effectLayer.appendChild(star);
+                }
+            } else if (theme === 'ocean' || theme === 'blue') {
+                if (theme === 'ocean') {
+                    let seaCreatures = ['🐠', '🦑', '🦐', '🦈', '🐢'];
+                    for(let i=0; i<8; i++) {
+                        let fish = document.createElement('div'); fish.style.position = 'fixed'; 
+                        fish.innerText = seaCreatures[Math.floor(Math.random() * seaCreatures.length)];
+                        fish.style.top = (Math.random() * 50 + 20) + 'vh'; fish.style.fontSize = '40px';
+                        if(fish.innerText === '🦈') { fish.style.animation = `driftLeftAnim ${Math.random() * 15 + 15}s linear infinite`; } 
+                        else { fish.style.animation = `driftRightAnim ${Math.random() * 20 + 15}s linear infinite`; }
+                        fish.style.animationDelay = `-${Math.random() * 10}s`;
+                        effectLayer.appendChild(fish);
+                    }
+                }
+                for(let i=0; i<30; i++) {
+                    let b = document.createElement('div'); b.style.position = 'fixed';
+                    b.innerText = theme === 'ocean' ? '🫧' : '💧';
+                    b.style.left = Math.random() * 100 + 'vw'; b.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                    if (theme === 'ocean') { b.style.animation = `bubbleRiseAnim ${Math.random() * 4 + 3}s linear infinite`; } 
+                    else { b.style.opacity = '0.6'; b.style.animation = `fallAnim ${Math.random() * 3 + 2}s linear infinite`; }
+                    b.style.animationDelay = `-${Math.random() * 5}s`;
+                    effectLayer.appendChild(b);
+                }
+            } else if (theme === 'bamboo') {
+                for(let i=0; i<20; i++) {
+                    let firefly = document.createElement('div'); firefly.style.position = 'fixed'; firefly.innerText = '✨';
+                    firefly.style.color = '#bef264'; firefly.style.left = Math.random() * 100 + 'vw'; firefly.style.top = Math.random() * 100 + 'vh';
+                    firefly.style.animation = `blink ${Math.random() * 3 + 2}s infinite alternate`;
+                    effectLayer.appendChild(firefly);
+                }
             }
 
-            // 12: Starry Night (Shooting stars)
-            if (theme === 'dark') {
-                createParticles('⭐', 50, 'twinkle');
-                setInterval(() => {
-                    const star = document.createElement('div');
-                    star.className = 'particle';
-                    star.style.cssText = `top:${Math.random()*40}vh; left:100vw; animation: shootingStar 1s linear forwards; height:2px; background:white;`;
-                    layer.appendChild(star);
-                    setTimeout(() => star.remove(), 1000);
-                }, 2000);
+            if (theme === 'twotone' || theme === 'purple' || theme === 'blue') {
+                for(let i=0; i<6; i++) {
+                    let blob = document.createElement('div'); blob.style.position = 'fixed';
+                    blob.style.borderRadius = '50%'; blob.style.opacity = '0.4'; blob.style.filter = 'blur(20px)';
+                    blob.style.width = (Math.random() * 200 + 150) + 'px'; blob.style.height = blob.style.width;
+                    if(theme === 'purple') blob.style.background = '#d8b4fe';
+                    else if(theme === 'blue') blob.style.background = '#bfdbfe';
+                    else blob.style.background = Math.random() > 0.5 ? '#fbcfe8' : '#bfdbfe';
+                    blob.style.left = Math.random() * 100 + 'vw'; blob.style.top = Math.random() * 100 + 'vh';
+                    blob.style.animation = `floatRandomAnim ${Math.random() * 5 + 5}s infinite alternate`;
+                    effectLayer.appendChild(blob);
+                }
             }
         }
 
-        function createParticles(char, count, anim, size = 20) {
-            const layer = document.getElementById('themeEffectLayer');
-            for (let i = 0; i < count; i++) {
-                const p = document.createElement('div');
-                p.className = `particle ${anim}`;
-                p.innerText = char;
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.top = Math.random() * 100 + 'vh';
-                p.style.fontSize = (Math.random() * size + 10) + 'px';
-                p.style.animation = `${anim} ${Math.random() * 5 + 3}s infinite linear`;
-                p.style.animationDelay = `-${Math.random() * 5}s`;
-                if(anim === 'twinkle') p.style.animation = `twinkle ${Math.random()*2+1}s infinite`;
-                layer.appendChild(p);
+        window.changeTheme = () => {
+            const theme = document.getElementById('themeSelect').value;
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('user_theme', theme);
+            renderThemeEffects(theme);
+            if(myChart) updateUI();
+        };
+
+        const savedTheme = localStorage.getItem('user_theme') || 'sakura';
+        document.getElementById('themeSelect').value = savedTheme;
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        renderThemeEffects(savedTheme);
+
+        window.toggleAuth = () => {
+            isLoginMode = !isLoginMode;
+            const title = document.getElementById('authTitle');
+            const sub = document.getElementById('authSubtitle');
+            const btn = document.getElementById('authBtn');
+            const confirmGroup = document.getElementById('confirmPasswordGroup');
+            const toggleText = document.getElementById('authToggle');
+            const confirmInput = document.getElementById('confirmPassword');
+            const emoji = document.getElementById('authEmoji');
+            
+            document.getElementById('password').value = ''; confirmInput.value = '';
+
+            if (isLoginMode) {
+                emoji.innerText = "👋"; title.innerText = "ยินดีต้อนรับ! ✨"; sub.innerText = "มาบันทึกเงินเดือนและโอทีกันเถอะ ~";
+                btn.innerText = "เข้าสู่ระบบ"; confirmGroup.style.display = "none"; confirmInput.removeAttribute('required');
+                toggleText.innerHTML = "ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span>";
+            } else {
+                emoji.innerText = "🚀"; title.innerText = "สร้างบัญชีใหม่ ✨"; sub.innerText = "สมัครฟรีเพื่อซิงค์ข้อมูลบน Cloud ของคุณ";
+                btn.innerText = "สร้างบัญชีเลย"; confirmGroup.style.display = "block"; confirmInput.setAttribute('required', 'true');
+                toggleText.innerHTML = "มีบัญชีอยู่แล้ว? <span>เข้าสู่ระบบ</span>";
+            }
+        };
+
+        window.handleResetPassword = async () => {
+            const email = document.getElementById('email').value.trim();
+            if(!email) return showPopup('พิมพ์อีเมลของคุณก่อนนะ\nแล้วค่อยกดปุ่มนี้จ้า', '📧');
+            try { await sendPasswordResetEmail(auth, email); showPopup(`ส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่\n${email} เรียบร้อยจ้า\n(เช็กใน Junk Mail ด้วยน้า)`, '✅'); } 
+            catch (error) { showPopup('ไม่พบอีเมลนี้ในระบบครับ', '❌'); }
+        };
+
+        window.handleAuth = async () => {
+            const email = document.getElementById('email').value.trim();
+            const p = document.getElementById('password').value.trim();
+            const cp = document.getElementById('confirmPassword').value.trim();
+            
+            if(!isLoginMode && p !== cp) return showPopup('รหัสผ่านไม่ตรงกันจ้า\nพิมพ์ใหม่อีกรอบนะ', '❌');
+
+            const btn = document.getElementById('authBtn');
+            const originalText = btn.innerText; btn.innerText = "⏳ กำลังโหลด..."; btn.disabled = true;
+
+            try {
+                if(!isLoginMode) { await createUserWithEmailAndPassword(auth, email, p); showPopup('สมัครสมาชิกสำเร็จ!\nยินดีต้อนรับจ้า', '🎉'); } 
+                else { await signInWithEmailAndPassword(auth, email, p); }
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') showPopup('อีเมลนี้มีคนใช้แล้วจ้า', '⚠️');
+                else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') showPopup('อีเมลหรือรหัสผ่านผิดจ้า', '🚫');
+                else showPopup('เกิดข้อผิดพลาด:\n' + error.message, '🔧');
+            } finally { btn.innerText = originalText; btn.disabled = false; }
+        };
+
+        window.logout = () => signOut(auth);
+        window.changeYear = () => { selectedYear = document.getElementById('displayYear').value; loadData(); };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('appSection').style.display = 'block';
+                document.getElementById('displayUser').innerText = user.email;
+                currentUserUid = user.uid; loadData();
+            } else {
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('appSection').style.display = 'none';
+                currentUserUid = null;
+            }
+        });
+
+        async function loadData() {
+            if(!currentUserUid) return;
+            // โหลดเงียบๆ ไร้ Error Popup กวนใจ
+            try {
+                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) currentData = docSnap.data().monthsData || Array(12).fill(null);
+                else currentData = Array(12).fill(null);
+            } catch (error) { 
+                console.error(error); 
+                currentData = Array(12).fill(null); 
+            } finally { 
+                renderTable(); updateUI(); 
             }
         }
 
-        applyTheme(); // Init
+        window.handleSaveData = async () => {
+            const m = document.getElementById('monthSelect').value;
+            const base = parseFloat(document.getElementById('baseIn').value) || 0;
+            const house = parseFloat(document.getElementById('houseIn').value) || 0;
+            const food = parseFloat(document.getElementById('foodIn').value) || 0;
+            const leave = parseFloat(document.getElementById('leaveIn').value) || 0;
+            const ss = parseFloat(document.getElementById('ssIn').value) || 0;
+            const rate = base / 240;
+
+            const getH = (idH, idM) => (parseFloat(document.getElementById(idH).value)||0) + ((parseFloat(document.getElementById(idM).value)||0)/60);
+            const h15 = getH('ot15h', 'ot15m'), h20 = getH('ot20h', 'ot20m'), h30 = getH('ot30h', 'ot30m');
+            
+            const otVal = (h15 * rate * 1.5) + (h20 * rate * 2) + (h30 * rate * 3);
+            const totalH = h15 + h20 + h30;
+            const netVal = (base + house + food + otVal) - leave - ss;
+
+            currentData[m] = { base, house, food, leave, ss, otTotal: otVal, totalOtHours: totalH, net: netVal, ot15: h15, ot20: h20, ot30: h30 };
+            
+            const btn = document.getElementById('saveBtn'); btn.innerText = "⏳ กำลังบันทึก..."; btn.disabled = true;
+
+            try {
+                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
+                await setDoc(docRef, { monthsData: currentData });
+                document.querySelectorAll('.ot-row input').forEach(el => el.value = '');
+                renderTable(); updateUI();
+                showPopup(`บันทึกข้อมูลเดือน ${months[m]} เรียบร้อยจ้า!`, '💾');
+            } catch (error) { console.error(error); showPopup("บันทึกข้อมูลไม่สำเร็จ", "⚠️"); } 
+            finally { btn.innerText = "💾 บันทึกข้อมูลขึ้นระบบ"; btn.disabled = false; }
+        };
+
+        window.updateOTSummaryCard = () => {
+            const val = document.getElementById('otSummaryMonth').value;
+            let sum15 = 0, sum20 = 0, sum30 = 0, totalMoney = 0;
+            
+            if (val === 'all') {
+                sum15 = currentData.reduce((a,b) => a + (b ? (b.ot15 || 0) : 0), 0);
+                sum20 = currentData.reduce((a,b) => a + (b ? (b.ot20 || 0) : 0), 0);
+                sum30 = currentData.reduce((a,b) => a + (b ? (b.ot30 || 0) : 0), 0);
+                totalMoney = currentData.reduce((a,b) => a + (b ? (b.otTotal || 0) : 0), 0);
+            } else {
+                const d = currentData[parseInt(val)];
+                if (d) { sum15 = d.ot15 || 0; sum20 = d.ot20 || 0; sum30 = d.ot30 || 0; totalMoney = d.otTotal || 0; }
+            }
+            
+            let totalOtSum = sum15 + sum20 + sum30;
+
+            document.getElementById('pieTotalHours').innerText = totalOtSum.toFixed(2);
+            document.getElementById('leg15').innerText = sum15.toFixed(2);
+            document.getElementById('leg20').innerText = sum20.toFixed(2);
+            document.getElementById('leg30').innerText = sum30.toFixed(2);
+            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits: 2}) + ' บาท';
+
+            if(myPieChart) myPieChart.destroy();
+            if (totalOtSum === 0) {
+                document.getElementById('otPieChart').style.display = 'none';
+                document.getElementById('pieCenterText').style.display = 'none';
+                document.getElementById('noOtMessage').style.display = 'block';
+                document.getElementById('otCustomLegend').style.opacity = '0.4';
+            } else {
+                document.getElementById('otPieChart').style.display = 'block';
+                document.getElementById('pieCenterText').style.display = 'flex';
+                document.getElementById('noOtMessage').style.display = 'none';
+                document.getElementById('otCustomLegend').style.opacity = '1';
+
+                Chart.defaults.plugins.legend.display = false;
+
+                myPieChart = new Chart(document.getElementById('otPieChart'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x'],
+                        datasets: [{ data: [sum15, sum20, sum30], backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'], borderWidth: 0, hoverOffset: 5 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { tooltip: { callbacks: { label: function(c) { return ` ${c.raw.toFixed(2)} ชม.`; } } } } }
+                });
+            }
+        };
+
+        function renderTable() {
+            const body = document.getElementById('tableBody'); body.innerHTML = '';
+            let sB=0, sO=0, sN=0, sH=0;
+            currentData.forEach((d, i) => {
+                if(d) {
+                    let foodVal = d.food || 0;
+                    body.innerHTML += `<tr><td style="text-align:center; font-weight:800;">${months[i]}</td>
+                        <td>${(d.base + d.house + foodVal).toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
+                        <td style="color:var(--color-primary); font-weight:800;">${d.totalOtHours.toFixed(2)}</td>
+                        <td>${d.otTotal.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
+                        <td class="income">${d.net.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td></tr>`;
+                    sB += (d.base + d.house + foodVal); sO += d.otTotal; sN += d.net; sH += d.totalOtHours;
+                } else { body.innerHTML += `<tr><td style="text-align:center; font-weight:800;">${months[i]}</td><td colspan="4" style="text-align:center; color: var(--text-muted); opacity: 0.5;">-</td></tr>`; }
+            });
+            document.getElementById('totalBase').innerText = sB.toLocaleString('th-TH', {minimumFractionDigits: 2});
+            document.getElementById('totalOt').innerText = sO.toLocaleString('th-TH', {minimumFractionDigits: 2});
+            document.getElementById('totalHoursText').innerText = sH.toFixed(2) + " ชม.";
+            document.getElementById('totalNet').innerText = sN.toLocaleString('th-TH', {minimumFractionDigits: 2});
+        }
+
+        function updateUI() {
+            let ots = currentData.map(d => d ? d.totalOtHours : 0);
+            let totalG = currentData.reduce((a,b) => a + (b ? (b.base + b.house + (b.food || 0) + b.otTotal - b.leave) : 0), 0);
+            let totalSS = currentData.reduce((a,b) => a + (b ? b.ss : 0), 0);
+
+            const rootStyle = getComputedStyle(document.documentElement);
+            const textColor = rootStyle.getPropertyValue('--text-main').trim();
+            const barColor = rootStyle.getPropertyValue('--chart-bar').trim();
+            const gridColor = rootStyle.getPropertyValue('--border-color').trim();
+
+            Chart.defaults.color = textColor; Chart.defaults.font.family = "'Sarabun', sans-serif";
+            if(myChart) myChart.destroy();
+            myChart = new Chart(document.getElementById('otChart'), {
+                type: 'bar', 
+                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 8 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { color: textColor, font: {weight: 'bold'} } }, y: { grid: { color: gridColor }, ticks: { color: textColor } } } }
+            });
+
+            window.updateOTSummaryCard(); 
+
+            let exp = Math.min(totalG * 0.5, 100000);
+            let netT = Math.max(totalG - exp - 60000 - totalSS, 0);
+            let tax = 0;
+            if(netT > 150000) tax += (Math.min(netT, 300000) - 150000) * 0.05;
+            if(netT > 300000) tax += (Math.min(netT, 500000) - 300000) * 0.10;
+
+            document.getElementById('taxGross').innerText = totalG.toLocaleString('th-TH', {minimumFractionDigits: 2});
+            document.getElementById('taxExp').innerText = exp.toLocaleString('th-TH', {minimumFractionDigits: 2});
+            document.getElementById('taxSS').innerText = totalSS.toLocaleString('th-TH', {minimumFractionDigits: 2});
+            document.getElementById('taxAmount').innerText = tax.toLocaleString('th-TH', {minimumFractionDigits: 2}) + " บาท";
+            
+            const alertBox = document.getElementById('overworkAlert');
+            let maxH = Math.max(...ots);
+            alertBox.innerHTML = maxH > 80 ? "🔴 ทำโอทีหนักไปแล้ว พักบ้างนะ!" : maxH > 60 ? "🟡 เริ่มทำโอทีเยอะแล้ว รักษาสุขภาพด้วย" : "🟢 Work-Life Balance เยี่ยมมาก!";
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'tokyo';
+            alertBox.style.background = maxH > 80 ? (isDark ? "rgba(127, 29, 29, 0.5)" : "rgba(254, 226, 226, 0.9)") : maxH > 60 ? (isDark ? "rgba(113, 63, 18, 0.5)" : "rgba(254, 249, 195, 0.9)") : (isDark ? "rgba(20, 83, 45, 0.5)" : "rgba(220, 252, 231, 0.9)");
+            alertBox.style.color = maxH > 80 ? (isDark ? "#fca5a5" : "#991b1b") : maxH > 60 ? (isDark ? "#fde047" : "#854d0e") : (isDark ? "#86efac" : "#166534");
+        }
     </script>
 </body>
 </html>
