@@ -47,7 +47,7 @@
             --bg-main: #f0fdfa; --color-primary: #2dd4bf; --color-primary-hover: #14b8a6; 
             --color-header: #115e59; --text-main: #134e4a; --text-muted: #0f766e; --chart-bar: #2dd4bf;
         }
-        [data-theme="purple"] {
+        [data-theme="lavender"] {
             --bg-main: #faf5ff; --color-primary: #c084fc; --color-primary-hover: #a855f7; 
             --color-header: #5b21b6; --text-main: #4c1d95; --text-muted: #6d28d9; --chart-bar: #c084fc;
         }
@@ -71,53 +71,21 @@
             --color-primary-hover: #f43f5e; --color-header: #fda4af; --border-color: rgba(63, 63, 70, 0.5); --chart-bar: #fb7185;
         }
 
-        /* 🌳 SCENERY LAYER (ฉากหลังที่แก้บัคแล้ว) */
+        /* 🌳 SCENERY LAYER */
         #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
         
-        .scenery-element { position: absolute; background-repeat: no-repeat; opacity: 0.9; }
-        
-        .tree-avenue {
-            bottom: -5vh; width: 40vh; height: 75vh; max-width: 400px;
-            background-size: contain; background-position: bottom left;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
-            animation: sway 5s ease-in-out infinite alternate;
-        }
-        .tree-left { left: -5vw; transform-origin: bottom left; }
-        .tree-right { right: -5vw; transform: scaleX(-1); transform-origin: bottom right; animation-direction: alternate-reverse;}
-
-        /* ✨ Keyframes แอนิเมชันสุดสมูท */
+        /* ✨ Keyframes แอนิเมชัน */
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes sway { 0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); } }
-        @keyframes swayPlant { 0% { transform: skewX(-2deg); } 100% { transform: skewX(2deg); } }
         @keyframes pulseSun { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
-        
-        /* แก้บัคการร่วงหล่น ให้ทำงานได้ 100% */
         @keyframes fallAnim { 
-            0% { transform: translate(0, -15vh) rotate(0deg); opacity: 0; } 
-            10% { opacity: 1; } 
-            90% { opacity: 1; } 
-            100% { transform: translate(-10vw, 115vh) rotate(360deg); opacity: 0; } 
+            0% { transform: translate(0, -5vh) rotate(0deg); opacity: 0; } 
+            10% { opacity: 0.8; } 
+            90% { opacity: 0.8; } 
+            100% { transform: translate(-10vw, 105vh) rotate(360deg); opacity: 0; } 
         }
-        @keyframes driftRightAnim { 
-            0% { transform: translateX(-15vw); opacity: 0; } 
-            10% { opacity: 1; } 
-            90% { opacity: 1; } 
-            100% { transform: translateX(115vw); opacity: 0; } 
-        }
-        @keyframes driftLeftAnim { 
-            0% { transform: translateX(115vw) scaleX(-1); opacity: 0; } 
-            10% { opacity: 1; } 
-            90% { opacity: 1; } 
-            100% { transform: translateX(-15vw) scaleX(-1); opacity: 0; } 
-        }
-        @keyframes floatUpAnim { from { transform: translateY(15vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes bubbleRiseAnim { 0% { transform: translateY(115vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-15vh) scale(1.2); opacity: 0; } }
-        @keyframes twinkleAnim { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
-        @keyframes floatRandomAnim { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
-        @keyframes shootingStarAnim { 0% { transform: translate(110vw, -10vh) rotate(-45deg); width: 0; opacity: 1; } 100% { transform: translate(-20vw, 110vh) rotate(-45deg); width: 250px; opacity: 0; } }
 
-        .particle { position: absolute; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+        .particle { position: absolute; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); pointer-events: none; }
 
         /* 📱 MAIN LAYOUT */
         body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 4vh 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; overflow-x: hidden; transition: background 0.5s ease; }
@@ -230,10 +198,8 @@
 </head>
 <body>
 
-    <!-- 🌸 เลเยอร์วาดทิวทัศน์ (Vector Scenery Layer) -->
     <div id="themeEffectLayer"></div>
 
-    <!-- 🐰 Cute Popup (หน้าต่างเด้งดึ๋ง น่ารักๆ) -->
     <div id="customPopup" class="cute-popup-overlay">
         <div class="cute-popup-box">
             <div class="cute-popup-icon" id="popupIcon">✨</div>
@@ -242,7 +208,6 @@
         </div>
     </div>
 
-    <!-- 🔐 หน้าเข้าสู่ระบบ (สมมาตร เป๊ะ) -->
     <div id="authSection" class="container" style="max-width: 440px; margin-top: 8vh;">
         <div style="text-align: center; margin-bottom: 30px;">
             <div style="width: 80px; height: 80px; background: var(--bg-input); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 3rem; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" id="authEmoji">👋</div>
@@ -250,7 +215,7 @@
             <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">มาบันทึกเงินเดือนและโอทีกันเถอะ ~</p>
         </div>
         
-        <form onsubmit="event.preventDefault(); handleAuth();">
+        <form id="authForm">
             <div class="form-group">
                 <label>อีเมล (Email)</label>
                 <input type="email" id="email" placeholder="name@email.com" required>
@@ -267,12 +232,11 @@
         </form>
         
         <div class="toggle-area">
-            <div id="authToggle" class="toggle-text" onclick="toggleAuth()" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span></div>
-            <div id="forgotToggle" class="forgot-text" onclick="handleResetPassword()">ลืมรหัสผ่าน? คลิกตั้งใหม่</div>
+            <div id="authToggle" class="toggle-text" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span></div>
+            <div id="forgotToggle" class="forgot-text">ลืมรหัสผ่าน? คลิกตั้งใหม่</div>
         </div>
     </div>
 
-    <!-- 💻 หน้าหลัก Dashboard -->
     <div id="appSection" class="container">
         <h1>💸 ระบบบันทึกเงินเดือน & ประเมินภาษี</h1>
         
@@ -280,8 +244,8 @@
             <div style="font-size: 1.15rem; font-weight: 800;">👤 <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
             <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap;">
                 <span style="font-weight: 800; color: var(--text-muted);">🎨 ธีม:</span>
-                <select id="themeSelect" onchange="changeTheme()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);">
-                    <option value="sakura">🌸 Sakura Bloom (แนะนำ)</option>
+                <select id="themeSelect" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);">
+                    <option value="sakura">🌸 Sakura Bloom</option>
                     <option value="orange">🍁 Autumn Maple</option>
                     <option value="fuji">🗻 Mt. Fuji View</option>
                     <option value="bamboo">🎋 Zen Bamboo</option>
@@ -289,12 +253,12 @@
                     <option value="matcha">🍵 Matcha Garden</option>
                     <option value="ocean">🌊 Deep Ocean</option>
                     <option value="ruby">🍓 Berry Sweet</option>
-                    <option value="purple">🔮 Magic Lavender</option>
+                    <option value="lavender" selected>🔮 Magic Lavender</option>
                     <option value="twotone">🦄 Pastel Magic</option>
                     <option value="tokyo">🌃 Tokyo Neon</option>
                     <option value="dark">🌙 Starry Night</option>
                 </select>
-                <select id="displayYear" onchange="changeYear()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);"></select>
+                <select id="displayYear" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);"></select>
             </div>
         </div>
         
@@ -310,7 +274,7 @@
             <div class="card">
                 <h3 style="border:none;">
                     <span>🍩 สัดส่วนโอที</span>
-                    <select id="otSummaryMonth" onchange="updateOTSummaryCard()">
+                    <select id="otSummaryMonth">
                         <option value="all">🌟 รวมทั้งปี</option>
                         <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
                         <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
@@ -367,7 +331,8 @@
                     <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                 </select>
             </div>
-            <div class="form-group"><label>💰 ฐานเงินเดือน</label><input type="number" id="baseIn" value="18000" step="any"></div>
+            <div class="form-group"><label>💰 ฐานเงินเดือน</label><input type="number" id="baseIn" value="20000" step="any"></div>
+            <div class="form-group"><label>📜 ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="3000" step="any"></div>
             <div class="form-group"><label>🏠 ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000" step="any"></div>
             <div class="form-group"><label>🍲 ค่าอาหาร</label><input type="number" id="foodIn" value="0" step="any"></div>
             <div class="form-group"><label>❌ หักลางาน/หักอื่น</label><input type="number" id="leaveIn" value="0" step="any"></div>
@@ -381,7 +346,7 @@
             <div class="form-group"><label>OT 3.0</label><div class="ot-row"><input type="number" id="ot30h" step="any" placeholder="ชม."><input type="number" id="ot30m" step="any" placeholder="นาที"></div></div>
         </div>
 
-        <button id="saveBtn" class="btn btn-primary" style="padding: 22px; font-size: 1.3rem; margin-bottom: 15px;" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้นระบบ</button>
+        <button id="saveBtn" class="btn btn-primary" style="padding: 22px; font-size: 1.3rem; margin-bottom: 15px;">💾 บันทึกข้อมูลขึ้นระบบ</button>
 
         <div class="table-responsive">
             <table>
@@ -395,9 +360,8 @@
             </table>
         </div>
         
-        <!-- ปุ่มออกจากระบบ -->
         <div style="text-align: center; margin-top: 40px; padding-bottom: 10px;">
-            <button class="btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
+            <button class="btn-logout" id="logoutBtn">🚪 ออกจากระบบ</button>
         </div>
     </div>
 
@@ -420,446 +384,415 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let isLoginMode = true;
-        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-        let currentData = Array(12).fill(null);
-        let currentUserUid = null;
-        let selectedYear = new Date().getFullYear().toString();
-        
-        let myChart = null;
-        let myPieChart = null;
+        // 🌟 State Variables
+        let isSignUpMode = false;
+        let currentUid = null;
+        let currentYear = new Date().getFullYear();
+        let yearlyData = {}; 
+        let otChart = null;
+        let otPieChart = null;
 
-        window.showPopup = (msg, icon = '✨') => {
+        const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+
+        // 🐰 Popup Controller
+        window.showPopup = function(msg, icon = "✨") {
             document.getElementById('popupIcon').innerText = icon;
-            document.getElementById('popupMsg').innerHTML = msg.replace(/\n/g, '<br>');
+            document.getElementById('popupMsg').innerText = msg;
             document.getElementById('customPopup').classList.add('show');
-        };
-        window.closePopup = () => { document.getElementById('customPopup').classList.remove('show'); };
-
-        const yearSelect = document.getElementById('displayYear');
-        const currentYear = new Date().getFullYear();
-        for(let y = 2024; y <= currentYear + 50; y++) {
-            let opt = document.createElement('option');
-            opt.value = y; opt.text = `${y} (พ.ศ. ${y + 543})`;
-            if(y === currentYear) opt.selected = true;
-            yearSelect.appendChild(opt);
+        }
+        window.closePopup = function() {
+            document.getElementById('customPopup').classList.remove('show');
         }
 
-        // --- 🌳 โค้ดวาดฉากหลังแบบ Vector เวกเตอร์สมจริง และน่ารัก ---
-        const svgSakura = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 800'%3E%3Cpath d='M-10,800 Q30,400 100,50' stroke='%234a2e1b' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M0,500 Q150,450 250,250' stroke='%234a2e1b' stroke-width='25' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='50' r='80' fill='%23fbcfe8'/%3E%3Ccircle cx='150' cy='100' r='60' fill='%23f9a8d4'/%3E%3Ccircle cx='50' cy='120' r='90' fill='%23fce7f3'/%3E%3Ccircle cx='250' cy='250' r='80' fill='%23fbcfe8'/%3E%3Ccircle cx='200' cy='320' r='60' fill='%23f9a8d4'/%3E%3C/svg%3E";
-        const svgMaple = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 800'%3E%3Cpath d='M-10,800 Q30,400 100,50' stroke='%233e2723' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M0,500 Q150,450 250,250' stroke='%233e2723' stroke-width='25' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='50' r='80' fill='%23ea580c'/%3E%3Ccircle cx='150' cy='100' r='60' fill='%23f97316'/%3E%3Ccircle cx='50' cy='120' r='90' fill='%23ef4444'/%3E%3Ccircle cx='250' cy='250' r='80' fill='%23ea580c'/%3E%3Ccircle cx='200' cy='320' r='60' fill='%23fbbf24'/%3E%3C/svg%3E";
-        const svgFuji = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 300'%3E%3Cpath d='M400,50 Q480,150 750,300 L50,300 Q320,150 400,50 Z' fill='%2338bdf8'/%3E%3Cpath d='M400,50 Q440,90 470,110 Q430,130 400,110 Q370,130 330,110 Q360,90 400,50 Z' fill='white'/%3E%3C/svg%3E";
-        const svgBamboo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 800'%3E%3Crect x='20' y='0' width='16' height='800' fill='%2365a30d' rx='8'/%3E%3Crect x='60' y='0' width='12' height='800' fill='%234d7c0f' rx='6'/%3E%3Crect x='100' y='0' width='18' height='800' fill='%2384cc16' rx='9'/%3E%3Crect x='150' y='0' width='15' height='800' fill='%234d7c0f' rx='7'/%3E%3Cpath d='M100,150 Q150,100 180,150 Q150,165 100,150 Z' fill='%23a3e635'/%3E%3Cpath d='M60,300 Q10,250 -20,300 Q10,315 60,300 Z' fill='%23a3e635'/%3E%3Cpath d='M150,450 Q190,400 220,450 Q190,465 150,450 Z' fill='%23a3e635'/%3E%3C/svg%3E";
-        const svgPine = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 600'%3E%3Crect x='90' y='450' width='20' height='150' fill='%231e1b4b'/%3E%3Cpath d='M100,100 L180,300 L120,300 L190,450 L10,450 L80,300 L20,300 Z' fill='%23064e3b' stroke='%23047857' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E";
+        // 🎨 Theme & Effects Controller
+        const themeEmojis = { sakura:"🌸", orange:"🍁", fuji:"🗻", bamboo:"🎋", skyblue:"☁️", matcha:"🍵", ocean:"🌊", ruby:"🍓", lavender:"🔮", twotone:"🦄", tokyo:"🌃", dark:"🌙" };
+        
+        window.changeTheme = function() {
+            const selectedTheme = document.getElementById('themeSelect').value;
+            document.documentElement.setAttribute('data-theme', selectedTheme);
+            localStorage.setItem('userTheme', selectedTheme);
+            renderThemeParticles(selectedTheme);
+        }
 
-        function renderThemeEffects(theme) {
-            const effectLayer = document.getElementById('themeEffectLayer');
-            effectLayer.innerHTML = ''; 
+        function renderThemeParticles(theme) {
+            const layer = document.getElementById('themeEffectLayer');
+            layer.innerHTML = '';
+            let emoji = themeEmojis[theme] || "✨";
             
-            // วาดต้นไม้ 2 ข้างทาง
-            if(theme === 'sakura' || theme === 'orange' || theme === 'bamboo' || theme === 'dark') {
-                let tl = document.createElement('div'); tl.className = 'scenery-element tree-avenue tree-left';
-                let tr = document.createElement('div'); tr.className = 'scenery-element tree-avenue tree-right';
-                
-                if(theme === 'sakura') { tl.style.backgroundImage = `url("${svgSakura}")`; tr.style.backgroundImage = `url("${svgSakura}")`; }
-                else if(theme === 'orange') { tl.style.backgroundImage = `url("${svgMaple}")`; tr.style.backgroundImage = `url("${svgMaple}")`; }
-                else if(theme === 'bamboo') { 
-                    tl.style.backgroundImage = `url("${svgBamboo}")`; tr.style.backgroundImage = `url("${svgBamboo}")`; 
-                    let panda = document.createElement('div'); panda.className = 'scenery-element'; panda.innerText = '🐼';
-                    panda.style.bottom = '-10px'; panda.style.left = '10vw'; panda.style.fontSize = '80px';
-                    panda.style.animation = 'swayPlant 3s infinite alternate';
-                    effectLayer.appendChild(panda);
-                }
-                else if(theme === 'dark') { 
-                    tl.style.backgroundImage = `url("${svgPine}")`; tr.style.backgroundImage = `url("${svgPine}")`; 
-                    tl.style.height = '60vh'; tl.style.width = '30vh'; tr.style.height = '60vh'; tr.style.width = '30vh';
-                }
-
-                effectLayer.appendChild(tl); effectLayer.appendChild(tr);
+            // สร้าง Particle ปลิวละมุนๆ ตามธีม
+            for (let i = 0; i < 15; i++) {
+                const part = document.createElement('div');
+                part.className = 'particle';
+                part.innerText = emoji;
+                part.style.left = Math.random() * 100 + 'vw';
+                part.style.top = Math.random() * -20 + 'vh';
+                part.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                part.style.opacity = Math.random() * 0.6 + 0.2;
+                part.style.animation = `fallAnim ${Math.random() * 6 + 6}s linear infinite`;
+                part.style.animationDelay = Math.random() * -10 + 's';
+                layer.appendChild(part);
             }
+        }
 
-            // ภูเขาและท้องฟ้า
-            if (theme === 'fuji') {
-                let fuji = document.createElement('div'); fuji.className = 'scenery-element fuji-mountain'; fuji.style.backgroundImage = `url("${svgFuji}")`; effectLayer.appendChild(fuji);
-                let branch = document.createElement('div'); branch.className = 'scenery-element';
-                branch.style.top = '-5vh'; branch.style.right = '-5vw'; branch.style.width = '40vh'; branch.style.height = '40vh';
-                branch.style.backgroundImage = `url("${svgSakura}")`; branch.style.transform = 'rotate(135deg)';
-                effectLayer.appendChild(branch);
-            } 
-            if (theme === 'fuji' || theme === 'skyblue') {
-                let sun = document.createElement('div'); sun.className = 'cute-sun'; 
-                if(theme==='skyblue') { sun.style.left = 'auto'; sun.style.right = '10vw'; }
-                effectLayer.appendChild(sun);
-            }
+        // 🔑 Auth System
+        document.getElementById('authToggle').addEventListener('click', () => {
+            isSignUpMode = !isSignUpMode;
+            document.getElementById('authTitle').innerText = isSignUpMode ? "สร้างบัญชีใหม่ ✨" : "ยินดีต้อนรับ! ✨";
+            document.getElementById('authSubtitle').innerText = isSignUpMode ? "มาเริ่มต้นจัดการรายได้ของคุณกัน" : "มาบันทึกเงินเดือนและโอทีกันเถอะ ~";
+            document.getElementById('confirmPasswordGroup').style.display = isSignUpMode ? "block" : "none";
+            document.getElementById('authBtn').innerText = isSignUpMode ? "สมัครสมาชิก" : "เข้าสู่ระบบ";
+            document.getElementById('authToggle').innerHTML = isSignUpMode ? "มีบัญชีอยู่แล้ว? <span>เข้าสู่ระบบที่นี่</span>" : "ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span>";
+            document.getElementById('authEmoji').innerText = isSignUpMode ? "🚀" : "👋";
+        });
 
-            // ชามัทฉะ
-            if (theme === 'matcha') {
-                let matchaCup = document.createElement('div'); matchaCup.className = 'scenery-element'; matchaCup.innerText = '🍵';
-                matchaCup.style.bottom = '10px'; matchaCup.style.left = '5vw'; matchaCup.style.fontSize = '120px';
-                effectLayer.appendChild(matchaCup);
-            }
+        document.getElementById('forgotToggle').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            if(!email) { showPopup("กรุณากรอกอีเมลในช่องด้านบนก่อนคลิกตั้งรหัสผ่านใหม่ครับ", "📧"); return; }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showPopup("ระบบส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่อีเมลของคุณแล้วจ้า!", "📩");
+            } catch(err) { showPopup(err.message, "❌"); }
+        });
 
-            // คลื่นทะเลและปะการัง
-            if (theme === 'ocean') {
-                let waves = document.createElement('div'); waves.className = 'scenery-element ocean-waves';
-                waves.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230ea5e9' fill-opacity='0.4' d='M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,149.3C672,139,768,149,864,170.7C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`;
-                effectLayer.appendChild(waves);
-
-                let coralL = document.createElement('div'); coralL.className = 'scenery-element'; coralL.innerText = '🪸'; coralL.style.bottom='20px'; coralL.style.left='5vw'; coralL.style.fontSize='100px'; coralL.style.animation='swayPlant 3s infinite alternate'; effectLayer.appendChild(coralL);
-                let coralR = document.createElement('div'); coralR.className = 'scenery-element'; coralR.innerText = '🪸'; coralR.style.bottom='20px'; coralR.style.right='5vw'; coralR.style.fontSize='100px'; coralR.style.animation='swayPlant 4s infinite alternate-reverse'; effectLayer.appendChild(coralR);
-            }
-
-            // ลาเวนเดอร์
-            if (theme === 'purple') {
-                let lavL = document.createElement('div'); lavL.className = 'scenery-element'; lavL.innerText = '🪻'; lavL.style.bottom='-20px'; lavL.style.left='5vw'; lavL.style.fontSize='150px'; lavL.style.animation='swayPlant 3s infinite alternate'; effectLayer.appendChild(lavL);
-                let lavR = document.createElement('div'); lavR.className = 'scenery-element'; lavR.innerText = '🪻'; lavR.style.bottom='-20px'; lavR.style.right='5vw'; lavR.style.fontSize='150px'; lavR.style.animation='swayPlant 4s infinite alternate-reverse'; effectLayer.appendChild(lavR);
-            }
-
-            // --- จัดการ Particles ตกแต่ง (✅ แก้แอนิเมชันให้ร่วงหล่น/ลอย ทำงานได้ 100%) ---
-            if (theme === 'sakura' || theme === 'orange' || theme === 'ruby' || theme === 'matcha' || theme === 'twotone') {
-                let types = ['🌸', '💮'];
-                if(theme === 'orange') types = ['🍁', '🍂', '✨'];
-                if(theme === 'ruby') types = ['🍎', '🍓', '✨'];
-                if(theme === 'matcha') types = ['🍃', '🍵', '✨'];
-                if(theme === 'twotone') types = ['🦄', '💖', '✨', '🍭'];
-
-                for(let i=0; i<30; i++) {
-                    let p = document.createElement('div'); 
-                    p.style.position = 'fixed';
-                    p.innerText = types[Math.floor(Math.random() * types.length)];
-                    p.style.left = (Math.random() * 100) + 'vw';
-                    p.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                    p.style.opacity = '0.9';
-                    p.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))';
-                    // บังคับยัด Animation ลง inline style ให้มันร่วงลงมาแน่นอน
-                    p.style.animation = `fallAnim ${Math.random() * 6 + 4}s linear infinite`;
-                    p.style.animationDelay = `-${Math.random() * 10}s`; 
-                    effectLayer.appendChild(p);
-                }
-            } else if (theme === 'skyblue' || theme === 'fuji') {
-                for(let i=0; i<6; i++) {
-                    let cloud = document.createElement('div'); cloud.className = 'giant-cloud'; cloud.innerText = '☁️';
-                    cloud.style.top = (Math.random() * 40) + 'vh';
-                    cloud.style.fontSize = (Math.random() * 100 + 100) + 'px';
-                    cloud.style.animation = `driftRightAnim ${Math.random() * 40 + 30}s linear infinite`;
-                    cloud.style.animationDelay = `-${Math.random() * 30}s`; 
-                    effectLayer.appendChild(cloud);
-                }
-                if (theme === 'skyblue') {
-                    for(let i=0; i<5; i++) {
-                        let bird = document.createElement('div'); bird.style.position = 'fixed'; bird.innerText = '🕊️';
-                        bird.style.top = (Math.random() * 40) + 'vh'; bird.style.fontSize = '30px';
-                        bird.style.animation = `driftRightAnim ${Math.random() * 15 + 10}s linear infinite`;
-                        bird.style.animationDelay = `-${Math.random() * 15}s`;
-                        effectLayer.appendChild(bird);
-                    }
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                if(isSignUpMode) {
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    if(password !== confirmPassword) { showPopup("รหัสผ่านไม่ตรงกันครับ", "⚠️"); return; }
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    showPopup("สมัครสมาชิกสำเร็จแล้ว!", "🎉");
                 } else {
-                    for(let i=0; i<15; i++) {
-                        let p = document.createElement('div'); p.style.position = 'fixed'; p.innerText = '🌸';
-                        p.style.left = (Math.random() * 100) + 'vw'; p.style.fontSize = '20px';
-                        p.style.animation = `fallAnim ${Math.random() * 5 + 5}s linear infinite`;
-                        p.style.animationDelay = `-${Math.random() * 10}s`;
-                        effectLayer.appendChild(p);
-                    }
+                    await signInWithEmailAndPassword(auth, email, password);
                 }
-            } else if (theme === 'tokyo' || theme === 'dark' || theme === 'purple') {
-                if(theme === 'dark' || theme === 'purple') {
-                    let moon = document.createElement('div'); moon.className = 'cute-sun'; moon.style.background = '#fde047'; moon.style.boxShadow = '0 0 40px #fef08a'; effectLayer.appendChild(moon);
-                }
-                let types = theme === 'tokyo' ? ['✨', '⚡', '🏮'] : ['⭐', '✨'];
-                for(let i=0; i<40; i++) {
-                    let s = document.createElement('div'); s.style.position = 'fixed';
-                    s.innerText = types[Math.floor(Math.random() * types.length)];
-                    s.style.color = theme === 'dark' ? '#fde047' : 'inherit';
-                    s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
-                    s.style.fontSize = (Math.random() * 10 + 10) + 'px';
-                    s.style.animation = `blink ${Math.random() * 2 + 1}s infinite alternate`;
-                    s.style.animationDelay = `-${Math.random() * 2}s`;
-                    effectLayer.appendChild(s);
-                }
-                for(let i=0; i<5; i++) {
-                    let star = document.createElement('div'); star.style.position = 'fixed';
-                    star.style.height = '3px'; star.style.background = 'linear-gradient(to right, white, transparent)'; star.style.borderRadius = '50%';
-                    star.style.animation = `shootingStarAnim ${Math.random() * 1 + 1.5}s linear infinite`;
-                    star.style.animationDelay = `-${Math.random() * 8}s`;
-                    effectLayer.appendChild(star);
-                }
-            } else if (theme === 'ocean' || theme === 'blue') {
-                if (theme === 'ocean') {
-                    let seaCreatures = ['🐠', '🦑', '🦐', '🦈', '🐢'];
-                    for(let i=0; i<8; i++) {
-                        let fish = document.createElement('div'); fish.style.position = 'fixed'; 
-                        fish.innerText = seaCreatures[Math.floor(Math.random() * seaCreatures.length)];
-                        fish.style.top = (Math.random() * 50 + 20) + 'vh'; fish.style.fontSize = '40px';
-                        if(fish.innerText === '🦈') { fish.style.animation = `driftLeftAnim ${Math.random() * 15 + 15}s linear infinite`; } 
-                        else { fish.style.animation = `driftRightAnim ${Math.random() * 20 + 15}s linear infinite`; }
-                        fish.style.animationDelay = `-${Math.random() * 10}s`;
-                        effectLayer.appendChild(fish);
-                    }
-                }
-                for(let i=0; i<30; i++) {
-                    let b = document.createElement('div'); b.style.position = 'fixed';
-                    b.innerText = theme === 'ocean' ? '🫧' : '💧';
-                    b.style.left = Math.random() * 100 + 'vw'; b.style.fontSize = (Math.random() * 15 + 10) + 'px';
-                    if (theme === 'ocean') { b.style.animation = `bubbleRiseAnim ${Math.random() * 4 + 3}s linear infinite`; } 
-                    else { b.style.opacity = '0.6'; b.style.animation = `fallAnim ${Math.random() * 3 + 2}s linear infinite`; }
-                    b.style.animationDelay = `-${Math.random() * 5}s`;
-                    effectLayer.appendChild(b);
-                }
-            } else if (theme === 'bamboo') {
-                for(let i=0; i<20; i++) {
-                    let firefly = document.createElement('div'); firefly.style.position = 'fixed'; firefly.innerText = '✨';
-                    firefly.style.color = '#bef264'; firefly.style.left = Math.random() * 100 + 'vw'; firefly.style.top = Math.random() * 100 + 'vh';
-                    firefly.style.animation = `blink ${Math.random() * 3 + 2}s infinite alternate`;
-                    effectLayer.appendChild(firefly);
-                }
-            }
+            } catch(err) { showPopup(err.message, "❌"); }
+        });
 
-            if (theme === 'twotone' || theme === 'purple' || theme === 'blue') {
-                for(let i=0; i<6; i++) {
-                    let blob = document.createElement('div'); blob.style.position = 'fixed';
-                    blob.style.borderRadius = '50%'; blob.style.opacity = '0.4'; blob.style.filter = 'blur(20px)';
-                    blob.style.width = (Math.random() * 200 + 150) + 'px'; blob.style.height = blob.style.width;
-                    if(theme === 'purple') blob.style.background = '#d8b4fe';
-                    else if(theme === 'blue') blob.style.background = '#bfdbfe';
-                    else blob.style.background = Math.random() > 0.5 ? '#fbcfe8' : '#bfdbfe';
-                    blob.style.left = Math.random() * 100 + 'vw'; blob.style.top = Math.random() * 100 + 'vh';
-                    blob.style.animation = `floatRandomAnim ${Math.random() * 5 + 5}s infinite alternate`;
-                    effectLayer.appendChild(blob);
-                }
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+        // 📅 Year Handler
+        function initYearSelector() {
+            const select = document.getElementById('displayYear');
+            select.innerHTML = '';
+            for(let y = currentYear - 2; y <= currentYear + 2; y++) {
+                let opt = document.createElement('option');
+                opt.value = y; opt.innerText = `ปี พ.ศ. ${y + 543}`;
+                if(y === currentYear) opt.selected = true;
+                select.appendChild(opt);
             }
+            select.addEventListener('change', (e) => {
+                currentYear = parseInt(e.target.value);
+                fetchYearlyData();
+            });
         }
 
-        window.changeTheme = () => {
-            const theme = document.getElementById('themeSelect').value;
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('user_theme', theme);
-            renderThemeEffects(theme);
-            if(myChart) updateUI();
-        };
+        // 💾 Data Logic & Calculations
+        document.getElementById('monthSelect').addEventListener('change', (e) => loadMonthToInputs(parseInt(e.target.value)));
 
-        const savedTheme = localStorage.getItem('user_theme') || 'sakura';
-        document.getElementById('themeSelect').value = savedTheme;
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        renderThemeEffects(savedTheme);
+        function loadMonthToInputs(mIdx) {
+            const data = yearlyData[mIdx] || {
+                base: 20000, license: 3000, house: 2000, food: 0, leave: 0, ss: 875,
+                ot15h: 0, ot15m: 0, ot20h: 0, ot20m: 0, ot30h: 0, ot30m: 0
+            };
+            document.getElementById('baseIn').value = data.base;
+            document.getElementById('licenseIn').value = data.license;
+            document.getElementById('houseIn').value = data.house;
+            document.getElementById('foodIn').value = data.food;
+            document.getElementById('leaveIn').value = data.leave;
+            document.getElementById('ssIn').value = data.ss;
+            document.getElementById('ot15h').value = data.ot15h || "";
+            document.getElementById('ot15m').value = data.ot15m || "";
+            document.getElementById('ot20h').value = data.ot20h || "";
+            document.getElementById('ot20m').value = data.ot20m || "";
+            document.getElementById('ot30h').value = data.ot30h || "";
+            document.getElementById('ot30m').value = data.ot30m || "";
+        }
 
-        window.toggleAuth = () => {
-            isLoginMode = !isLoginMode;
-            const title = document.getElementById('authTitle');
-            const sub = document.getElementById('authSubtitle');
-            const btn = document.getElementById('authBtn');
-            const confirmGroup = document.getElementById('confirmPasswordGroup');
-            const toggleText = document.getElementById('authToggle');
-            const confirmInput = document.getElementById('confirmPassword');
-            const emoji = document.getElementById('authEmoji');
+        function calculateOTMoney(base, h, m, rate) {
+            let totalHours = parseFloat(h || 0) + (parseFloat(m || 0) / 60);
+            let hourlyRate = (base / 30 / 8); 
+            return totalHours * hourlyRate * rate;
+        }
+
+        window.handleSaveData = async function() {
+            document.getElementById('loadingOverlay').style.display = "block";
+            const mIdx = parseInt(document.getElementById('monthSelect').value);
             
-            document.getElementById('password').value = ''; confirmInput.value = '';
+            const monthObj = {
+                base: parseFloat(document.getElementById('baseIn').value) || 0,
+                license: parseFloat(document.getElementById('licenseIn').value) || 0,
+                house: parseFloat(document.getElementById('houseIn').value) || 0,
+                food: parseFloat(document.getElementById('foodIn').value) || 0,
+                leave: parseFloat(document.getElementById('leaveIn').value) || 0,
+                ss: parseFloat(document.getElementById('ssIn').value) || 0,
+                ot15h: parseFloat(document.getElementById('ot15h').value) || 0,
+                ot15m: parseFloat(document.getElementById('ot15m').value) || 0,
+                ot20h: parseFloat(document.getElementById('ot20h').value) || 0,
+                ot20m: parseFloat(document.getElementById('ot20m').value) || 0,
+                ot30h: parseFloat(document.getElementById('ot30h').value) || 0,
+                ot30m: parseFloat(document.getElementById('ot30m').value) || 0,
+            };
 
-            if (isLoginMode) {
-                emoji.innerText = "👋"; title.innerText = "ยินดีต้อนรับ! ✨"; sub.innerText = "มาบันทึกเงินเดือนและโอทีกันเถอะ ~";
-                btn.innerText = "เข้าสู่ระบบ"; confirmGroup.style.display = "none"; confirmInput.removeAttribute('required');
-                toggleText.innerHTML = "ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span>";
-            } else {
-                emoji.innerText = "🚀"; title.innerText = "สร้างบัญชีใหม่ ✨"; sub.innerText = "สมัครฟรีเพื่อซิงค์ข้อมูลบน Cloud ของคุณ";
-                btn.innerText = "สร้างบัญชีเลย"; confirmGroup.style.display = "block"; confirmInput.setAttribute('required', 'true');
-                toggleText.innerHTML = "มีบัญชีอยู่แล้ว? <span>เข้าสู่ระบบ</span>";
-            }
-        };
-
-        window.handleResetPassword = async () => {
-            const email = document.getElementById('email').value.trim();
-            if(!email) return showPopup('พิมพ์อีเมลของคุณก่อนนะ\nแล้วค่อยกดปุ่มนี้จ้า', '📧');
-            try { await sendPasswordResetEmail(auth, email); showPopup(`ส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่\n${email} เรียบร้อยจ้า\n(เช็กใน Junk Mail ด้วยน้า)`, '✅'); } 
-            catch (error) { showPopup('ไม่พบอีเมลนี้ในระบบครับ', '❌'); }
-        };
-
-        window.handleAuth = async () => {
-            const email = document.getElementById('email').value.trim();
-            const p = document.getElementById('password').value.trim();
-            const cp = document.getElementById('confirmPassword').value.trim();
-            
-            if(!isLoginMode && p !== cp) return showPopup('รหัสผ่านไม่ตรงกันจ้า\nพิมพ์ใหม่อีกรอบนะ', '❌');
-
-            const btn = document.getElementById('authBtn');
-            const originalText = btn.innerText; btn.innerText = "⏳ กำลังโหลด..."; btn.disabled = true;
+            yearlyData[mIdx] = monthObj;
 
             try {
-                if(!isLoginMode) { await createUserWithEmailAndPassword(auth, email, p); showPopup('สมัครสมาชิกสำเร็จ!\nยินดีต้อนรับจ้า', '🎉'); } 
-                else { await signInWithEmailAndPassword(auth, email, p); }
-            } catch (error) {
-                if (error.code === 'auth/email-already-in-use') showPopup('อีเมลนี้มีคนใช้แล้วจ้า', '⚠️');
-                else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') showPopup('อีเมลหรือรหัสผ่านผิดจ้า', '🚫');
-                else showPopup('เกิดข้อผิดพลาด:\n' + error.message, '🔧');
-            } finally { btn.innerText = originalText; btn.disabled = false; }
-        };
+                await setDoc(doc(db, `users/${currentUid}/years/${currentYear}`), { months: yearlyData }, { merge: true });
+                showPopup(`บันทึกข้อมูลเดือน ${monthsTH[mIdx]} เรียบร้อยแล้วครับ!`, "💾");
+                renderDashboard();
+            } catch(err) {
+                showPopup("เกิดข้อผิดพลาดในการบันทึกข้อมูล: " + err.message, "❌");
+            } finally {
+                document.getElementById('loadingOverlay').style.display = "none";
+            }
+        }
 
-        window.logout = () => signOut(auth);
-        window.changeYear = () => { selectedYear = document.getElementById('displayYear').value; loadData(); };
+        async function fetchYearlyData() {
+            document.getElementById('loadingOverlay').style.display = "block";
+            try {
+                const snap = await getDoc(doc(db, `users/${currentUid}/years/${currentYear}`));
+                if(snap.exists() && snap.data().months) {
+                    yearlyData = snap.data().months;
+                } else {
+                    yearlyData = {};
+                }
+                loadMonthToInputs(parseInt(document.getElementById('monthSelect').value));
+                renderDashboard();
+            } catch(err) {
+                console.error(err);
+            } finally {
+                document.getElementById('loadingOverlay').style.display = "none";
+            }
+        }
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('authSection').style.display = 'none';
-                document.getElementById('appSection').style.display = 'block';
-                document.getElementById('displayUser').innerText = user.email;
-                currentUserUid = user.uid; loadData();
+        function renderDashboard() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            let sumGross = 0, sumOtHours = 0, sumOtMoney = 0, sumNet = 0, sumSS = 0;
+            let otHoursArray = Array(12).fill(0);
+
+            for(let i=0; i<12; i++) {
+                if(yearlyData[i]) {
+                    const d = yearlyData[i];
+                    let ot15Hrs = d.ot15h + (d.ot15m / 60);
+                    let ot20Hrs = d.ot20h + (d.ot20m / 60);
+                    let ot30Hrs = d.ot30h + (d.ot30m / 60);
+                    let totalMonthOtHours = ot15Hrs + ot20Hrs + ot30Hrs;
+                    
+                    let ot15Money = calculateOTMoney(d.base, d.ot15h, d.ot15m, 1.5);
+                    let ot20Money = calculateOTMoney(d.base, d.ot20h, d.ot20m, 2.0);
+                    let ot30Money = calculateOTMoney(d.base, d.ot30h, d.ot30m, 3.0);
+                    let totalMonthOtMoney = ot15Money + ot20Money + ot30Money;
+
+                    // รวมรายได้ทั้งหมด: ฐานเงินเดือน + กว. + ค่าที่พัก + ค่าอาหาร + เงินโอที - หักลางาน
+                    let monthGross = d.base + d.license + d.house + d.food + totalMonthOtMoney - d.leave;
+                    let monthNet = monthGross - d.ss;
+
+                    sumGross += monthGross;
+                    sumOtHours += totalMonthOtHours;
+                    sumOtMoney += totalMonthOtMoney;
+                    sumNet += monthNet;
+                    sumSS += d.ss;
+                    otHoursArray[i] = totalMonthOtHours;
+
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td style="text-align:center; font-weight:700;">${monthsTH[i]}</td>
+                        <td>${monthGross.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                        <td>${totalMonthOtHours.toFixed(1)} ชม.</td>
+                        <td>${totalMonthOtMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                        <td style="font-weight:700; color:var(--color-primary);">${monthNet.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    `;
+                    tbody.appendChild(tr);
+                }
+            }
+
+            // อัปเดตแถวสรุปท้ายตาราง
+            document.getElementById('totalBase').innerText = sumGross.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('totalHoursText').innerText = sumOtHours.toFixed(1) + " ชม.";
+            document.getElementById('totalOt').innerText = sumOtMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('totalNet').innerText = sumNet.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            // คำนวณภาษีประจำปี (ภ.ง.ด. 91)
+            let taxExpenses = Math.min(sumGross * 0.5, 100000);
+            let taxPersonal = 60000;
+            let taxableIncome = sumGross - taxExpenses - taxPersonal - sumSS;
+            let finalTax = calculateThaiTax(taxableIncome);
+
+            document.getElementById('taxGross').innerText = sumGross.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxExp').innerText = taxExpenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxSS').innerText = sumSS.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxAmount').innerText = finalTax.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + " บาท";
+
+            // แจ้งเตือนเรื่องการทำงานเกินเวลา (ตัวอย่างกฎหมายแรงงาน 36 ชม./สัปดาห์)
+            const alertBox = document.getElementById('overworkAlert');
+            if(sumOtHours > 150) {
+                alertBox.style.backgroundColor = "rgba(225, 29, 72, 0.06)";
+                alertBox.style.borderColor = "#f43f5e";
+                alertBox.style.color = "#e11d48";
+                alertBox.innerText = "⚠️ คุณทำงานโอทีสะสมเยอะมาก อย่าลืมรักษาสุขภาพด้วยนะพักผ่อนบ้างนะครับ!";
             } else {
-                document.getElementById('authSection').style.display = 'block';
-                document.getElementById('appSection').style.display = 'none';
-                currentUserUid = null;
+                alertBox.style.backgroundColor = "rgba(16, 185, 129, 0.06)";
+                alertBox.style.borderColor = "#10b981";
+                alertBox.style.color = "#047857";
+                alertBox.innerText = "💚 ชั่วโมงการทำงานโอทีของคุณอยู่ในเกณฑ์ที่เหมาะสม ลุยต่อไปครับ!";
+            }
+
+            // อัปเดตกราฟแท่งสรุปชั่วโมงรายเดือน
+            updateBarChart(otHoursArray);
+            // อัปเดตกราฟวงกลม
+            updateOTSummaryCard();
+        }
+
+        function calculateThaiTax(taxable) {
+            if (taxable <= 150000) return 0;
+            let tax = 0;
+            const brackets = [
+                { limit: 150000, rate: 0 },
+                { limit: 300000, rate: 0.05 },
+                { limit: 500000, rate: 0.10 },
+                { limit: 750000, rate: 0.15 },
+                { limit: 1000000, rate: 0.20 },
+                { limit: 2000000, rate: 0.25 },
+                { limit: 5000000, rate: 0.30 },
+                { limit: Infinity, rate: 0.35 }
+            ];
+            let prev = 0;
+            for (let b of brackets) {
+                if (taxable > prev) {
+                    let curAmt = Math.min(taxable, b.limit) - prev;
+                    tax += curAmt * b.rate;
+                    prev = b.limit;
+                } else break;
+            }
+            return tax;
+        }
+
+        // 📊 Chart.js Renderer
+        function updateBarChart(dataArr) {
+            const ctx = document.getElementById('otChart').getContext('2d');
+            if(otChart) otChart.destroy();
+            
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
+
+            otChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'],
+                    datasets: [{
+                        label: 'ชั่วโมงโอที',
+                        data: dataArr,
+                        backgroundColor: primaryColor || '#60a5fa',
+                        borderRadius: 10,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.03)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        }
+
+        window.updateOTSummaryCard = function() {
+            const mode = document.getElementById('otSummaryMonth').value;
+            let t15 = 0, t20 = 0, t30 = 0, totalMoney = 0;
+
+            if(mode === 'all') {
+                for(let i=0; i<12; i++) {
+                    if(yearlyData[i]) {
+                        const d = yearlyData[i];
+                        t15 += d.ot15h + (d.ot15m / 60);
+                        t20 += d.ot20h + (d.ot20m / 60);
+                        t30 += d.ot30h + (d.ot30m / 60);
+                        totalMoney += calculateOTMoney(d.base, d.ot15h, d.ot15m, 1.5) + calculateOTMoney(d.base, d.ot20h, d.ot20m, 2.0) + calculateOTMoney(d.base, d.ot30h, d.ot30m, 3.0);
+                    }
+                }
+            } else {
+                let mIdx = parseInt(mode);
+                if(yearlyData[mIdx]) {
+                    const d = yearlyData[mIdx];
+                    t15 = d.ot15h + (d.ot15m / 60);
+                    t20 = d.ot20h + (d.ot20m / 60);
+                    t30 = d.ot30h + (d.ot30m / 60);
+                    totalMoney = calculateOTMoney(d.base, d.ot15h, d.ot15m, 1.5) + calculateOTMoney(d.base, d.ot20h, d.ot20m, 2.0) + calculateOTMoney(d.base, d.ot30h, d.ot30m, 3.0);
+                }
+            }
+
+            let totalH = t15 + t20 + t30;
+            document.getElementById('pieTotalHours').innerText = totalH.toFixed(1);
+            document.getElementById('leg15').innerText = t15.toFixed(1) + " ชม.";
+            document.getElementById('leg20').innerText = t20.toFixed(1) + " ชม.";
+            document.getElementById('leg30').innerText = t30.toFixed(1) + " ชม.";
+            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + " บาท";
+
+            const ctx = document.getElementById('otPieChart').getContext('2d');
+            if(otPieChart) otPieChart.destroy();
+
+            if(totalH === 0) {
+                document.getElementById('noOtMessage').style.display = "block";
+                document.getElementById('pieCenterText').style.display = "none";
+                return;
+            } else {
+                document.getElementById('noOtMessage').style.display = "none";
+                document.getElementById('pieCenterText').style.display = "flex";
+            }
+
+            otPieChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['OT 1.5', 'OT 2.0', 'OT 3.0'],
+                    datasets: [{
+                        data: [t15, t20, t30],
+                        backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '75%'
+                }
+            });
+        }
+
+        // ⚡ Auth State Change Listener
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                currentUid = user.uid;
+                document.getElementById('displayUser').innerText = user.email;
+                document.getElementById('authSection').style.display = "none";
+                document.getElementById('appSection').style.display = "block";
+                
+                // โหลดธีมเก่าที่บันทึกไว้
+                const savedTheme = localStorage.getItem('userTheme') || 'lavender';
+                document.getElementById('themeSelect').value = savedTheme;
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                renderThemeParticles(savedTheme);
+
+                initYearSelector();
+                fetchYearlyData();
+            } else {
+                currentUid = null;
+                document.getElementById('authSection').style.display = "block";
+                document.getElementById('appSection').style.display = "none";
+                document.getElementById('themeEffectLayer').innerHTML = '';
             }
         });
 
-        async function loadData() {
-            if(!currentUserUid) return;
-            // โหลดเงียบๆ ไร้ Error Popup กวนใจ
-            try {
-                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) currentData = docSnap.data().monthsData || Array(12).fill(null);
-                else currentData = Array(12).fill(null);
-            } catch (error) { 
-                console.error(error); 
-                currentData = Array(12).fill(null); 
-            } finally { 
-                renderTable(); updateUI(); 
-            }
-        }
+        // Event listener สำรองเผื่อฟังก์ชันบางส่วนถูกเรียกใช้ข้างนอกโครงสร้าง module
+        document.getElementById('themeSelect').addEventListener('change', changeTheme);
+        document.getElementById('otSummaryMonth').addEventListener('change', updateOTSummaryCard);
+        document.getElementById('saveBtn').addEventListener('click', handleSaveData);
 
-        window.handleSaveData = async () => {
-            const m = document.getElementById('monthSelect').value;
-            const base = parseFloat(document.getElementById('baseIn').value) || 0;
-            const house = parseFloat(document.getElementById('houseIn').value) || 0;
-            const food = parseFloat(document.getElementById('foodIn').value) || 0;
-            const leave = parseFloat(document.getElementById('leaveIn').value) || 0;
-            const ss = parseFloat(document.getElementById('ssIn').value) || 0;
-            const rate = base / 240;
-
-            const getH = (idH, idM) => (parseFloat(document.getElementById(idH).value)||0) + ((parseFloat(document.getElementById(idM).value)||0)/60);
-            const h15 = getH('ot15h', 'ot15m'), h20 = getH('ot20h', 'ot20m'), h30 = getH('ot30h', 'ot30m');
-            
-            const otVal = (h15 * rate * 1.5) + (h20 * rate * 2) + (h30 * rate * 3);
-            const totalH = h15 + h20 + h30;
-            const netVal = (base + house + food + otVal) - leave - ss;
-
-            currentData[m] = { base, house, food, leave, ss, otTotal: otVal, totalOtHours: totalH, net: netVal, ot15: h15, ot20: h20, ot30: h30 };
-            
-            const btn = document.getElementById('saveBtn'); btn.innerText = "⏳ กำลังบันทึก..."; btn.disabled = true;
-
-            try {
-                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
-                await setDoc(docRef, { monthsData: currentData });
-                document.querySelectorAll('.ot-row input').forEach(el => el.value = '');
-                renderTable(); updateUI();
-                showPopup(`บันทึกข้อมูลเดือน ${months[m]} เรียบร้อยจ้า!`, '💾');
-            } catch (error) { console.error(error); showPopup("บันทึกข้อมูลไม่สำเร็จ", "⚠️"); } 
-            finally { btn.innerText = "💾 บันทึกข้อมูลขึ้นระบบ"; btn.disabled = false; }
-        };
-
-        window.updateOTSummaryCard = () => {
-            const val = document.getElementById('otSummaryMonth').value;
-            let sum15 = 0, sum20 = 0, sum30 = 0, totalMoney = 0;
-            
-            if (val === 'all') {
-                sum15 = currentData.reduce((a,b) => a + (b ? (b.ot15 || 0) : 0), 0);
-                sum20 = currentData.reduce((a,b) => a + (b ? (b.ot20 || 0) : 0), 0);
-                sum30 = currentData.reduce((a,b) => a + (b ? (b.ot30 || 0) : 0), 0);
-                totalMoney = currentData.reduce((a,b) => a + (b ? (b.otTotal || 0) : 0), 0);
-            } else {
-                const d = currentData[parseInt(val)];
-                if (d) { sum15 = d.ot15 || 0; sum20 = d.ot20 || 0; sum30 = d.ot30 || 0; totalMoney = d.otTotal || 0; }
-            }
-            
-            let totalOtSum = sum15 + sum20 + sum30;
-
-            document.getElementById('pieTotalHours').innerText = totalOtSum.toFixed(2);
-            document.getElementById('leg15').innerText = sum15.toFixed(2);
-            document.getElementById('leg20').innerText = sum20.toFixed(2);
-            document.getElementById('leg30').innerText = sum30.toFixed(2);
-            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits: 2}) + ' บาท';
-
-            if(myPieChart) myPieChart.destroy();
-            if (totalOtSum === 0) {
-                document.getElementById('otPieChart').style.display = 'none';
-                document.getElementById('pieCenterText').style.display = 'none';
-                document.getElementById('noOtMessage').style.display = 'block';
-                document.getElementById('otCustomLegend').style.opacity = '0.4';
-            } else {
-                document.getElementById('otPieChart').style.display = 'block';
-                document.getElementById('pieCenterText').style.display = 'flex';
-                document.getElementById('noOtMessage').style.display = 'none';
-                document.getElementById('otCustomLegend').style.opacity = '1';
-
-                Chart.defaults.plugins.legend.display = false;
-
-                myPieChart = new Chart(document.getElementById('otPieChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x'],
-                        datasets: [{ data: [sum15, sum20, sum30], backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'], borderWidth: 0, hoverOffset: 5 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { tooltip: { callbacks: { label: function(c) { return ` ${c.raw.toFixed(2)} ชม.`; } } } } }
-                });
-            }
-        };
-
-        function renderTable() {
-            const body = document.getElementById('tableBody'); body.innerHTML = '';
-            let sB=0, sO=0, sN=0, sH=0;
-            currentData.forEach((d, i) => {
-                if(d) {
-                    let foodVal = d.food || 0;
-                    body.innerHTML += `<tr><td style="text-align:center; font-weight:800;">${months[i]}</td>
-                        <td>${(d.base + d.house + foodVal).toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
-                        <td style="color:var(--color-primary); font-weight:800;">${d.totalOtHours.toFixed(2)}</td>
-                        <td>${d.otTotal.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
-                        <td class="income">${d.net.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td></tr>`;
-                    sB += (d.base + d.house + foodVal); sO += d.otTotal; sN += d.net; sH += d.totalOtHours;
-                } else { body.innerHTML += `<tr><td style="text-align:center; font-weight:800;">${months[i]}</td><td colspan="4" style="text-align:center; color: var(--text-muted); opacity: 0.5;">-</td></tr>`; }
-            });
-            document.getElementById('totalBase').innerText = sB.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('totalOt').innerText = sO.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('totalHoursText').innerText = sH.toFixed(2) + " ชม.";
-            document.getElementById('totalNet').innerText = sN.toLocaleString('th-TH', {minimumFractionDigits: 2});
-        }
-
-        function updateUI() {
-            let ots = currentData.map(d => d ? d.totalOtHours : 0);
-            let totalG = currentData.reduce((a,b) => a + (b ? (b.base + b.house + (b.food || 0) + b.otTotal - b.leave) : 0), 0);
-            let totalSS = currentData.reduce((a,b) => a + (b ? b.ss : 0), 0);
-
-            const rootStyle = getComputedStyle(document.documentElement);
-            const textColor = rootStyle.getPropertyValue('--text-main').trim();
-            const barColor = rootStyle.getPropertyValue('--chart-bar').trim();
-            const gridColor = rootStyle.getPropertyValue('--border-color').trim();
-
-            Chart.defaults.color = textColor; Chart.defaults.font.family = "'Sarabun', sans-serif";
-            if(myChart) myChart.destroy();
-            myChart = new Chart(document.getElementById('otChart'), {
-                type: 'bar', 
-                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 8 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { color: textColor, font: {weight: 'bold'} } }, y: { grid: { color: gridColor }, ticks: { color: textColor } } } }
-            });
-
-            window.updateOTSummaryCard(); 
-
-            let exp = Math.min(totalG * 0.5, 100000);
-            let netT = Math.max(totalG - exp - 60000 - totalSS, 0);
-            let tax = 0;
-            if(netT > 150000) tax += (Math.min(netT, 300000) - 150000) * 0.05;
-            if(netT > 300000) tax += (Math.min(netT, 500000) - 300000) * 0.10;
-
-            document.getElementById('taxGross').innerText = totalG.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('taxExp').innerText = exp.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('taxSS').innerText = totalSS.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('taxAmount').innerText = tax.toLocaleString('th-TH', {minimumFractionDigits: 2}) + " บาท";
-            
-            const alertBox = document.getElementById('overworkAlert');
-            let maxH = Math.max(...ots);
-            alertBox.innerHTML = maxH > 80 ? "🔴 ทำโอทีหนักไปแล้ว พักบ้างนะ!" : maxH > 60 ? "🟡 เริ่มทำโอทีเยอะแล้ว รักษาสุขภาพด้วย" : "🟢 Work-Life Balance เยี่ยมมาก!";
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'tokyo';
-            alertBox.style.background = maxH > 80 ? (isDark ? "rgba(127, 29, 29, 0.5)" : "rgba(254, 226, 226, 0.9)") : maxH > 60 ? (isDark ? "rgba(113, 63, 18, 0.5)" : "rgba(254, 249, 195, 0.9)") : (isDark ? "rgba(20, 83, 45, 0.5)" : "rgba(220, 252, 231, 0.9)");
-            alertBox.style.color = maxH > 80 ? (isDark ? "#fca5a5" : "#991b1b") : maxH > 60 ? (isDark ? "#fde047" : "#854d0e") : (isDark ? "#86efac" : "#166534");
-        }
     </script>
 </body>
 </html>
