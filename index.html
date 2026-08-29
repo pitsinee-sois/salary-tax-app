@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Sakura Full-Width Dashboard)</title>
+    <title>Salary & Tax System (Sakura Full-Width Dashboard + OT Chart)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -267,12 +267,12 @@
                 <div class="slip-table-container">
                     <div class="slip-col">
                         <h4>รายการได้</h4>
-                        <div class="slip-row-item"><span>เงินเดือน</span> <span id="slipBase">20,000.00</span></div>
-                        <div class="slip-row-item"><span>ค่าใบประกอบ (กว.)</span> <span id="slipLicense">3,000.00</span></div>
-                        <div class="slip-row-item"><span>ค่าที่พัก/เดินทาง</span> <span id="slipHouse">2,000.00</span></div>
-                        <div class="slip-row-item"><span>ค่าอาหาร</span> <span id="slipFood">750.00</span></div>
+                        <div class="slip-row-item"><span>เงินเดือน</span> <span id="slipBase">0.00</span></div>
+                        <div class="slip-row-item"><span>ค่าใบประกอบ (กว.)</span> <span id="slipLicense">0.00</span></div>
+                        <div class="slip-row-item"><span>ค่าที่พัก/เดินทาง</span> <span id="slipHouse">0.00</span></div>
+                        <div class="slip-row-item"><span>ค่าอาหาร</span> <span id="slipFood">0.00</span></div>
                         <div class="slip-row-item"><span>เบี้ยเลี้ยง</span> <span id="slipAllowance">0.00</span></div>
-                        <div class="slip-row-item"><span>สวัสดิการ</span> <span id="slipWelfare">684.00</span></div>
+                        <div class="slip-row-item"><span>สวัสดิการ</span> <span id="slipWelfare">0.00</span></div>
                         <div class="slip-row-item"><span>OT 1.5x</span> <span id="slipOt15">0.00</span></div>
                         <div class="slip-row-item"><span>OT 2.0x</span> <span id="slipOt20">0.00</span></div>
                         <div class="slip-row-item"><span>OT 3.0x</span> <span id="slipOt30">0.00</span></div>
@@ -280,8 +280,8 @@
                     </div>
                     <div class="slip-col">
                         <h4>รายการหัก</h4>
-                        <div class="slip-row-item"><span>หักลางาน/อื่นๆ</span> <span id="slipLeave" style="color:#e11d48;">684.00</span></div>
-                        <div class="slip-row-item"><span>ประกันสังคม</span> <span id="slipSS" style="color:#e11d48;">875.00</span></div>
+                        <div class="slip-row-item"><span>หักลางาน/อื่นๆ</span> <span id="slipLeave" style="color:#e11d48;">0.00</span></div>
+                        <div class="slip-row-item"><span>ประกันสังคม</span> <span id="slipSS" style="color:#e11d48;">0.00</span></div>
                     </div>
                 </div>
 
@@ -382,7 +382,26 @@
                 </div>
             </div>
 
+            <!-- 🌸 กราฟวงล้อสัดส่วน OT -->
             <div class="grid-forms">
+                <div class="card" style="margin-bottom:0; display: flex; flex-direction: column; align-items: center;">
+                    <h3 style="width: 100%;">🌸 สัดส่วน OT ประจำเดือนที่เลือก</h3>
+                    <div style="width: 250px; height: 250px; position: relative; margin: 15px 0;">
+                        <canvas id="monthOtChart"></canvas>
+                    </div>
+                    <span id="monthOtChartLabel" class="field-hint" style="text-align: center;">แสดงสัดส่วนชั่วโมง OT แยกตามเรทในเดือนนี้</span>
+                </div>
+                
+                <div class="card" style="margin-bottom:0; display: flex; flex-direction: column; align-items: center;">
+                    <h3 style="width: 100%;">🌐 สัดส่วน OT ภาพรวมทั้งปี</h3>
+                    <div style="width: 250px; height: 250px; position: relative; margin: 15px 0;">
+                        <canvas id="yearOtChart"></canvas>
+                    </div>
+                    <span id="yearOtChartLabel" class="field-hint" style="text-align: center;">แสดงสัดส่วนชั่วโมง OT สะสมตลอดทั้งปี</span>
+                </div>
+            </div>
+
+            <div class="grid-forms" style="margin-top: 25px;">
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="color: var(--color-primary-hover);">
                         <span>💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
@@ -397,17 +416,17 @@
                             <option value="9">ตลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                         </select>
                     </div>
-                    <div class="form-group"><label for="baseIn">ฐานเงินเดือน</label><input type="number" id="baseIn" value="20000" min="0" step="any"></div>
-                    <div class="form-group"><label for="licenseIn">ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="3000" min="0" step="any"></div>
-                    <div class="form-group"><label for="houseIn">ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000" min="0" step="any"></div>
+                    <div class="form-group"><label for="baseIn">ฐานเงินเดือน</label><input type="number" id="baseIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <div class="form-group"><label for="licenseIn">ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <div class="form-group"><label for="houseIn">ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div style="display:flex; gap:15px;">
                         <div class="form-group"><label for="foodDaysIn">ค่าอาหาร (วันละ 50)</label><input type="number" id="foodDaysIn" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
                         <div class="form-group"><label for="allowanceDaysIn">เบี้ยเลี้ยง (วันละ 150)</label><input type="number" id="allowanceDaysIn" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
                     </div>
-                    <div class="form-group"><label for="welfareIn">สวัสดิการ</label><input type="number" id="welfareIn" value="684" min="0" step="any"></div>
+                    <div class="form-group"><label for="welfareIn">สวัสดิการ</label><input type="number" id="welfareIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div style="display:flex; gap:15px;">
-                        <div class="form-group"><label for="leaveIn">หักลางาน/อื่นๆ</label><input type="number" id="leaveIn" value="684" min="0" step="any"></div>
-                        <div class="form-group"><label for="ssIn">หักประกันสังคม</label><input type="number" id="ssIn" value="875" min="0" step="any"></div>
+                        <div class="form-group"><label for="leaveIn">หักลางาน/อื่นๆ</label><input type="number" id="leaveIn" value="0" min="0" step="any" placeholder="0"></div>
+                        <div class="form-group"><label for="ssIn">หักประกันสังคม</label><input type="number" id="ssIn" value="0" min="0" step="any" placeholder="0"></div>
                     </div>
                 </div>
 
@@ -544,6 +563,8 @@
         let yearlyData = {}; 
         let formDirty = false;
         let isAutoTheme = true;
+        let monthOtChartInstance = null;
+        let yearOtChartInstance = null;
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
         const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
@@ -631,7 +652,7 @@
             document.getElementById('slipAllowance').innerText = c.allowanceMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipWelfare').innerText = c.welfare.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             
-            const hourlyRate = c.base / 240;
+            const hourlyRate = c.base > 0 ? c.base / 240 : 0;
             document.getElementById('slipOt15').innerText = (c.h15 * 1.5 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipOt20').innerText = (c.h20 * 2.0 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipOt30').innerText = (c.h30 * 3.0 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -677,8 +698,9 @@
         }
         INCOME_FIELD_IDS.forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.addEventListener('input', markDirty);
+            if (el) el.addEventListener('input', () => { markDirty(); updateCharts(); });
         });
+        document.getElementById('monthSelect').addEventListener('change', () => { loadMonthToForm(); updateCharts(); });
         document.getElementById('withholdingTaxIn').addEventListener('input', () => renderTableAndTax());
 
         document.getElementById('togglePw').addEventListener('click', () => {
@@ -764,14 +786,14 @@
         function loadMonthToForm() {
             const m = document.getElementById('monthSelect').value;
             const data = yearlyData[m] || {};
-            document.getElementById('baseIn').value = data.base ?? 20000;
-            document.getElementById('licenseIn').value = data.license ?? 3000;
-            document.getElementById('houseIn').value = data.house ?? 2000;
+            document.getElementById('baseIn').value = data.base ?? 0;
+            document.getElementById('licenseIn').value = data.license ?? 0;
+            document.getElementById('houseIn').value = data.house ?? 0;
             document.getElementById('foodDaysIn').value = data.foodDays ?? '';
             document.getElementById('allowanceDaysIn').value = data.allowanceDays ?? '';
-            document.getElementById('welfareIn').value = data.welfare ?? 684;
-            document.getElementById('leaveIn').value = data.leave ?? 684;
-            document.getElementById('ssIn').value = data.ss ?? 875;
+            document.getElementById('welfareIn').value = data.welfare ?? 0;
+            document.getElementById('leaveIn').value = data.leave ?? 0;
+            document.getElementById('ssIn').value = data.ss ?? 0;
             document.getElementById('ot15h').value = data.ot15h ?? '';
             document.getElementById('ot15m').value = data.ot15m ?? '';
             document.getElementById('ot20h').value = data.ot20h ?? '';
@@ -784,8 +806,6 @@
             document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
             markClean();
         }
-
-        document.getElementById('monthSelect').addEventListener('change', () => loadMonthToForm());
 
         async function saveToFirebase() {
             if (!currentUid) return;
@@ -843,12 +863,12 @@
             const foodMoney = foodDays * 50;
             const allowanceDays = raw.allowanceDays || 0;
             const allowanceMoney = allowanceDays * 150;
-            const welfare = raw.welfare ?? 684;
-            const leave = raw.leave ?? 684;
-            const ss = raw.ss ?? 875;
+            const welfare = raw.welfare || 0;
+            const leave = raw.leave || 0;
+            const ss = raw.ss || 0;
 
             const baseIncome = base + license + house + foodMoney + allowanceMoney + welfare;
-            const hourlyRate = base / 240;
+            const hourlyRate = base > 0 ? base / 240 : 0;
 
             const h15 = (raw.ot15h || 0) + ((raw.ot15m || 0) / 60);
             const h20 = (raw.ot20h || 0) + ((raw.ot20m || 0) / 60);
@@ -868,6 +888,74 @@
 
         function renderAll() {
             renderTableAndTax();
+            updateCharts();
+        }
+
+        // 🌸 อัปเดตกราฟวงล้อ OT
+        function updateCharts() {
+            // ดึงข้อมูลเดือนปัจจุบันที่เลือกจากฟอร์มแบบเรียลไทม์
+            const currentMonthH15 = (parseFloat(document.getElementById('ot15h').value) || 0) + ((parseFloat(document.getElementById('ot15m').value) || 0) / 60);
+            const currentMonthH20 = (parseFloat(document.getElementById('ot20h').value) || 0) + ((parseFloat(document.getElementById('ot20m').value) || 0) / 60);
+            const currentMonthH30 = (parseFloat(document.getElementById('ot30h').value) || 0) + ((parseFloat(document.getElementById('ot30m').value) || 0) / 60);
+            const currentMonthH60 = (parseFloat(document.getElementById('ot60h').value) || 0) + ((parseFloat(document.getElementById('ot60m').value) || 0) / 60);
+
+            const monthCtx = document.getElementById('monthOtChart').getContext('2d');
+            if (monthOtChartInstance) monthOtChartInstance.destroy();
+            monthOtChartInstance = new Chart(monthCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'],
+                    datasets: [{
+                        data: [currentMonthH15, currentMonthH20, currentMonthH30, currentMonthH60],
+                        backgroundColor: ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { font: { family: 'Sarabun', weight: 'bold' } } } }
+                }
+            });
+
+            // คำนวณรวมทั้งปีจาก yearlyData
+            let yearH15 = 0, yearH20 = 0, yearH30 = 0, yearH60 = 0;
+            for (let i = 0; i < 12; i++) {
+                // ถ้าเป็นเดือนที่กำลังแก้ไขอยู่ ให้ใช้ค่าสดจากฟอร์ม
+                if (i === parseInt(document.getElementById('monthSelect').value)) {
+                    yearH15 += currentMonthH15;
+                    yearH20 += currentMonthH20;
+                    yearH30 += currentMonthH30;
+                    yearH60 += currentMonthH60;
+                } else {
+                    const raw = yearlyData[i] || {};
+                    yearH15 += (raw.ot15h || 0) + ((raw.ot15m || 0) / 60);
+                    yearH20 += (raw.ot20h || 0) + ((raw.ot20m || 0) / 60);
+                    yearH30 += (raw.ot30h || 0) + ((raw.ot30m || 0) / 60);
+                    yearH60 += (raw.ot60h || 0) + ((raw.ot60m || 0) / 60);
+                }
+            }
+
+            const yearCtx = document.getElementById('yearOtChart').getContext('2d');
+            if (yearOtChartInstance) yearOtChartInstance.destroy();
+            yearOtChartInstance = new Chart(yearCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'],
+                    datasets: [{
+                        data: [yearH15, yearH20, yearH30, yearH60],
+                        backgroundColor: ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { font: { family: 'Sarabun', weight: 'bold' } } } }
+                }
+            });
         }
 
         function renderTableAndTax() {
@@ -909,10 +997,10 @@
                             </div>
                             <div class="breakdown-box">
                                 <h4>⏱️ รายละเอียด OT</h4>
-                                <div class="breakdown-item"><span>OT 1.5x (${c.h15.toFixed(1)} ชม.):</span> <span>${(c.h15 * 1.5 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
-                                <div class="breakdown-item"><span>OT 2.0x (${c.h20.toFixed(1)} ชม.):</span> <span>${(c.h20 * 2.0 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
-                                <div class="breakdown-item"><span>OT 3.0x (${c.h30.toFixed(1)} ชม.):</span> <span>${(c.h30 * 3.0 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
-                                <div class="breakdown-item"><span>OT 6.0x (${c.h60.toFixed(1)} ชม.):</span> <span>${(c.h60 * 6.0 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 1.5x (${c.h15.toFixed(1)} ชม.):</span> <span>${(c.h15 * 1.5 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 2.0x (${c.h20.toFixed(1)} ชม.):</span> <span>${(c.h20 * 2.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 3.0x (${c.h30.toFixed(1)} ชม.):</span> <span>${(c.h30 * 3.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 6.0x (${c.h60.toFixed(1)} ชม.):</span> <span>${(c.h60 * 6.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
                             </div>
                             <div class="breakdown-box">
                                 <h4>✂️ รายการหักออก</h4>
@@ -971,7 +1059,7 @@
 
         function computeQuickOT() {
             const salary = parseFloat(document.getElementById('quickSalary').value) || 0;
-            const hourlyRate = salary / 240;
+            const hourlyRate = salary > 0 ? salary / 240 : 0;
             document.getElementById('quickRateDisplay').innerText = hourlyRate.toFixed(2);
 
             const h15 = (parseFloat(document.getElementById('qOt15h').value) || 0) + ((parseFloat(document.getElementById('qOt15m').value) || 0) / 60);
