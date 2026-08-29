@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Sakura Dashboard)</title>
+    <title>Salary & Tax System (Sakura Full-Width Dashboard)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -94,45 +94,15 @@
         .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
         .tab-content.active { display: block; }
 
-        .grid-dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px; }
         .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         
         .card { 
             background: var(--bg-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; 
-            box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.15); transition: 0.3s; 
+            box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.15); transition: 0.3s; margin-bottom: 25px;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: var(--color-primary); }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: var(--color-primary); }
         .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-
-        /* 🌸 ดีไซน์การ์ดเปรียบเทียบเดือนต่อเดือน (MoM Comparison) */
-        .mom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .mom-box { background: var(--bg-input); padding: 18px; border-radius: 24px; border: 1px solid var(--border-color); text-align: center; }
-        .mom-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 5px; }
-        .mom-val { font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
-        .mom-sub { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-top: 3px; display: block; }
-        
-        .mom-diff-banner { margin-top: 15px; background: var(--bg-input); padding: 16px; border-radius: 20px; text-align: center; border: 2px dashed var(--border-color); font-weight: 800; font-size: 1.05rem; }
-
-        /* 🌸 กระปุกเป้าหมายเงินเก็บหลายรายการ (K-Pocket Style) */
-        .goals-header { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; margin-bottom: 15px; }
-        .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-height: 240px; overflow-y: auto; padding-right: 5px; }
-        .goal-card { background: var(--bg-input); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); position: relative; box-shadow: 0 5px 15px rgba(244,114,182,0.06); }
-        .goal-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-        .goal-title { font-weight: 800; font-size: 1rem; color: var(--color-header); }
-        .goal-delete-btn { background: none; border: none; color: #e11d48; cursor: pointer; font-size: 0.9rem; padding: 0; }
-        .goal-amounts { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 6px; }
-        .progress-bar-container { width: 100%; background: rgba(244,114,182,0.15); height: 8px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); border-radius: 10px; transition: width 0.6s ease; }
-
-        .pie-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0;}
-        .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
-        
-        .ot-custom-legend { display: flex; justify-content: space-around; background: var(--bg-input); padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(244,114,182,0.05); flex-wrap: wrap; gap: 10px; }
-        .legend-item { display: flex; flex-direction: column; align-items: center; font-weight: 700; font-size: 0.85rem; color: var(--text-muted); }
-        .legend-val { font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-top: 3px; }
-        .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 5px; }
-        .legend-money-bar { text-align: center; margin-top: 12px; font-weight: 800; color: var(--color-primary-hover); background: rgba(244,114,182,0.08); padding: 10px; border-radius: 16px; }
 
         .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .tax-box { background: var(--bg-input); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid var(--border-color); }
@@ -189,7 +159,7 @@
         .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; }
         .breakdown-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
 
-        /* 🌸 สลิปเงินเดือนดีไซน์ใหม่ ละเอียดเหมือนต้นแบบ */
+        /* 🌸 สลิปเงินเดือนดีไซน์ละเอียด */
         .slip-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
         .slip-modal-overlay.show { opacity: 1; pointer-events: auto; }
         
@@ -229,7 +199,7 @@
         .user-chip { font-weight: 700; color: var(--color-header); background: rgba(244,114,182,0.12); padding: 8px 16px; border-radius: 16px; font-size: 0.95rem; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         @media (max-width: 1024px) {
-            .grid-dashboard, .grid-forms { grid-template-columns: 1fr; }
+            .grid-forms { grid-template-columns: 1fr; }
             .dashboard-wrapper { padding: 0; }
             .top-nav { flex-direction: column; text-align: center; padding: 20px; }
             .tab-nav { width: 100%; justify-content: center; flex-wrap: wrap; }
@@ -395,73 +365,7 @@
 
         <div id="dashboardTab" class="tab-content active">
             
-            <div class="grid-dashboard">
-                <!-- 🌸 เปลี่ยนฝั่งซ้ายเป็น "การ์ดเปรียบเทียบเดือนต่อเดือน (MoM Comparison)" -->
-                <div class="card">
-                    <h3>
-                        <span>📈 เปรียบเทียบรายได้เดือนนี้ vs เดือนก่อนหน้า</span>
-                        <select id="momMonthSelect" aria-label="เลือกเดือนเปรียบเทียบ" style="width: auto; padding: 6px 15px; border-radius: 14px; background: var(--bg-input); cursor: pointer; font-size: 1rem;">
-                            <!-- เติมผ่าน JS -->
-                        </select>
-                    </h3>
-                    
-                    <div class="mom-grid">
-                        <div class="mom-box">
-                            <span class="mom-label" id="momPrevLabel">เดือนก่อนหน้า</span>
-                            <span class="mom-val" id="momPrevVal">0.00</span>
-                            <span class="mom-sub" id="momPrevOt">0 ชม. OT</span>
-                        </div>
-                        <div class="mom-box">
-                            <span class="mom-label" id="momCurrLabel">เดือนนี้</span>
-                            <span class="mom-val" id="momCurrVal" style="color: var(--color-primary-hover);">0.00</span>
-                            <span class="mom-sub" id="momCurrOt">0 ชม. OT</span>
-                        </div>
-                    </div>
-
-                    <div class="mom-diff-banner" id="momDiffBanner">
-                        ✨ รายได้สุทธิเปลี่ยนแปลง: 0.00 บาท
-                    </div>
-
-                    <!-- กระปุกเป้าหมายเงินเก็บ K-Pocket -->
-                    <div class="goals-header">
-                        <span style="font-weight: 800; color: var(--color-header); font-size: 1.05rem;">🎯 กระปุกเป้าหมายเงินเก็บ (K-Pocket)</span>
-                        <button class="btn btn-primary" onclick="openAddGoalModal()" style="width: auto; padding: 6px 14px; font-size: 0.85rem; margin: 0;">+ สร้างกระปุก</button>
-                    </div>
-                    <div id="goalsContainer" class="goals-grid"></div>
-                </div>
-
-                <div class="card">
-                    <h3 style="border:none;">
-                        <span>🍩 สัดส่วนโอที</span>
-                        <select id="otSummaryMonth" aria-label="เลือกเดือนสำหรับสัดส่วนโอที" style="width: auto; padding: 6px 15px; border-radius: 14px; background: var(--bg-input); cursor: pointer; font-size: 1rem;">
-                            <option value="all">🌟 รวมทั้งปี</option>
-                            <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
-                            <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
-                            <option value="6">ก.ค.</option><option value="7">ส.ค.</option><option value="8">ก.ย.</option>
-                            <option value="9">ต.ค.</option><option value="10">พ.ย.</option><option value="11">ธ.ค.</option>
-                        </select>
-                    </h3>
-                    
-                    <div class="pie-container">
-                        <canvas id="otPieChart"></canvas>
-                        <div id="pieCenterText" class="pie-center-label">
-                            <div style="font-size: 1rem; color: var(--text-muted); font-weight: 800;">รวมเวลา</div>
-                            <div id="pieTotalHours" style="font-size: 2.5rem; font-weight: 800; color: var(--color-primary-hover); line-height: 1.1;">0</div>
-                            <div style="font-size: 1rem; color: var(--text-muted); font-weight: 800;">ชั่วโมง</div>
-                        </div>
-                    </div>
-
-                    <div class="ot-custom-legend">
-                        <div class="legend-item"><div class="legend-dot" style="background: #f472b6;"></div><span>1.5x</span><span class="legend-val" id="leg15">0</span></div>
-                        <div class="legend-item"><div class="legend-dot" style="background: #fb923c;"></div><span>2.0x</span><span class="legend-val" id="leg20">0</span></div>
-                        <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>3.0x</span><span class="legend-val" id="leg30">0</span></div>
-                        <div class="legend-item"><div class="legend-dot" style="background: #8b5cf6;"></div><span>6.0x</span><span class="legend-val" id="leg60">0</span></div>
-                    </div>
-                    <div class="legend-money-bar">💰 รวมเงิน OT: <span id="legTotalMoney">0.00</span> บาท</div>
-                </div>
-            </div>
-
-            <div class="card" style="margin-bottom: 25px;">
+            <div class="card">
                 <h3 style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                     <span>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</span>
                     <div style="display:flex; align-items:center; gap:8px; font-size:0.95rem; font-weight:normal;">
@@ -479,7 +383,7 @@
             </div>
 
             <div class="grid-forms">
-                <div class="card">
+                <div class="card" style="margin-bottom:0;">
                     <h3 style="color: var(--color-primary-hover);">
                         <span>💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
                         <button class="btn btn-secondary" onclick="openSlipModal()" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin: 0;">🌸 ดูสลิปเดือนนี้</button>
@@ -507,7 +411,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" style="margin-bottom:0;">
                     <h3 style="color: var(--color-primary-hover);">⏱️ บันทึกชั่วโมงโอที</h3>
                     <div class="form-group">
                         <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
@@ -546,7 +450,7 @@
 
         <div id="calcTab" class="tab-content">
             <div class="grid-forms">
-                <div class="card">
+                <div class="card" style="margin-bottom:0;">
                     <h3 style="color: var(--color-primary-hover);">🧮 เครื่องคำนวณ OT ด่วน</h3>
                     
                     <div class="form-group">
@@ -576,7 +480,7 @@
                     </div>
                 </div>
 
-                <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="card" style="display: flex; flex-direction: column; justify-content: center; margin-bottom:0;">
                     <h3 style="text-align: center; justify-content: center;">ยอดเงิน OT ที่จะได้รับ</h3>
                     
                     <div class="tax-grid" style="margin-top: 10px;">
@@ -614,25 +518,6 @@
         
     </div>
 
-    <!-- 🌸 โมดัลเพิ่มกระปุกเงินเก็บ -->
-    <div id="addGoalModal" class="slip-modal-overlay">
-        <div class="card" style="max-width: 400px; width: 90%; background: var(--bg-input);">
-            <h3 style="color: var(--color-header);">🎯 สร้างกระปุกเงินเก็บใหม่</h3>
-            <div class="form-group" style="margin-top: 15px;">
-                <label for="newGoalName">ชื่อเป้าหมาย (เช่น เที่ยวญี่ปุ่น, ซื้อกระเป๋า)</label>
-                <input type="text" id="newGoalName" placeholder="ระบุชื่อเป้าหมาย">
-            </div>
-            <div class="form-group">
-                <label for="newGoalTarget">จำนวนเงินเป้าหมาย (บาท)</label>
-                <input type="number" id="newGoalTarget" value="50000" min="0" step="1000">
-            </div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button class="btn btn-secondary" onclick="closeAddGoalModal()">ยกเลิก</button>
-                <button class="btn btn-primary" onclick="saveNewGoal()">บันทึกกระปุก</button>
-            </div>
-        </div>
-    </div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -657,7 +542,6 @@
         let currentUserEmail = "";
         let currentYear = new Date().getFullYear();
         let yearlyData = {}; 
-        let otPieChart = null;
         let formDirty = false;
         let isAutoTheme = true;
 
@@ -717,7 +601,6 @@
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             btnElement.classList.add('active');
-            if (tabId === 'dashboardTab') renderCharts();
         };
 
         window.showPopup = function(msg, icon = "🌸") {
@@ -782,112 +665,6 @@
                 link.href = canvas.toDataURL('image/png');
                 link.click();
             });
-        }
-
-        // 🌸 กระปุกเป้าหมาย K-Pocket
-        window.openAddGoalModal = function() { document.getElementById('addGoalModal').classList.add('show'); }
-        window.closeAddGoalModal = function() { document.getElementById('addGoalModal').classList.remove('show'); }
-        window.saveNewGoal = async function() {
-            const name = document.getElementById('newGoalName').value.trim();
-            const target = parseFloat(document.getElementById('newGoalTarget').value) || 0;
-            if(!name) { showPopup("กรุณากรอกชื่อเป้าหมายครับ", "⚠️"); return; }
-            if(!yearlyData.goals) yearlyData.goals = [];
-            yearlyData.goals.push({ id: Date.now(), name, target });
-            closeAddGoalModal();
-            document.getElementById('newGoalName').value = '';
-            await saveToFirebase();
-            renderGoals();
-        }
-        window.deleteGoal = async function(id) {
-            if(!yearlyData.goals) return;
-            yearlyData.goals = yearlyData.goals.filter(g => g.id !== id);
-            await saveToFirebase();
-            renderGoals();
-        }
-
-        function renderGoals() {
-            const container = document.getElementById('goalsContainer');
-            container.innerHTML = '';
-            const goals = yearlyData.goals || [];
-            let totalNetYear = 0;
-            for(let i=0; i<12; i++) totalNetYear += calculateMonth(i).netIncome;
-
-            if(goals.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 600; padding: 10px;">ยังไม่มีกระปุกเป้าหมาย</div>`;
-                return;
-            }
-
-            goals.forEach(g => {
-                const percent = g.target > 0 ? Math.min(100, (totalNetYear / g.target) * 100) : 0;
-                const card = document.createElement('div');
-                card.className = 'goal-card';
-                card.innerHTML = `
-                    <div class="goal-card-top">
-                        <span class="goal-title">🎯 ${g.name}</span>
-                        <button class="goal-delete-btn" onclick="deleteGoal(${g.id})" title="ลบกระปุก">🗑️</button>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" style="width: ${percent}%;"></div>
-                    </div>
-                    <div class="goal-amounts">
-                        <span>${totalNetYear.toLocaleString('th-TH', {maximumFractionDigits:0})} ฿</span>
-                        <span>เป้า: ${g.target.toLocaleString()} (${percent.toFixed(0)}%)</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // 🌸 เติมตัวเลือกเดือนในช่องเปรียบเทียบ MoM
-        function initMoMSelector() {
-            const select = document.getElementById('momMonthSelect');
-            select.innerHTML = '';
-            monthsTH.forEach((mName, idx) => {
-                const opt = document.createElement('option');
-                opt.value = idx;
-                opt.innerText = mName;
-                if(idx === new Date().getMonth()) opt.selected = true;
-                select.appendChild(opt);
-            });
-        }
-        initMoMSelector();
-
-        document.getElementById('momMonthSelect').addEventListener('change', renderMoMComparison);
-
-        function renderMoMComparison() {
-            const currIdx = parseInt(document.getElementById('momMonthSelect').value);
-            const prevIdx = currIdx === 0 ? 0 : currIdx - 1;
-
-            const currData = calculateMonth(currIdx);
-            const prevData = calculateMonth(prevIdx);
-
-            document.getElementById('momCurrLabel').innerText = `เดือน${monthsTH[currIdx]}`;
-            document.getElementById('momPrevLabel').innerText = currIdx === 0 ? "ไม่มีเดือนก่อนหน้า" : `เดือน${monthsTH[prevIdx]}`;
-
-            document.getElementById('momCurrVal').innerText = currData.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
-            document.getElementById('momCurrOt').innerText = `${currData.totalOtHours.toFixed(1)} ชม. OT`;
-
-            if (currIdx === 0) {
-                document.getElementById('momPrevVal').innerText = "-";
-                document.getElementById('momPrevOt').innerText = "-";
-                document.getElementById('momDiffBanner').innerText = `✨ เดือนเริ่มต้นปี (รายได้สุทธิ: ${currData.netIncome.toLocaleString('th-TH', {maximumFractionDigits:2})} ฿)`;
-            } else {
-                document.getElementById('momPrevVal').innerText = prevData.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
-                document.getElementById('momPrevOt').innerText = `${prevData.totalOtHours.toFixed(1)} ชม. OT`;
-
-                const diff = currData.netIncome - prevData.netIncome;
-                const diffBanner = document.getElementById('momDiffBanner');
-                if (diff > 0) {
-                    diffBanner.style.color = '#10b981';
-                    diffBanner.innerText = `📈 เดือนนี้ได้มากกว่าเดือนก่อน +${diff.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท 🎉`;
-                } else if (diff < 0) {
-                    diffBanner.style.color = '#e11d48';
-                    diffBanner.innerText = `📉 เดือนนี้น้อยกว่าเดือนก่อน ${diff.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท`;
-                } else {
-                    diffBanner.style.color = 'var(--text-main)';
-                    diffBanner.innerText = `⚖️ รายได้สุทธิเท่ากับเดือนก่อนหน้าพอดี`;
-                }
-            }
         }
 
         function markDirty() {
@@ -975,7 +752,6 @@
                 const docRef = doc(db, "users", currentUid, "years", currentYear.toString());
                 const docSnap = await getDoc(docRef);
                 yearlyData = docSnap.exists() ? docSnap.data() : {};
-                if(!yearlyData.goals) yearlyData.goals = [{ id: 1, name: 'เงินเก็บสำรอง', target: 50000 }];
                 loadMonthToForm();
                 renderAll();
             } catch (err) {
@@ -1092,9 +868,6 @@
 
         function renderAll() {
             renderTableAndTax();
-            renderCharts();
-            renderGoals();
-            renderMoMComparison();
         }
 
         function renderTableAndTax() {
@@ -1195,47 +968,6 @@
                 taxAmountEl.style.color = '#10b981';
             }
         }
-
-        function renderCharts() {
-            const monthlyHours = [];
-            for (let i = 0; i < 12; i++) {
-                monthlyHours.push(calculateMonth(i).totalOtHours);
-            }
-            renderPieChart();
-        }
-
-        function renderPieChart() {
-            const selectedM = document.getElementById('otSummaryMonth').value;
-            let sum15 = 0, sum20 = 0, sum30 = 0, sum60 = 0, totalMoney = 0;
-            if (selectedM === 'all') {
-                for (let i = 0; i < 12; i++) { const c = calculateMonth(i); sum15 += c.h15; sum20 += c.h20; sum30 += c.h30; sum60 += c.h60; totalMoney += c.totalOtMoney; }
-            } else {
-                const c = calculateMonth(parseInt(selectedM)); sum15 = c.h15; sum20 = c.h20; sum30 = c.h30; sum60 = c.h60; totalMoney = c.totalOtMoney;
-            }
-
-            const totalHours = sum15 + sum20 + sum30 + sum60;
-            document.getElementById('pieTotalHours').innerText = totalHours.toFixed(1);
-            document.getElementById('leg15').innerText = sum15.toFixed(1) + ' ชม.';
-            document.getElementById('leg20').innerText = sum20.toFixed(1) + ' ชม.';
-            document.getElementById('leg30').innerText = sum30.toFixed(1) + ' ชม.';
-            document.getElementById('leg60').innerText = sum60.toFixed(1) + ' ชม.';
-            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
-
-            const ctx2 = document.getElementById('otPieChart').getContext('2d');
-            if (otPieChart) { otPieChart.destroy(); otPieChart = null; }
-            
-            if(totalHours > 0) {
-                otPieChart = new Chart(ctx2, {
-                    type: 'doughnut',
-                    data: { labels: ['1.5x', '2.0x', '3.0x', '6.0x'], datasets: [{ data: [sum15, sum20, sum30, sum60], backgroundColor: ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'], borderWidth: 2, borderColor: '#fff', hoverOffset: 5 }] },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } }
-                });
-            } else {
-                ctx2.clearRect(0, 0, ctx2.canvas.width, ctx2.canvas.height);
-            }
-        }
-
-        document.getElementById('otSummaryMonth').addEventListener('change', renderPieChart);
 
         function computeQuickOT() {
             const salary = parseFloat(document.getElementById('quickSalary').value) || 0;
