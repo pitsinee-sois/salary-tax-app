@@ -309,15 +309,21 @@
             </div>
 
             <div class="card" style="margin-bottom: 25px;">
-                <h3>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</h3>
+                <h3 style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <span>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</span>
+                    <div style="display:flex; align-items:center; gap:8px; font-size:0.95rem; font-weight:normal;">
+                        <label for="withholdingTaxIn" style="margin:0; font-size:0.95rem; color:var(--text-muted);">ภาษีหัก ณ ที่จ่ายสะสมทั้งปี:</label>
+                        <input type="number" id="withholdingTaxIn" value="0" min="0" step="any" style="width:130px; padding:8px 12px; font-size:1rem; border-radius:12px;" placeholder="0.00">
+                    </div>
+                </h3>
                 <div class="tax-grid">
                     <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
                     <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
                     <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
                     <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
-                    <div class="tax-box tax-total-box"><span class="tax-label" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
+                    <div class="tax-box tax-total-box"><span class="tax-label" id="taxFinalLabel" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
                 </div>
-                <p class="field-hint" style="margin-top: 15px; text-align: center;">* ประมาณการเบื้องต้นเท่านั้น ไม่รวมค่าลดหย่อนอื่น เช่น ประกันชีวิต กองทุน หรือบุตร กรุณาตรวจสอบกับกรมสรรพากรอีกครั้ง</p>
+                <p class="field-hint" style="margin-top: 15px; text-align: center;">* สามารถกรอกยอด "ภาษีหัก ณ ที่จ่าย" ที่ถูกหักไว้แล้วจากบริษัท (เช่น 3%) เพื่อนำมาหักลบกับภาษีที่ต้องจ่ายจริงสิ้นปีได้ทันที</p>
             </div>
 
             <div class="grid-forms">
@@ -481,7 +487,7 @@
         let formDirty = false;
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m'];
+        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
 
         function createSakuraPetals() {
             const layer = document.getElementById('sakuraLayer');
@@ -549,6 +555,9 @@
         INCOME_FIELD_IDS.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.addEventListener('input', markDirty);
+        });
+        document.getElementById('withholdingTaxIn').addEventListener('input', () => {
+            renderTableAndTax();
         });
 
         document.getElementById('togglePw').addEventListener('click', () => {
@@ -684,6 +693,10 @@
             document.getElementById('ot30m').value = data.ot30m ?? '';
             document.getElementById('ot60h').value = data.ot60h ?? '';
             document.getElementById('ot60m').value = data.ot60m ?? '';
+            
+            // Load withholding tax global for the year stored in meta if exists, or first time
+            document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
+
             markClean();
         }
 
@@ -719,6 +732,8 @@
                 ot60h: parseFloat(document.getElementById('ot60h').value) || 0,
                 ot60m: parseFloat(document.getElementById('ot60m').value) || 0
             };
+            yearlyData.withholdingTax = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
+
             document.getElementById('loadingOverlay').style.display = 'block';
             try {
                 await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData);
@@ -851,10 +866,24 @@
             else if (taxableIncome > 300000) tax += (taxableIncome - 300000) * 0.10 + 7500;
             else if (taxableIncome > 150000) tax += (taxableIncome - 150000) * 0.05;
 
+            const withholding = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
+            const finalTaxNet = tax - withholding;
+
             document.getElementById('taxGross').innerText = totalGrossSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('taxExp').innerText = expenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('taxSS').innerText = totalSSSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
-            document.getElementById('taxAmount').innerText = tax.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+            
+            const taxAmountEl = document.getElementById('taxAmount');
+            const taxLabelEl = document.getElementById('taxFinalLabel');
+            if (finalTaxNet >= 0) {
+                taxLabelEl.innerText = "ภาษีที่ต้องชำระสุทธิ (หลังหัก ณ ที่จ่าย)";
+                taxAmountEl.innerText = finalTaxNet.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+                taxAmountEl.style.color = '#be123c';
+            } else {
+                taxLabelEl.innerText = "ยอดภาษีที่ควรได้คืน ( Refund )";
+                taxAmountEl.innerText = Math.abs(finalTaxNet).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+                taxAmountEl.style.color = '#10b981'; // เขียวสดใสแสดงว่าได้เงินคืน
+            }
         }
 
         function renderCharts() {
