@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Sakura Full-Width Dashboard + OT Chart)</title>
+    <title>Salary & Tax System (Sakura Full-Width Dashboard + OT Donut)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -382,26 +382,53 @@
                 </div>
             </div>
 
-            <!-- 🌸 กราฟวงล้อสัดส่วน OT -->
-            <div class="grid-forms">
-                <div class="card" style="margin-bottom:0; display: flex; flex-direction: column; align-items: center;">
-                    <h3 style="width: 100%;">🌸 สัดส่วน OT ประจำเดือนที่เลือก</h3>
-                    <div style="width: 250px; height: 250px; position: relative; margin: 15px 0;">
-                        <canvas id="monthOtChart"></canvas>
-                    </div>
-                    <span id="monthOtChartLabel" class="field-hint" style="text-align: center;">แสดงสัดส่วนชั่วโมง OT แยกตามเรทในเดือนนี้</span>
-                </div>
+            <!-- 🌸 การ์ดวงล้อสัดส่วน OT (ดีไซน์เดิมที่คุณต้องการ) -->
+            <div class="card" style="display: flex; flex-direction: column; align-items: center;">
+                <h3 style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="display: flex; align-items: center; gap: 8px;">🍩 สัดส่วนโอที</span>
+                    <select id="otViewSelect" style="width: auto; padding: 8px 15px; font-size: 0.95rem; border-radius: 16px; font-weight: 800; background: var(--bg-input); border: 2px solid var(--color-primary); color: var(--color-primary-hover); cursor: pointer;">
+                        <option value="year">☀️ รวมทั้งปี</option>
+                        <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
+                        <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
+                        <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
+                        <option value="9">ตลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
+                    </select>
+                </h3>
                 
-                <div class="card" style="margin-bottom:0; display: flex; flex-direction: column; align-items: center;">
-                    <h3 style="width: 100%;">🌐 สัดส่วน OT ภาพรวมทั้งปี</h3>
-                    <div style="width: 250px; height: 250px; position: relative; margin: 15px 0;">
-                        <canvas id="yearOtChart"></canvas>
+                <div style="width: 280px; height: 280px; position: relative; margin: 15px 0;">
+                    <canvas id="otDonutChart"></canvas>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); display: block;" id="otCenterTitle">รวมเวลา</span>
+                        <span style="font-size: 2rem; font-weight: 800; color: var(--color-header); display: block; line-height: 1.1;" id="otCenterHours">0.0</span>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block;">ชั่วโมง</span>
                     </div>
-                    <span id="yearOtChartLabel" class="field-hint" style="text-align: center;">แสดงสัดส่วนชั่วโมง OT สะสมตลอดทั้งปี</span>
+                </div>
+
+                <div style="width: 100%; max-width: 700px; background: var(--bg-input); padding: 15px 20px; border-radius: 20px; border: 2px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 10px; margin-top: 10px;">
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #f472b6; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#f472b6; border-radius:50%; display:inline-block;"></span> 1.5x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat15h">0.0 ชม.</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fb923c; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#fb923c; border-radius:50%; display:inline-block;"></span> 2.0x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat20h">0.0 ชม.</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #ef4444; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#ef4444; border-radius:50%; display:inline-block;"></span> 3.0x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat30h">0.0 ชม.</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #8b5cf6; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#8b5cf6; border-radius:50%; display:inline-block;"></span> 6.0x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat60h">0.0 ชม.</div>
+                    </div>
+                </div>
+
+                <div style="width: 100%; max-width: 700px; background: linear-gradient(135deg, rgba(244,114,182,0.15), rgba(253,164,175,0.15)); border: 2px solid rgba(244,114,182,0.4); padding: 15px; border-radius: 20px; text-align: center; margin-top: 15px;">
+                    <span style="font-weight: 800; font-size: 1.2rem; color: var(--color-header);" id="otTotalMoneyText">💰 รวมเงิน OT: 0.00 บาท</span>
                 </div>
             </div>
 
-            <div class="grid-forms" style="margin-top: 25px;">
+            <div class="grid-forms">
                 <div class="card" style="margin-bottom:0;">
                     <h3 style="color: var(--color-primary-hover);">
                         <span>💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
@@ -563,8 +590,7 @@
         let yearlyData = {}; 
         let formDirty = false;
         let isAutoTheme = true;
-        let monthOtChartInstance = null;
-        let yearOtChartInstance = null;
+        let otDonutChartInstance = null;
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
         const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
@@ -636,7 +662,6 @@
             document.getElementById('customPopup').classList.remove('show');
         }
 
-        // 🌸 จัดการสลิปเงินเดือน
         window.openSlipModal = function() {
             const m = document.getElementById('monthSelect').value;
             const c = calculateMonth(parseInt(m));
@@ -698,9 +723,18 @@
         }
         INCOME_FIELD_IDS.forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.addEventListener('input', () => { markDirty(); updateCharts(); });
+            if (el) el.addEventListener('input', () => { markDirty(); updateOtDonutChart(); });
         });
-        document.getElementById('monthSelect').addEventListener('change', () => { loadMonthToForm(); updateCharts(); });
+        document.getElementById('monthSelect').addEventListener('change', () => {
+            loadMonthToForm();
+            // ถ้าเลือกมุมมองวงล้อเป็นแบบเดือนนั้นๆ ให้ซิงค์ตามไปด้วย
+            const viewVal = document.getElementById('otViewSelect').value;
+            if (viewVal !== 'year') {
+                document.getElementById('otViewSelect').value = document.getElementById('monthSelect').value;
+            }
+            updateOtDonutChart();
+        });
+        document.getElementById('otViewSelect').addEventListener('change', () => updateOtDonutChart());
         document.getElementById('withholdingTaxIn').addEventListener('input', () => renderTableAndTax());
 
         document.getElementById('togglePw').addEventListener('click', () => {
@@ -888,72 +922,80 @@
 
         function renderAll() {
             renderTableAndTax();
-            updateCharts();
+            updateOtDonutChart();
         }
 
-        // 🌸 อัปเดตกราฟวงล้อ OT
-        function updateCharts() {
-            // ดึงข้อมูลเดือนปัจจุบันที่เลือกจากฟอร์มแบบเรียลไทม์
-            const currentMonthH15 = (parseFloat(document.getElementById('ot15h').value) || 0) + ((parseFloat(document.getElementById('ot15m').value) || 0) / 60);
-            const currentMonthH20 = (parseFloat(document.getElementById('ot20h').value) || 0) + ((parseFloat(document.getElementById('ot20m').value) || 0) / 60);
-            const currentMonthH30 = (parseFloat(document.getElementById('ot30h').value) || 0) + ((parseFloat(document.getElementById('ot30m').value) || 0) / 60);
-            const currentMonthH60 = (parseFloat(document.getElementById('ot60h').value) || 0) + ((parseFloat(document.getElementById('ot60m').value) || 0) / 60);
+        // 🌸 อัปเดตกราฟวงล้อสัดส่วน OT แบบเลือกดูทั้งปีหรือรายเดือน
+        function updateOtDonutChart() {
+            const viewMode = document.getElementById('otViewSelect').value;
+            let sum15 = 0, sum20 = 0, sum30 = 0, sum60 = 0;
+            let totalMoney = 0;
 
-            const monthCtx = document.getElementById('monthOtChart').getContext('2d');
-            if (monthOtChartInstance) monthOtChartInstance.destroy();
-            monthOtChartInstance = new Chart(monthCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'],
-                    datasets: [{
-                        data: [currentMonthH15, currentMonthH20, currentMonthH30, currentMonthH60],
-                        backgroundColor: ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { font: { family: 'Sarabun', weight: 'bold' } } } }
+            const activeFormMonth = parseInt(document.getElementById('monthSelect').value);
+            const currH15 = (parseFloat(document.getElementById('ot15h').value) || 0) + ((parseFloat(document.getElementById('ot15m').value) || 0) / 60);
+            const currH20 = (parseFloat(document.getElementById('ot20h').value) || 0) + ((parseFloat(document.getElementById('ot20m').value) || 0) / 60);
+            const currH30 = (parseFloat(document.getElementById('ot30h').value) || 0) + ((parseFloat(document.getElementById('ot30m').value) || 0) / 60);
+            const currH60 = (parseFloat(document.getElementById('ot60h').value) || 0) + ((parseFloat(document.getElementById('ot60m').value) || 0) / 60);
+
+            if (viewMode === 'year') {
+                for (let i = 0; i < 12; i++) {
+                    if (i === activeFormMonth) {
+                        const b = parseFloat(document.getElementById('baseIn').value) || 0;
+                        const hr = b > 0 ? b / 240 : 0;
+                        sum15 += currH15; sum20 += currH20; sum30 += currH30; sum60 += currH60;
+                        totalMoney += (currH15 * 1.5 * hr) + (currH20 * 2.0 * hr) + (currH30 * 3.0 * hr) + (currH60 * 6.0 * hr);
+                    } else {
+                        const c = calculateMonth(i);
+                        sum15 += c.h15; sum20 += c.h20; sum30 += c.h30; sum60 += c.h60;
+                        totalMoney += c.totalOtMoney;
+                    }
                 }
-            });
-
-            // คำนวณรวมทั้งปีจาก yearlyData
-            let yearH15 = 0, yearH20 = 0, yearH30 = 0, yearH60 = 0;
-            for (let i = 0; i < 12; i++) {
-                // ถ้าเป็นเดือนที่กำลังแก้ไขอยู่ ให้ใช้ค่าสดจากฟอร์ม
-                if (i === parseInt(document.getElementById('monthSelect').value)) {
-                    yearH15 += currentMonthH15;
-                    yearH20 += currentMonthH20;
-                    yearH30 += currentMonthH30;
-                    yearH60 += currentMonthH60;
+            } else {
+                const mIdx = parseInt(viewMode);
+                if (mIdx === activeFormMonth) {
+                    const b = parseFloat(document.getElementById('baseIn').value) || 0;
+                    const hr = b > 0 ? b / 240 : 0;
+                    sum15 = currH15; sum20 = currH20; sum30 = currH30; sum60 = currH60;
+                    totalMoney = (currH15 * 1.5 * hr) + (currH20 * 2.0 * hr) + (currH30 * 3.0 * hr) + (currH60 * 6.0 * hr);
                 } else {
-                    const raw = yearlyData[i] || {};
-                    yearH15 += (raw.ot15h || 0) + ((raw.ot15m || 0) / 60);
-                    yearH20 += (raw.ot20h || 0) + ((raw.ot20m || 0) / 60);
-                    yearH30 += (raw.ot30h || 0) + ((raw.ot30m || 0) / 60);
-                    yearH60 += (raw.ot60h || 0) + ((raw.ot60m || 0) / 60);
+                    const c = calculateMonth(mIdx);
+                    sum15 = c.h15; sum20 = c.h20; sum30 = c.h30; sum60 = c.h60;
+                    totalMoney = c.totalOtMoney;
                 }
             }
 
-            const yearCtx = document.getElementById('yearOtChart').getContext('2d');
-            if (yearOtChartInstance) yearOtChartInstance.destroy();
-            yearOtChartInstance = new Chart(yearCtx, {
+            const totalHours = sum15 + sum20 + sum30 + sum60;
+
+            document.getElementById('stat15h').innerText = sum15.toFixed(1) + ' ชม.';
+            document.getElementById('stat20h').innerText = sum20.toFixed(1) + ' ชม.';
+            document.getElementById('stat30h').innerText = sum30.toFixed(1) + ' ชม.';
+            document.getElementById('stat60h').innerText = sum60.toFixed(1) + ' ชม.';
+            document.getElementById('otCenterHours').innerText = totalHours.toFixed(1);
+            document.getElementById('otTotalMoneyText').innerText = `💰 รวมเงิน OT: ${totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท`;
+
+            const ctx = document.getElementById('otDonutChart').getContext('2d');
+            if (otDonutChartInstance) otDonutChartInstance.destroy();
+
+            // ป้องกันกราฟพังเวลากราฟว่างเปล่า (ให้โชว์สีเทาอ่อนเต็มวง)
+            const chartData = (totalHours === 0) ? [1] : [sum15, sum20, sum30, sum60];
+            const chartColors = (totalHours === 0) ? ['#f1f5f9'] : ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'];
+
+            otDonutChartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'],
                     datasets: [{
-                        data: [yearH15, yearH20, yearH30, yearH60],
-                        backgroundColor: ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'],
-                        borderWidth: 2,
+                        data: chartData,
+                        backgroundColor: chartColors,
+                        borderWidth: 3,
                         borderColor: '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { position: 'bottom', labels: { font: { family: 'Sarabun', weight: 'bold' } } } }
+                    cutout: '72%',
+                    plugins: { legend: { display: false } }
                 }
             });
         }
