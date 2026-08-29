@@ -3,22 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#f472b6">
-    <title>Sakura Salary Pro (Perfect Edition)</title>
+    <title>Salary & Tax System (Sakura Dashboard)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
         
         * { box-sizing: border-box; }
 
-        /* ซ่อนลูกศรในช่องตัวเลข */
-        input[type="number"]::-webkit-inner-spin-button, 
-        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-        input[type="number"] { -moz-appearance: textfield; }
-
+        /* 🌸 โทนสีซากุระแบบ Premium */
         :root {
             --bg-main: linear-gradient(135deg, #ffe4e1 0%, #fff0f5 100%); 
             --bg-card: rgba(255, 255, 255, 0.7); 
@@ -29,199 +23,253 @@
             --color-primary-hover: #db2777; 
             --color-header: #9d174d; 
             --border-color: rgba(255, 255, 255, 0.8);
-            --petal-color1: #ffb7c5; --petal-color2: #ff8da1;
         }
 
-        [data-theme="yozakura"] {
-            --bg-main: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); 
-            --bg-card: rgba(30, 41, 59, 0.65); 
-            --bg-input: rgba(15, 23, 42, 0.8);
-            --text-main: #f8fafc; 
-            --text-muted: #fbcfe8; 
-            --color-primary: #f472b6;
-            --color-primary-hover: #f9a8d4; 
-            --color-header: #fbcfe8; 
-            --border-color: rgba(244, 114, 182, 0.2);
-            --petal-color1: #f472b6; --petal-color2: #db2777;
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 2vh 20px; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            background-attachment: fixed;
         }
 
-        body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 2vh 20px; min-height: 100vh; overflow-x: hidden; background-attachment: fixed; transition: background 0.5s ease; }
-
+        /* 🌳 Sakura Scenery Effect */
         #sakuraLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; overflow: hidden; }
-        .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; transition: filter 0.5s; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
-        [data-theme="yozakura"] .sakura-branch { filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.6)) brightness(0.8); }
-        
-        .petal { position: absolute; background: linear-gradient(135deg, var(--petal-color1), var(--petal-color2)); border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8; box-shadow: 0 2px 8px var(--petal-color1); animation: fall linear infinite, sway ease-in-out infinite alternate; }
+        .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
+        .petal {
+            position: absolute; background: linear-gradient(135deg, #ffb7c5, #ff8da1);
+            border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8;
+            box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+        }
         @keyframes fall { 0% { top: -10%; opacity: 0; transform: rotate(0deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; transform: rotate(360deg); } }
         @keyframes sway { 0% { transform: translateX(0px) rotate(0deg); } 100% { transform: translateX(40px) rotate(45deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         
-        .dashboard-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
+        /* 📱 FULL SCREEN DASHBOARD LAYOUT */
+        .dashboard-wrapper { 
+            width: 100%; 
+            max-width: 1400px; /* ขยายให้เต็มจอมากขึ้น */
+            margin: 0 auto; 
+            position: relative; z-index: 10; 
+        }
 
-        .top-nav { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); backdrop-filter: blur(20px); padding: 15px 30px; border-radius: 24px; border: 2px solid var(--border-color); box-shadow: 0 15px 35px rgba(0,0,0,0.05); margin-bottom: 25px; animation: fadeUp 0.6s ease-out forwards; flex-wrap: wrap; gap: 15px; }
+        /* 🗂️ Header & Navigation */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
+            padding: 15px 30px; border-radius: 24px; border: 2px solid var(--border-color);
+            box-shadow: 0 15px 35px rgba(244, 114, 182, 0.1); margin-bottom: 25px;
+            animation: fadeUp 0.6s ease-out forwards; flex-wrap: wrap; gap: 15px;
+        }
         .app-title { font-size: 1.8rem; font-weight: 800; color: var(--color-header); display: flex; align-items: center; gap: 10px; margin: 0; }
         
         .tab-nav { display: flex; gap: 10px; background: rgba(244, 114, 182, 0.1); padding: 5px; border-radius: 20px; }
-        .tab-btn { padding: 12px 25px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun'; font-size: 1.05rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
-        .tab-btn:hover { background: rgba(255, 255, 255, 0.3); }
-        .tab-btn.active { background: var(--color-primary); color: #fff; box-shadow: 0 4px 15px rgba(244, 114, 182, 0.3); }
+        .tab-btn { padding: 12px 25px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun', sans-serif; font-size: 1.05rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.5); }
+        .tab-btn.active { background: #fff; color: var(--color-primary-hover); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2); }
+        
         .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
         .tab-content.active { display: block; }
 
-        .grid-dashboard, .grid-forms { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px; }
-        .grid-forms { grid-template-columns: 1fr 1fr; }
+        /* 📦 Grid Systems */
+        .grid-dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         
-        .card { background: var(--bg-card); backdrop-filter: blur(15px); border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; box-shadow: 0 15px 40px -10px rgba(0,0,0,0.1); transition: 0.3s; }
-        .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+        /* 🃏 Glass Cards */
+        .card { 
+            background: var(--bg-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; 
+            box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.15); transition: 0.3s; 
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: #fff; }
+        .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
 
-        .goal-bar-bg { width: 100%; background: var(--bg-input); height: 25px; border-radius: 12.5px; overflow: hidden; margin-top: 15px; border: 1px solid var(--border-color); position: relative;}
-        .goal-bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
-        .goal-text { position: absolute; width: 100%; text-align: center; top: 0; line-height: 25px; font-size: 0.9rem; font-weight: 800; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
-
+        /* 📊 Charts */
         .chart-wrapper { height: 320px; width: 100%; margin-top: 15px;}
         .pie-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0;}
-        .pie-center-label { position: absolute; text-align: center; pointer-events: none;}
-        .ot-custom-legend { display: flex; justify-content: space-around; background: var(--bg-input); padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
         
+        .ot-custom-legend { display: flex; justify-content: space-around; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(244,114,182,0.05); }
+        .legend-item { display: flex; flex-direction: column; align-items: center; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); }
+        .legend-val { font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin-top: 5px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 5px; }
+
+        /* 🧾 Tax Grid */
         .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .tax-box { background: var(--bg-input); padding: 20px; border-radius: 24px; text-align: center; border: 1px solid var(--border-color); }
+        .tax-box { background: rgba(255,255,255,0.85); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.5); }
+        .tax-box:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 10px 20px rgba(244, 114, 182, 0.15);}
         .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
         .tax-value { display: block; font-size: 1.6rem; font-weight: 800; color: var(--text-main); }
         .tax-value.deduct { color: #ec4899; }
         .tax-total-box { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(253, 164, 175, 0.15)); border: 2px solid rgba(244, 114, 182, 0.4); }
+        .tax-total-box .tax-value { color: #be185d; font-size: 2.2rem; }
 
-        .form-group { margin-bottom: 15px; width: 100%; }
-        label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); }
-        input, select { width: 100%; padding: 14px 20px; border: 2px solid transparent; border-radius: 16px; font-family: 'Sarabun'; font-size: 1.1rem; background-color: var(--bg-input); color: var(--text-main); font-weight: 600; transition: 0.3s; }
-        input:focus, select:focus { border-color: var(--color-primary); outline: none; }
-        .ot-row { display: flex; gap: 10px; }
+        /* 🎛️ Form Elements */
+        .form-group { margin-bottom: 20px; width: 100%; }
+        label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); padding-left: 5px; }
+        input, select { 
+            width: 100%; padding: 16px 20px; border: 2px solid transparent; 
+            border-radius: 20px; font-family: 'Sarabun', sans-serif; font-size: 1.1rem; 
+            background-color: var(--bg-input); color: var(--text-main); font-weight: 600;
+            transition: 0.3s; box-shadow: inset 0 2px 5px rgba(244, 114, 182, 0.05); 
+        }
+        input:focus, select:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2); outline: none; transform: translateY(-2px); }
         
-        .btn { padding: 15px; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.15rem; text-align: center; display: inline-flex; justify-content: center; align-items: center; gap: 8px;}
-        .btn-primary { background: linear-gradient(135deg, #f472b6, #db2777); color: white; box-shadow: 0 10px 25px rgba(219, 39, 119, 0.3); width: 100%; }
-        .btn-primary:hover { transform: translateY(-3px); filter: brightness(1.1); }
-        .btn-outline { background: transparent; border: 2px solid var(--color-primary); color: var(--color-primary); width: 100%;}
-        .btn-outline:hover { background: var(--color-primary); color: #fff; }
+        .ot-row { display: flex; gap: 10px; }
+        .ot-row input { text-align: center; font-weight: 800; color: var(--color-primary-hover); font-size: 1.2rem; }
 
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: var(--bg-card); border: 2px solid var(--border-color); }
+        .btn { width: 100%; padding: 20px; border: none; border-radius: 24px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.25rem; color: white; display: flex; justify-content: center; align-items: center; gap: 10px;}
+        .btn-primary { background: linear-gradient(135deg, #f472b6, #db2777); box-shadow: 0 10px 25px rgba(219, 39, 119, 0.3); }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(219, 39, 119, 0.4); filter: brightness(1.1); }
+        
+        /* 📋 Table */
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.1); border: 2px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        th, td { padding: 15px; text-align: right; border-bottom: 1px dashed var(--border-color); font-size: 1rem;}
-        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid var(--color-primary); }
-        tbody tr:hover { background: rgba(244, 114, 182, 0.1); }
-        .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); }
+        th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed rgba(244, 114, 182, 0.2); font-size: 1.05rem;}
+        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid rgba(244, 114, 182, 0.3); background: rgba(253, 242, 248, 0.5);}
+        tbody tr { transition: 0.2s; }
+        tbody tr:hover { background: rgba(244, 114, 182, 0.08); transform: scale(1.01); }
+        tbody tr:hover td { color: var(--color-primary-hover); font-weight: 700; }
+        .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); font-size: 1.15rem; }
 
-        /* 🍞 Toast Notification */
-        #toast { visibility: hidden; min-width: 250px; background-color: var(--color-header); color: #fff; text-align: center; border-radius: 12px; padding: 16px; position: fixed; z-index: 100000; right: 30px; bottom: 30px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        #toast.show { visibility: visible; animation: slideInRight 0.5s, fadeOut 0.5s 2.5s forwards; }
-        @keyframes fadeOut { from {opacity: 1;} to {opacity: 0;} }
+        /* 🐰 Popups & Auth */
+        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255, 240, 245, 0.7); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
+        .cute-popup-box { background: rgba(255,255,255,0.95); border: 4px solid var(--color-primary); padding: 40px; border-radius: 36px; text-align: center; max-width: 400px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 30px 60px rgba(244, 114, 182, 0.25); }
+        .cute-popup-overlay.show .cute-popup-box { transform: scale(1); animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        #authSection { max-width: 450px; margin: 10vh auto; }
+        #appSection { display: none; }
+        #loadingOverlay { display: none; text-align: center; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 20px; }
 
-        /* 🧾 Slip Template */
-        #slipWrapper { position: absolute; z-index: -9999; top: 0; left: -9999px; } /* ซ่อนไว้แต่ให้เรนเดอร์ได้เสถียร */
-        #slipTemplate { width: 600px; background: linear-gradient(135deg, #fff0f5, #ffe4e1); padding: 40px; border-radius: 20px; color: #831843; font-family: 'Sarabun'; text-align: center; }
-        .slip-header { font-size: 2rem; font-weight: 800; color: #9d174d; margin-bottom: 20px; border-bottom: 2px dashed #f472b6; padding-bottom: 10px; }
-        .slip-row { display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 10px; font-weight: 600; }
-        .slip-total { font-size: 1.8rem; font-weight: 800; color: #db2777; margin-top: 20px; border-top: 3px solid #db2777; padding-top: 15px; }
-
+        /* 📱 Responsive */
         @media (max-width: 1024px) {
             .grid-dashboard, .grid-forms { grid-template-columns: 1fr; }
-            .top-nav { flex-direction: column; text-align: center; }
+            .dashboard-wrapper { padding: 0; }
+            .top-nav { flex-direction: column; text-align: center; padding: 20px; }
             .tab-nav { width: 100%; justify-content: center; flex-wrap: wrap; }
+            .chart-wrapper { height: 260px; }
+            .sakura-branch { width: 300px; right: -30px; top: -10px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- 🌸 Sakura Background Effect -->
     <div id="sakuraLayer">
         <svg class="sakura-branch" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
             <path d="M450,-50 Q400,100 250,150 T50,300" fill="none" stroke="#5c4033" stroke-width="8" stroke-linecap="round"/>
             <path d="M350,70 Q300,150 150,120" fill="none" stroke="#5c4033" stroke-width="5" stroke-linecap="round"/>
-            <g fill="var(--petal-color1)" stroke="var(--petal-color2)" stroke-width="1.5">
-                <circle cx="350" cy="70" r="15"/> <circle cx="340" cy="60" r="15"/> <circle cx="360" cy="60" r="15"/>
-                <circle cx="250" cy="150" r="12"/> <circle cx="150" cy="120" r="18"/> <circle cx="80" cy="280" r="14"/>
+            <path d="M280,140 Q250,220 180,250" fill="none" stroke="#5c4033" stroke-width="4" stroke-linecap="round"/>
+            <g fill="#ffb7c5" stroke="#ff8da1" stroke-width="1.5">
+                <circle cx="350" cy="70" r="15"/> <circle cx="340" cy="60" r="15"/> <circle cx="360" cy="60" r="15"/> <circle cx="345" cy="80" r="15"/> <circle cx="355" cy="80" r="15"/>
+                <circle cx="250" cy="150" r="12"/> <circle cx="240" cy="140" r="12"/> <circle cx="260" cy="140" r="12"/> <circle cx="245" cy="160" r="12"/> <circle cx="255" cy="160" r="12"/>
+                <circle cx="150" cy="120" r="18"/> <circle cx="135" cy="110" r="18"/> <circle cx="165" cy="110" r="18"/> <circle cx="140" cy="135" r="18"/> <circle cx="160" cy="135" r="18"/>
+                <circle cx="180" cy="250" r="10"/> <circle cx="170" cy="240" r="10"/> <circle cx="190" cy="240" r="10"/> <circle cx="175" cy="260" r="10"/> <circle cx="185" cy="260" r="10"/>
+                <circle cx="80" cy="280" r="14"/> <circle cx="70" cy="270" r="14"/> <circle cx="90" cy="270" r="14"/> <circle cx="75" cy="290" r="14"/> <circle cx="85" cy="290" r="14"/>
+            </g>
+            <g fill="#ec4899">
+                <circle cx="350" cy="70" r="4"/> <circle cx="250" cy="150" r="3"/> <circle cx="150" cy="120" r="5"/> <circle cx="180" cy="250" r="2.5"/> <circle cx="80" cy="280" r="4"/>
             </g>
         </svg>
     </div>
 
-    <!-- 🍞 Toast -->
-    <div id="toast">✅ ข้อความแจ้งเตือน</div>
+    <!-- 🐰 Popup -->
+    <div id="customPopup" class="cute-popup-overlay">
+        <div class="cute-popup-box">
+            <div class="cute-popup-icon" id="popupIcon" style="font-size: 5rem; margin-bottom: 10px;">🌸</div>
+            <div class="cute-popup-msg" id="popupMsg">ข้อความแจ้งเตือน</div>
+            <button class="btn btn-primary" style="margin: 0;" onclick="closePopup()">โอเคจ้า!</button>
+        </div>
+    </div>
 
     <!-- 🔐 Login Section -->
-    <div id="authSection" class="card" style="max-width: 450px; margin: 10vh auto;">
+    <div id="authSection" class="card">
         <div style="text-align: center; margin-bottom: 25px;">
-            <div style="font-size: 4rem; margin-bottom: 10px;">🌸</div>
-            <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin: 0; font-size: 1.8rem;">ยินดีต้อนรับ!</h2>
-            <p id="authSubtitle" style="color: var(--text-muted); margin-top: 5px; font-weight: 500;">ระบบบันทึกเงินเดือน & ประเมินภาษี (Pro)</p>
+            <div style="width: 80px; height: 80px; background: #fff; border: 3px solid var(--color-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 2.8rem; box-shadow: 0 10px 20px rgba(244,114,182,0.2);" id="authEmoji">🌸</div>
+            <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin-bottom: 5px; font-size: 1.8rem;">ยินดีต้อนรับ!</h2>
+            <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">ระบบบันทึกเงินเดือน & ประเมินภาษี</p>
         </div>
         
         <form id="authForm">
-            <div class="form-group"><label>อีเมล (Email)</label><input type="email" id="email" required></div>
-            <div class="form-group"><label>รหัสผ่าน (Password)</label><input type="password" id="password" required></div>
-            <div class="form-group" id="confirmPasswordGroup" style="display: none;"><label>ยืนยันรหัสผ่าน</label><input type="password" id="confirmPassword"></div>
-            <button type="submit" id="authBtn" class="btn btn-primary" style="margin-top: 10px;">เข้าสู่ระบบ</button>
+            <div class="form-group">
+                <label>อีเมล (Email)</label>
+                <input type="email" id="email" placeholder="name@email.com" required>
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน (Password)</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+            <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                <label>ยืนยันรหัสผ่าน</label>
+                <input type="password" id="confirmPassword" placeholder="••••••••">
+            </div>
+            <button type="submit" id="authBtn" class="btn btn-primary" style="margin-top: 20px;">เข้าสู่ระบบ</button>
         </form>
         
         <div style="margin-top: 25px; text-align: center;">
             <div id="authToggle" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span style="color: var(--color-primary-hover); cursor: pointer; font-weight: 800;">สมัครสมาชิกที่นี่</span></div>
+            <div id="forgotToggle" style="font-size: 0.95rem; color: var(--text-muted); cursor: pointer; margin-top: 15px; font-weight: 600; text-decoration: underline;">ลืมรหัสผ่าน? คลิกตั้งใหม่</div>
         </div>
     </div>
 
     <!-- 💻 Main App Section -->
     <div id="appSection" class="dashboard-wrapper">
+        
+        <!-- 🗂️ Header -->
         <div class="top-nav">
             <h1 class="app-title">🌸 Salary & Tax Pro</h1>
+            
             <div class="tab-nav">
-                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด</button>
-                <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณด่วน</button>
+                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด & บันทึก</button>
+                <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณ OT ด่วน</button>
             </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-                <button onclick="toggleDarkMode()" id="darkModeBtn" style="background:var(--bg-input); border:none; padding:10px 15px; border-radius:14px; font-weight:700; color:var(--text-main); cursor:pointer;">🌙 โหมดกลางคืน</button>
-                <select id="displayYear" style="padding:10px; border-radius: 14px; font-weight: 800; background: var(--bg-input); color: var(--color-primary); border:none;"></select>
-                <button id="logoutBtn" style="background: rgba(225,29,72,0.1); color: #e11d48; border: none; border-radius: 14px; padding: 10px 15px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer;">🚪 ออกจากระบบ</button>
+
+            <div style="display:flex; align-items:center; gap:15px;">
+                <select id="displayYear" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 800; background: #fff; border: 2px solid var(--border-color); color: var(--color-primary-hover); cursor: pointer;"></select>
+                <button id="logoutBtn" style="background: rgba(255,255,255,0.5); color: #e11d48; border: 2px solid #fda4af; border-radius: 16px; padding: 10px 20px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer; transition: 0.3s;">🚪 ออกจากระบบ</button>
             </div>
         </div>
+        
+        <div id="loadingOverlay">กำลังซิงค์ข้อมูล... ⏳</div>
 
-        <div id="loadingOverlay" style="text-align: center; color: var(--color-primary); font-weight: bold; margin-bottom: 20px; display: none;">กำลังซิงค์ข้อมูล... ⏳</div>
-
-        <!-- 📌 TAB 1: DASHBOARD -->
+        <!-- 📌 TAB 1: DASHBOARD & RECORD -->
         <div id="dashboardTab" class="tab-content active">
+            
+            <!-- 📈 Chart Grid -->
             <div class="grid-dashboard">
-                <div class="card" style="display: flex; flex-direction: column;">
+                <div class="card">
                     <h3><span>📈 กราฟชั่วโมงโอทีรายเดือน</span></h3>
-                    <div class="chart-wrapper" style="flex-grow: 1;"><canvas id="otChart"></canvas></div>
-                    
-                    <div style="margin-top: 20px; padding-top: 20px; border-top: 2px dashed var(--border-color);">
-                        <h4 style="margin: 0 0 10px 0; color: var(--color-header); display: flex; justify-content: space-between;">
-                            <span>🎯 เป้าหมายจากเงิน OT</span>
-                            <span id="goalPercentText" style="color: var(--color-primary);">0%</span>
-                        </h4>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="text" id="goalName" placeholder="ชื่อเป้าหมาย (เช่น ทริปญี่ปุ่น)" style="flex: 2; padding: 10px;">
-                            <input type="number" id="goalAmount" placeholder="ยอดเงินเป้าหมาย" style="flex: 1; padding: 10px;">
-                            <button onclick="saveGoal()" class="btn btn-primary" style="width: auto; padding: 10px 20px;">บันทึก</button>
-                        </div>
-                        <div class="goal-bar-bg">
-                            <div class="goal-bar-fill" id="goalProgressBar"></div>
-                            <div class="goal-text" id="goalTextOverlay">OT รวม: 0 / เป้าหมาย: 0</div>
-                        </div>
-                    </div>
+                    <div class="chart-wrapper"><canvas id="otChart"></canvas></div>
+                    <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:800; padding:12px; border-radius:16px; border: 2px dashed var(--border-color); background: rgba(255,255,255,0.5);"></div>
                 </div>
 
                 <div class="card">
                     <h3 style="border:none;">
                         <span>🍩 สัดส่วนโอที</span>
-                        <select id="otSummaryMonth" style="width: auto; padding: 5px 10px; border-radius: 10px; background: var(--bg-input); color: var(--text-main); font-family: 'Sarabun'; border: none;">
+                        <select id="otSummaryMonth" style="width: auto; padding: 6px 15px; border-radius: 14px; background: #fff; cursor: pointer; font-size: 1rem;">
                             <option value="all">🌟 รวมทั้งปี</option>
-                            <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option><option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option><option value="6">ก.ค.</option><option value="7">ส.ค.</option><option value="8">ก.ย.</option><option value="9">ต.ค.</option><option value="10">พ.ย.</option><option value="11">ธ.ค.</option>
+                            <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
+                            <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
+                            <option value="6">ก.ค.</option><option value="7">ส.ค.</option><option value="8">ก.ย.</option>
+                            <option value="9">ต.ค.</option><option value="10">พ.ย.</option><option value="11">ธ.ค.</option>
                         </select>
                     </h3>
+                    
                     <div class="pie-container">
                         <canvas id="otPieChart"></canvas>
-                        <div class="pie-center-label">
-                            <div style="font-size: 0.9rem; color: var(--text-muted); font-weight: 800;">รวมเวลา</div>
-                            <div id="pieTotalHours" style="font-size: 2.2rem; font-weight: 800; color: var(--color-primary-hover); line-height: 1.1;">0</div>
-                            <div style="font-size: 0.9rem; color: var(--text-muted); font-weight: 800;">ชั่วโมง</div>
+                        <div id="pieCenterText" class="pie-center-label">
+                            <div style="font-size: 1rem; color: var(--text-muted); font-weight: 800;">รวมเวลา</div>
+                            <div id="pieTotalHours" style="font-size: 2.5rem; font-weight: 800; color: var(--color-primary-hover); line-height: 1.1;">0</div>
+                            <div style="font-size: 1rem; color: var(--text-muted); font-weight: 800;">ชั่วโมง</div>
                         </div>
                     </div>
+
                     <div class="ot-custom-legend">
                         <div class="legend-item"><div class="legend-dot" style="background: #f472b6;"></div><span>1.5x</span><span class="legend-val" id="leg15">0</span></div>
                         <div class="legend-item"><div class="legend-dot" style="background: #fb923c;"></div><span>2.0x</span><span class="legend-val" id="leg20">0</span></div>
@@ -230,64 +278,70 @@
                 </div>
             </div>
 
+            <!-- 🧾 Tax Grid -->
             <div class="card" style="margin-bottom: 25px;">
-                <h3 style="margin-bottom: 15px;">
-                    <span>🧾 ประเมินภาษีเงินได้ (ภ.ง.ด. 91)</span>
-                    <button onclick="toggleTaxOptions()" class="btn btn-outline" style="width: auto; padding: 5px 15px; font-size: 0.9rem; border-radius: 12px;">⚙️ ปรับแต่งค่าลดหย่อน</button>
-                </h3>
-                <div id="advancedTaxOptions" style="display: none; background: var(--bg-input); padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px dashed var(--color-primary);">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                        <div><label>เบี้ยประกันชีวิต/สุขภาพ</label><input type="number" id="taxInsure" placeholder="สูงสุด 100,000"></div>
-                        <div><label>กองทุนลดหย่อน (SSF/RMF)</label><input type="number" id="taxFund" placeholder="ยอดรวมกองทุน"></div>
-                        <div><label>เงินบริจาค</label><input type="number" id="taxDonate" placeholder="ยอดเงินบริจาค"></div>
-                        <div><label style="color: transparent;">.</label><button onclick="saveTaxDeductions()" class="btn btn-primary" style="padding: 14px;">บันทึกค่าลดหย่อน</button></div>
-                    </div>
-                </div>
+                <h3>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</h3>
                 <div class="tax-grid">
                     <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
-                    <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย 50%</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
-                    <div class="tax-box"><span class="tax-label">ลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000</span></div>
-                    <div class="tax-box"><span class="tax-label">ลดหย่อนอื่นๆ/ปสค.</span><span class="tax-value deduct">- <span id="taxTotalDeduct">0.00</span></span></div>
-                    <div class="tax-box tax-total-box"><span class="tax-label" style="color: #be123c;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
+                    <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
+                    <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
+                    <div class="tax-box tax-total-box"><span class="tax-label" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
                 </div>
             </div>
 
+            <!-- 📝 Inputs Form Grid -->
             <div class="grid-forms">
+                <!-- ฝั่งซ้าย: รายได้ -->
                 <div class="card">
-                    <h3 style="color: var(--color-primary-hover);">💰 บันทึกรายได้ (เดือน)</h3>
-                    <div class="form-group"><label>เลือกเดือน</label><select id="monthSelect"></select></div>
-                    <div class="form-group"><label>ฐานเงินเดือน</label><input type="number" id="baseIn" value="20000"></div>
-                    <div style="display:flex; gap:10px;">
-                        <div class="form-group"><label>ใบประกอบ(กว.)</label><input type="number" id="licenseIn" value="3000"></div>
-                        <div class="form-group"><label>ค่าที่พัก/อื่นๆ</label><input type="number" id="houseIn" value="2000"></div>
+                    <h3 style="color: var(--color-primary-hover);">💰 บันทึกรายได้ประจำเดือน</h3>
+                    <div class="form-group">
+                        <label>📅 เลือกเดือนที่จะบันทึก</label>
+                        <select id="monthSelect" style="border: 2px solid var(--color-primary); background: #fff;">
+                            <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
+                            <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
+                            <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
+                            <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
+                        </select>
                     </div>
-                    <div style="display:flex; gap:10px;">
-                        <div class="form-group"><label>ค่าอาหาร(วัน)</label><input type="number" id="foodDaysIn"></div>
-                        <div class="form-group"><label>เบี้ยเลี้ยง(วัน)</label><input type="number" id="allowanceDaysIn"></div>
+                    <div class="form-group"><label>ฐานเงินเดือน</label><input type="number" id="baseIn" value="20000" step="any"></div>
+                    <div class="form-group"><label>ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="3000" step="any"></div>
+                    <div class="form-group"><label>ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000" step="any"></div>
+                    <div style="display:flex; gap:15px;">
+                        <div class="form-group"><label>ค่าอาหาร (วันละ 50)</label><input type="number" id="foodDaysIn" placeholder="จำนวนวัน" step="any"></div>
+                        <div class="form-group"><label>เบี้ยเลี้ยง (วันละ 150)</label><input type="number" id="allowanceDaysIn" placeholder="จำนวนวัน" step="any"></div>
                     </div>
-                    <div class="form-group"><label>สวัสดิการ</label><input type="number" id="welfareIn" value="684"></div>
-                    <div style="display:flex; gap:10px;">
-                        <div class="form-group"><label>หักลางาน/อื่นๆ</label><input type="number" id="leaveIn" value="684"></div>
-                        <div class="form-group"><label>หักประกันสังคม</label><input type="number" id="ssIn" value="875"></div>
+                    <div class="form-group"><label>สวัสดิการ</label><input type="number" id="welfareIn" value="684" step="any"></div>
+                    <div style="display:flex; gap:15px;">
+                        <div class="form-group"><label>หักลางาน/อื่นๆ</label><input type="number" id="leaveIn" value="684" step="any"></div>
+                        <div class="form-group"><label>หักประกันสังคม</label><input type="number" id="ssIn" value="875" step="any"></div>
                     </div>
                 </div>
 
-                <div class="card" style="display: flex; flex-direction: column;">
+                <!-- ฝั่งขวา: ชั่วโมง OT -->
+                <div class="card">
                     <h3 style="color: var(--color-primary-hover);">⏱️ บันทึกชั่วโมงโอที</h3>
-                    <div class="form-group"><label style="color: #f472b6;">OT 1.5 เท่า</label><div class="ot-row"><input type="number" id="ot15h" placeholder="ชม."><input type="number" id="ot15m" placeholder="นาที"></div></div>
-                    <div class="form-group"><label style="color: #fb923c;">OT 2.0 เท่า</label><div class="ot-row"><input type="number" id="ot20h" placeholder="ชม."><input type="number" id="ot20m" placeholder="นาที"></div></div>
-                    <div class="form-group"><label style="color: #ef4444;">OT 3.0 เท่า</label><div class="ot-row"><input type="number" id="ot30h" placeholder="ชม."><input type="number" id="ot30m" placeholder="นาที"></div></div>
-                    
-                    <div style="margin-top: auto; display: flex; gap: 15px;">
-                        <button id="saveBtn" class="btn btn-primary" style="flex: 2;">💾 บันทึกข้อมูล</button>
-                        <button onclick="generateSlip()" class="btn btn-outline" style="flex: 1; font-size: 1rem;">📥 โหลดสลิป</button>
+                    <div class="form-group">
+                        <label style="color: #f472b6;">🌸 OT 1.5 เท่า (วันทำงานปกติ)</label>
+                        <div class="ot-row"><input type="number" id="ot15h" step="any" placeholder="ชั่วโมง"><input type="number" id="ot15m" step="any" placeholder="นาที"></div>
                     </div>
+                    <div class="form-group">
+                        <label style="color: #fb923c;">🍁 OT 2.0 เท่า (ทำงานวันหยุด)</label>
+                        <div class="ot-row"><input type="number" id="ot20h" step="any" placeholder="ชั่วโมง"><input type="number" id="ot20m" step="any" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #ef4444;">🌹 OT 3.0 เท่า (โอทีวันหยุด)</label>
+                        <div class="ot-row"><input type="number" id="ot30h" step="any" placeholder="ชั่วโมง"><input type="number" id="ot30m" step="any" placeholder="นาที"></div>
+                    </div>
+                    
+                    <button id="saveBtn" class="btn btn-primary" style="margin-top: 30px; height: 75px; font-size: 1.4rem;">💾 บันทึกข้อมูลลงระบบ</button>
                 </div>
             </div>
 
+            <!-- 📋 Table -->
             <div class="table-responsive">
                 <table>
-                    <thead><tr><th>เดือน</th><th>รายได้รวม (฿)</th><th>ชั่วโมง OT</th><th>เงิน OT (฿)</th><th>รับสุทธิ (฿)</th></tr></thead>
+                    <thead><tr><th>เดือน</th><th>รายได้รวม (บาท)</th><th>ชั่วโมง OT</th><th>เงิน OT (บาท)</th><th>รับสุทธิ (บาท)</th></tr></thead>
                     <tbody id="tableBody"></tbody>
                     <tfoot>
                         <tr class="tfoot-bg">
@@ -303,63 +357,66 @@
             <div class="grid-forms">
                 <div class="card">
                     <h3 style="color: var(--color-primary-hover);">🧮 เครื่องคำนวณ OT ด่วน</h3>
+                    
                     <div class="form-group">
-                        <label>💰 ฐานเงินเดือน</label>
-                        <input type="number" id="quickSalary" value="20000">
-                        <div style="background: var(--bg-input); padding: 15px; border-radius: 16px; margin-top: 15px; text-align: center;">
-                            <span style="color: var(--text-muted); font-weight: 700;">อัตราค่าแรง/ชั่วโมง = </span>
-                            <span id="quickRateDisplay" style="color: var(--color-primary-hover); font-weight: 800; font-size: 1.5rem;">83.33</span> ฿
+                        <label>💰 ฐานเงินเดือน (เพื่อคำนวณเรท/ชม.)</label>
+                        <input type="number" id="quickSalary" value="20000" placeholder="ระบุเงินเดือน">
+                        <div style="background: rgba(255,255,255,0.7); padding: 15px; border-radius: 16px; margin-top: 15px; border: 1px dashed var(--color-primary); text-align: center;">
+                            <span style="color: var(--text-muted); font-weight: 700;">อัตราค่าแรงต่อชั่วโมง</span><br>
+                            <span id="quickRateDisplay" style="color: var(--color-primary-hover); font-weight: 800; font-size: 1.8rem;">83.33</span><span style="font-weight: 700; color: var(--text-muted);"> บาท/ชม.</span>
                         </div>
                     </div>
-                    <div class="form-group"><label style="color: #f472b6;">OT 1.5x</label><div class="ot-row"><input type="number" id="qOt15h" placeholder="ชม."><input type="number" id="qOt15m" placeholder="นาที"></div></div>
-                    <div class="form-group"><label style="color: #fb923c;">OT 2.0x</label><div class="ot-row"><input type="number" id="qOt20h" placeholder="ชม."><input type="number" id="qOt20m" placeholder="นาที"></div></div>
-                    <div class="form-group"><label style="color: #ef4444;">OT 3.0x</label><div class="ot-row"><input type="number" id="qOt30h" placeholder="ชม."><input type="number" id="qOt30m" placeholder="นาที"></div></div>
-                </div>
-                <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
-                    <h3 style="text-align: center; justify-content: center;">ยอดเงิน OT ที่จะได้รับ</h3>
-                    <div class="tax-grid" style="margin-top: 10px;">
-                        <div class="tax-box"><span class="tax-label">OT 1.5x</span><span class="tax-value" id="res15Money" style="color: #f472b6;">0.00 ฿</span><small id="res15Time" style="color: var(--text-muted);">0 ชม.</small></div>
-                        <div class="tax-box"><span class="tax-label">OT 2.0x</span><span class="tax-value" id="res20Money" style="color: #fb923c;">0.00 ฿</span><small id="res20Time" style="color: var(--text-muted);">0 ชม.</small></div>
-                        <div class="tax-box"><span class="tax-label">OT 3.0x</span><span class="tax-value" id="res30Money" style="color: #ef4444;">0.00 ฿</span><small id="res30Time" style="color: var(--text-muted);">0 ชม.</small></div>
-                        <div class="tax-box tax-total-box"><span class="tax-label" style="color: var(--color-primary-hover);">รวมยอดเงิน OT ทั้งสิ้น</span><span class="tax-value" id="resTotalMoney" style="color: var(--color-primary-hover); font-size: 2.5rem;">0.00 บาท</span></div>
+
+                    <div class="form-group" style="margin-top: 25px;">
+                        <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt15h" placeholder="ชม."><input type="number" id="qOt15m" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt20h" placeholder="ชม."><input type="number" id="qOt20m" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt30h" placeholder="ชม."><input type="number" id="qOt30m" placeholder="นาที"></div>
                     </div>
                 </div>
+
+                <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                    <h3 style="text-align: center; justify-content: center;">ยอดเงิน OT ที่จะได้รับ</h3>
+                    
+                    <div class="tax-grid" style="margin-top: 10px;">
+                        <div class="tax-box" style="padding: 30px 20px;">
+                            <span class="tax-label">OT 1.5x</span>
+                            <span class="tax-value" id="res15Money" style="color: #f472b6; font-size: 2rem;">0.00 ฿</span>
+                            <small id="res15Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box" style="padding: 30px 20px;">
+                            <span class="tax-label">OT 2.0x</span>
+                            <span class="tax-value" id="res20Money" style="color: #fb923c; font-size: 2rem;">0.00 ฿</span>
+                            <small id="res20Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box" style="padding: 30px 20px;">
+                            <span class="tax-label">OT 3.0x</span>
+                            <span class="tax-value" id="res30Money" style="color: #ef4444; font-size: 2rem;">0.00 ฿</span>
+                            <small id="res30Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box tax-total-box" style="padding: 35px 20px;">
+                            <span class="tax-label" style="color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem;">รวมยอดเงิน OT ทั้งสิ้น</span>
+                            <span class="tax-value" id="resTotalMoney" style="color: var(--color-primary-hover); font-size: 3rem;">0.00 บาท</span>
+                            <span class="tax-label" id="resTotalHoursText" style="margin-top: 10px; color: var(--text-main); font-size: 1.1rem;">รวมเวลา: 0 ชั่วโมง</span>
+                        </div>
+                    </div>
+
+                    <button class="btn" id="copySummaryBtn" style="margin-top: 25px; background: rgba(255,255,255,0.8); color: var(--color-primary-hover); border: 2px solid var(--color-primary); box-shadow: 0 5px 15px rgba(244,114,182,0.1);">📋 คัดลอกสรุปข้อความ (ส่งไลน์)</button>
+                </div>
             </div>
         </div>
+        
     </div>
-
-    <!-- 🧾 Slip Template Wrapper -->
-    <div id="slipWrapper">
-        <div id="slipTemplate">
-            <div class="slip-header">🌸 Sakura Salary Slip 🌸</div>
-            <div class="slip-row" style="color: #64748b; font-size: 1rem;"><span id="slipUser">user@email.com</span><span id="slipMonthYear">มกราคม 2567</span></div>
-            <div style="border-top: 2px solid #fbcfe8; margin: 15px 0;"></div>
-            <div class="slip-row"><span>รายได้ (Base + อื่นๆ)</span><span id="slipBase">0.00 ฿</span></div>
-            <div class="slip-row" style="color: #f472b6;"><span>ค่าล่วงเวลา (OT รวม)</span><span id="slipOT">0.00 ฿</span></div>
-            <div style="font-size: 0.9rem; color: #94a3b8; text-align: left; padding-left: 20px;">
-                - OT 1.5x: <span id="s15">0</span> ฿ | 2.0x: <span id="s20">0</span> ฿ | 3.0x: <span id="s30">0</span> ฿
-            </div>
-            <div class="slip-row" style="color: #10b981; margin-top: 15px;"><span>รายรับรวม (Gross)</span><span id="slipGross">0.00 ฿</span></div>
-            <div class="slip-row" style="color: #ec4899;"><span>รายการหัก (ประกันสังคม+ลางาน)</span><span id="slipDeduct">0.00 ฿</span></div>
-            <div class="slip-total">รับสุทธิ: <span id="slipNet">0.00 ฿</span></div>
-            <div style="margin-top: 20px; font-size: 0.8rem; color: #cbd5e1;">Generated by Sakura Salary Pro</div>
-        </div>
-    </div>
-
-    <!-- 📱 PWA Manifest -->
-    <script>
-        const manifest = {
-            "name": "Sakura Salary Pro", "short_name": "SalaryPro", "start_url": ".", "display": "standalone",
-            "background_color": "#fff0f5", "theme_color": "#f472b6",
-            "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>", "sizes": "192x192", "type": "image/svg+xml"}]
-        };
-        const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
-    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -368,218 +425,325 @@
             projectId: "salary-tax-app",
             storageBucket: "salary-tax-app.firebasestorage.app",
             messagingSenderId: "212143318700",
-            appId: "1:212143318700:web:6660d9e73c08050ecfa109"
+            appId: "1:212143318700:web:6660d9e73c08050ecfa109",
+            measurementId: "G-3K4NH8MFK4"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let isSignUpMode = false; let currentUid = null; let currentYear = new Date().getFullYear();
-        let yearlyData = { deductions: {}, goal: { name: '', amount: 0 } }; 
-        let otChart = null; let otPieChart = null;
-        let isDarkMode = localStorage.getItem('darkMode') === 'true'; // ดึงค่า Dark Mode
+        let isSignUpMode = false;
+        let currentUid = null;
+        let currentYear = new Date().getFullYear();
+        let yearlyData = {}; 
+        let otChart = null;
+        let otPieChart = null;
+
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
+        // 🌸 Sakura Petals Generator
         function createSakuraPetals() {
-            const layer = document.getElementById('sakuraLayer'); layer.innerHTML = layer.querySelector('svg').outerHTML; 
-            for (let i = 0; i < 25; i++) {
-                const petal = document.createElement('div'); petal.classList.add('petal');
-                petal.style.width = petal.style.height = `${Math.random() * 8 + 8}px`; petal.style.left = `${Math.random() * 100}vw`; 
-                petal.style.animationDuration = `${Math.random() * 12 + 10}s, ${Math.random() * 3 + 2}s`;
+            const layer = document.getElementById('sakuraLayer');
+            const petalCount = 25; 
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                const size = Math.random() * 8 + 8; 
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                petal.style.left = `${Math.random() * 100}vw`; 
+                const fallDuration = Math.random() * 12 + 10; 
+                const swayDuration = Math.random() * 3 + 2; 
+                petal.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
                 petal.style.animationDelay = `${Math.random() * -20}s, ${Math.random() * -5}s`;
                 layer.appendChild(petal);
             }
         }
         createSakuraPetals();
 
-        // 🌙 Dark Mode Toggle Logic
-        window.toggleDarkMode = function() {
-            isDarkMode = !isDarkMode;
-            localStorage.setItem('darkMode', isDarkMode);
-            applyTheme();
-        };
-
-        function applyTheme() {
-            document.documentElement.setAttribute('data-theme', isDarkMode ? 'yozakura' : 'sakura');
-            document.getElementById('darkModeBtn').innerText = isDarkMode ? '☀️ โหมดสว่าง' : '🌙 โหมดกลางคืน';
-            if(otChart) { Chart.defaults.color = isDarkMode ? '#f8fafc' : '#831843'; renderCharts(); }
-        }
-        applyTheme();
-
-        // 🍞 Toast Notification Logic
-        window.showToast = function(msg) {
-            const toast = document.getElementById("toast");
-            toast.innerText = msg;
-            toast.className = "show";
-            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
-        }
-
+        // 📑 Tabs
         window.switchTab = function(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active'); btnElement.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
             if (tabId === 'dashboardTab') renderCharts();
         };
 
+        // 🐰 Popup
+        window.showPopup = function(msg, icon = "🌸") {
+            document.getElementById('popupIcon').innerText = icon;
+            document.getElementById('popupMsg').innerText = msg;
+            document.getElementById('customPopup').classList.add('show');
+        }
+        window.closePopup = function() {
+            document.getElementById('customPopup').classList.remove('show');
+        }
+
+        // 🔐 Auth
         document.getElementById('authToggle').addEventListener('click', () => {
             isSignUpMode = !isSignUpMode;
             document.getElementById('authTitle').innerText = isSignUpMode ? "สร้างบัญชีใหม่" : "ยินดีต้อนรับ!";
+            document.getElementById('authSubtitle').innerText = isSignUpMode ? "เริ่มต้นจัดการรายได้ของคุณกัน" : "ระบบบันทึกเงินเดือน & ประเมินภาษี";
             document.getElementById('confirmPasswordGroup').style.display = isSignUpMode ? "block" : "none";
             document.getElementById('authBtn').innerText = isSignUpMode ? "สมัครสมาชิก" : "เข้าสู่ระบบ";
+            document.getElementById('authToggle').innerHTML = isSignUpMode ? "มีบัญชีอยู่แล้ว? <span style='color: var(--color-primary-hover); cursor: pointer; font-weight: 800;'>เข้าสู่ระบบที่นี่</span>" : "ยังไม่มีบัญชีใช่ไหม? <span style='color: var(--color-primary-hover); cursor: pointer; font-weight: 800;'>สมัครสมาชิกที่นี่</span>";
+            document.getElementById('authEmoji').innerText = isSignUpMode ? "📝" : "🌸";
+        });
+
+        document.getElementById('forgotToggle').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            if(!email) { showPopup("กรุณากรอกอีเมลในช่องด้านบนก่อนคลิกตั้งรหัสผ่านใหม่ครับ", "📧"); return; }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showPopup("ระบบส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่อีเมลของคุณแล้วจ้า!", "📩");
+            } catch(err) { showPopup(err.message, "❌"); }
         });
 
         document.getElementById('authForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); const email = document.getElementById('email').value; const pwd = document.getElementById('password').value;
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
             try {
                 if(isSignUpMode) {
-                    if(pwd !== document.getElementById('confirmPassword').value) return showToast("⚠️ รหัสผ่านไม่ตรงกัน");
-                    await createUserWithEmailAndPassword(auth, email, pwd); showToast("🎉 สมัครสมาชิกสำเร็จ!");
-                } else await signInWithEmailAndPassword(auth, email, pwd);
-            } catch(err) { showToast("❌ Error: " + err.message); }
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    if(password !== confirmPassword) { showPopup("รหัสผ่านไม่ตรงกันครับ", "⚠️"); return; }
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    showPopup("สมัครสมาชิกสำเร็จแล้ว!", "🎉");
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+            } catch(err) { showPopup(err.message, "❌"); }
         });
+
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-        const monthSelect = document.getElementById('monthSelect');
-        monthsTH.forEach((m, i) => { const opt = document.createElement('option'); opt.value = i; opt.innerText = m; monthSelect.appendChild(opt); });
-
+        // 📅 Data Logic
         function initYearSelector() {
-            const select = document.getElementById('displayYear'); select.innerHTML = '';
+            const select = document.getElementById('displayYear');
+            select.innerHTML = '';
             for(let y = currentYear - 2; y <= currentYear + 2; y++) {
-                const opt = document.createElement('option'); opt.value = y; opt.innerText = `ปี ${y + 543}`;
-                if(y === currentYear) opt.selected = true; select.appendChild(opt);
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.innerText = `ปี ${y + 543}`;
+                if(y === currentYear) opt.selected = true;
+                select.appendChild(opt);
             }
         }
-        document.getElementById('displayYear').addEventListener('change', (e) => { currentYear = parseInt(e.target.value); loadYearData(); });
+
+        document.getElementById('displayYear').addEventListener('change', (e) => {
+            currentYear = parseInt(e.target.value);
+            loadYearData();
+        });
 
         async function loadYearData() {
             if (!currentUid) return;
             document.getElementById('loadingOverlay').style.display = 'block';
             try {
-                const docSnap = await getDoc(doc(db, "users", currentUid, "years", currentYear.toString()));
-                yearlyData = docSnap.exists() ? docSnap.data() : { deductions: {}, goal: { name: '', amount: 0 } };
-                if(!yearlyData.deductions) yearlyData.deductions = {};
-                if(!yearlyData.goal) yearlyData.goal = { name: '', amount: 0 };
-                
-                document.getElementById('goalName').value = yearlyData.goal.name || '';
-                document.getElementById('goalAmount').value = yearlyData.goal.amount || '';
-                document.getElementById('taxInsure').value = yearlyData.deductions.insure || '';
-                document.getElementById('taxFund').value = yearlyData.deductions.fund || '';
-                document.getElementById('taxDonate').value = yearlyData.deductions.donate || '';
-
-                loadMonthToForm(); renderAll();
-            } catch (err) { showToast("❌ Load Error: " + err.message); } 
-            finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+                const docRef = doc(db, "users", currentUid, "years", currentYear.toString());
+                const docSnap = await getDoc(docRef);
+                yearlyData = docSnap.exists() ? docSnap.data() : {};
+                loadMonthToForm();
+                renderAll();
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการโหลดข้อมูล: " + err.message, "❌");
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
         }
 
         function loadMonthToForm() {
-            const m = document.getElementById('monthSelect').value; const data = yearlyData[m] || {};
-            ['base','license','house','foodDays','allowanceDays','welfare','leave','ss','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m'].forEach(key => {
-                const el = document.getElementById(key + 'In') || document.getElementById(key);
-                if(el) el.value = data[key] ?? (['welfare','leave'].includes(key) ? 684 : (key==='ss' ? 875 : (key==='base' ? 20000 : '')));
-            });
+            const m = document.getElementById('monthSelect').value;
+            const data = yearlyData[m] || {};
+            document.getElementById('baseIn').value = data.base ?? 20000;
+            document.getElementById('licenseIn').value = data.license ?? 3000;
+            document.getElementById('houseIn').value = data.house ?? 2000;
+            document.getElementById('foodDaysIn').value = data.foodDays ?? '';
+            document.getElementById('allowanceDaysIn').value = data.allowanceDays ?? '';
+            document.getElementById('welfareIn').value = data.welfare ?? 684;
+            document.getElementById('leaveIn').value = data.leave ?? 684;
+            document.getElementById('ssIn').value = data.ss ?? 875;
+            document.getElementById('ot15h').value = data.ot15h ?? '';
+            document.getElementById('ot15m').value = data.ot15m ?? '';
+            document.getElementById('ot20h').value = data.ot20h ?? '';
+            document.getElementById('ot20m').value = data.ot20m ?? '';
+            document.getElementById('ot30h').value = data.ot30h ?? '';
+            document.getElementById('ot30m').value = data.ot30m ?? '';
         }
+
         document.getElementById('monthSelect').addEventListener('change', loadMonthToForm);
 
         document.getElementById('saveBtn').addEventListener('click', async () => {
-            if (!currentUid) return; const m = document.getElementById('monthSelect').value;
-            yearlyData[m] = {};
-            ['base','license','house','foodDays','allowanceDays','welfare','leave','ss','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m'].forEach(key => {
-                const el = document.getElementById(key + 'In') || document.getElementById(key);
-                yearlyData[m][key] = parseFloat(el.value) || 0;
-            });
+            if (!currentUid) return;
+            const m = document.getElementById('monthSelect').value;
+            yearlyData[m] = {
+                base: parseFloat(document.getElementById('baseIn').value) || 0,
+                license: parseFloat(document.getElementById('licenseIn').value) || 0,
+                house: parseFloat(document.getElementById('houseIn').value) || 0,
+                foodDays: parseFloat(document.getElementById('foodDaysIn').value) || 0,
+                allowanceDays: parseFloat(document.getElementById('allowanceDaysIn').value) || 0,
+                welfare: parseFloat(document.getElementById('welfareIn').value) || 0,
+                leave: parseFloat(document.getElementById('leaveIn').value) || 0,
+                ss: parseFloat(document.getElementById('ssIn').value) || 0,
+                ot15h: parseFloat(document.getElementById('ot15h').value) || 0,
+                ot15m: parseFloat(document.getElementById('ot15m').value) || 0,
+                ot20h: parseFloat(document.getElementById('ot20h').value) || 0,
+                ot20m: parseFloat(document.getElementById('ot20m').value) || 0,
+                ot30h: parseFloat(document.getElementById('ot30h').value) || 0,
+                ot30m: parseFloat(document.getElementById('ot30m').value) || 0
+            };
             document.getElementById('loadingOverlay').style.display = 'block';
-            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showToast("✅ บันทึกข้อมูลเรียบร้อย!"); renderAll(); } 
-            catch (err) { showToast("❌ Error saving!"); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+            try {
+                await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData);
+                showPopup("บันทึกข้อมูลเดือน " + monthsTH[m] + " เรียบร้อยแล้ว!", "💾");
+                renderAll();
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการบันทึก", "❌");
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
         });
 
-        window.saveGoal = async function() {
-            yearlyData.goal = { name: document.getElementById('goalName').value, amount: parseFloat(document.getElementById('goalAmount').value) || 0 };
-            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showToast("🎯 อัปเดตเป้าหมายแล้ว!"); renderAll(); } catch(e){}
-        };
-
-        window.toggleTaxOptions = () => { const el = document.getElementById('advancedTaxOptions'); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
-        window.saveTaxDeductions = async function() {
-            yearlyData.deductions = { insure: parseFloat(document.getElementById('taxInsure').value)||0, fund: parseFloat(document.getElementById('taxFund').value)||0, donate: parseFloat(document.getElementById('taxDonate').value)||0 };
-            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showToast("🧾 บันทึกค่าลดหย่อนแล้ว!"); renderAll(); } catch(e){}
-        };
-
         function calculateMonth(m) {
-            const data = yearlyData[m] || {};
-            const baseInc = (data.base||0) + (data.license||0) + (data.house||0) + ((data.foodDays||0)*50) + ((data.allowanceDays||0)*150) + (data.welfare ?? 684);
-            const rate = (data.base||0) / 240;
-            const h15 = (data.ot15h||0) + ((data.ot15m||0)/60), h20 = (data.ot20h||0) + ((data.ot20m||0)/60), h30 = (data.ot30h||0) + ((data.ot30m||0)/60);
-            const m15 = h15*1.5*rate, m20 = h20*2.0*rate, m30 = h30*3.0*rate;
-            const totalOtHours = h15+h20+h30, totalOtMoney = m15+m20+m30;
-            const deduct = (data.leave ?? 684) + (data.ss ?? 875);
-            return { baseInc, gross: baseInc+totalOtMoney, net: baseInc+totalOtMoney-deduct, totalOtHours, totalOtMoney, m15, m20, m30, ss: data.ss||0 };
+            const data = yearlyData[m] || { base:0, license:0, house:0, foodDays:0, allowanceDays:0, welfare:0, leave:0, ss:0, ot15h:0, ot15m:0, ot20h:0, ot20m:0, ot30h:0, ot30m:0 };
+            const foodMoney = (data.foodDays || 0) * 50;
+            const allowanceMoney = (data.allowanceDays || 0) * 150;
+            const welfareMoney = data.welfare ?? 684;
+            const baseIncome = data.base + data.license + data.house + foodMoney + allowanceMoney + welfareMoney;
+            const hourlyRate = (data.base) / 240;
+
+            const h15 = (data.ot15h || 0) + ((data.ot15m || 0) / 60);
+            const h20 = (data.ot20h || 0) + ((data.ot20m || 0) / 60);
+            const h30 = (data.ot30h || 0) + ((data.ot30m || 0) / 60);
+
+            const totalOtHours = h15 + h20 + h30;
+            const totalOtMoney = (h15 * 1.5 * hourlyRate) + (h20 * 2.0 * hourlyRate) + (h30 * 3.0 * hourlyRate);
+            const grossIncome = baseIncome + totalOtMoney;
+            const netIncome = grossIncome - (data.leave ?? 684) - (data.ss ?? 875);
+
+            return { baseIncome, grossIncome, netIncome, totalOtHours, totalOtMoney, h15, h20, h30, ss: data.ss || 0 };
         }
 
         function renderAll() {
-            const tbody = document.getElementById('tableBody'); tbody.innerHTML = '';
-            let tBase = 0, tHours = 0, tOt = 0, tNet = 0, tSS = 0, tGross = 0;
-
-            for (let i = 0; i < 12; i++) {
-                const c = calculateMonth(i);
-                tBase+=c.baseInc; tHours+=c.totalOtHours; tOt+=c.totalOtMoney; tNet+=c.net; tSS+=c.ss; tGross+=c.gross;
-                tbody.insertAdjacentHTML('beforeend', `<tr><td style="text-align:center;">${monthsTH[i]}</td><td>${c.baseInc.toLocaleString()}</td><td>${c.totalOtHours.toFixed(1)}</td><td>${c.totalOtMoney.toLocaleString()}</td><td style="color:var(--color-primary-hover); font-weight:700;">${c.net.toLocaleString()}</td></tr>`);
-            }
-
-            document.getElementById('totalBase').innerText = tBase.toLocaleString(); document.getElementById('totalHoursText').innerText = tHours.toFixed(1) + ' ชม.';
-            document.getElementById('totalOt').innerText = tOt.toLocaleString(); document.getElementById('totalNet').innerText = tNet.toLocaleString();
-
-            const goal = yearlyData.goal || {amount:0};
-            if(goal.amount > 0) {
-                const pct = Math.min((tOt / goal.amount) * 100, 100);
-                document.getElementById('goalProgressBar').style.width = pct + '%';
-                document.getElementById('goalPercentText').innerText = pct.toFixed(1) + '%';
-                document.getElementById('goalTextOverlay').innerText = `OT สะสม: ${tOt.toLocaleString(undefined,{maximumFractionDigits:0})} / ${goal.amount.toLocaleString()}`;
-            }
-
-            const exp = Math.min(tGross * 0.5, 100000);
-            const ded = yearlyData.deductions || {};
-            const extraDeduct = Math.min(ded.insure||0, 100000) + (ded.fund||0) + (ded.donate||0);
-            const totalDeductBox = 60000 + tSS + extraDeduct;
-            
-            const taxInc = Math.max(0, tGross - exp - totalDeductBox);
-            let tax = 0;
-            if(taxInc>5000000) tax+=(taxInc-5000000)*0.35+1265000; else if(taxInc>2000000) tax+=(taxInc-2000000)*0.30+365000;
-            else if(taxInc>1000000) tax+=(taxInc-1000000)*0.25+115000; else if(taxInc>750000) tax+=(taxInc-750000)*0.20+65000;
-            else if(taxInc>500000) tax+=(taxInc-500000)*0.15+27500; else if(taxInc>300000) tax+=(taxInc-300000)*0.10+7500;
-            else if(taxInc>150000) tax+=(taxInc-150000)*0.05;
-
-            document.getElementById('taxGross').innerText = tGross.toLocaleString();
-            document.getElementById('taxExp').innerText = exp.toLocaleString();
-            document.getElementById('taxTotalDeduct').innerText = (tSS + extraDeduct).toLocaleString();
-            document.getElementById('taxAmount').innerText = tax.toLocaleString() + ' ฿';
-
+            renderTableAndTax();
             renderCharts();
         }
 
-        function renderCharts() {
-            const mHours = []; for(let i=0;i<12;i++) mHours.push(calculateMonth(i).totalOtHours);
-            const ctx = document.getElementById('otChart').getContext('2d');
-            const grad = ctx.createLinearGradient(0,0,0,300); grad.addColorStop(0, '#db2777'); grad.addColorStop(1, '#fbcfe8');
+        function renderTableAndTax() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalGrossSum = 0;
 
-            if(otChart) otChart.destroy();
-            otChart = new Chart(ctx, { type: 'bar', data: { labels: monthsTH.map(m=>m.substring(0,3)), datasets: [{ label:'OT', data: mHours, backgroundColor: grad, borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: {legend:{display:false}}, scales: { y: {beginAtZero:true} } } });
+            for (let i = 0; i < 12; i++) {
+                const calc = calculateMonth(i);
+                totalBaseSum += calc.baseIncome; totalHoursSum += calc.totalOtHours;
+                totalOtSum += calc.totalOtMoney; totalNetSum += calc.netIncome;
+                totalSSSum += calc.ss; totalGrossSum += calc.grossIncome;
 
-            const selM = document.getElementById('otSummaryMonth').value;
-            let m15=0, m20=0, m30=0, tOt=0;
-            if(selM === 'all') { for(let i=0;i<12;i++){ const c=calculateMonth(i); m15+=c.m15; m20+=c.m20; m30+=c.m30; tOt+=c.totalOtMoney; } } 
-            else { const c=calculateMonth(parseInt(selM)); m15=c.m15; m20=c.m20; m30=c.m30; tOt=c.totalOtMoney; }
-            
-            document.getElementById('pieTotalHours').innerText = (selM==='all' ? mHours.reduce((a,b)=>a+b,0) : mHours[parseInt(selM)]).toFixed(1);
-            document.getElementById('leg15').innerText = m15.toLocaleString(); document.getElementById('leg20').innerText = m20.toLocaleString(); document.getElementById('leg30').innerText = m30.toLocaleString();
-            
-            const ctx2 = document.getElementById('otPieChart').getContext('2d');
-            if(otPieChart) otPieChart.destroy();
-            otPieChart = new Chart(ctx2, { type: 'doughnut', data: { labels:['1.5x','2.0x','3.0x'], datasets:[{data:[m15,m20,m30], backgroundColor:['#f472b6','#fb923c','#ef4444'], borderWidth:0}] }, options:{responsive:true, maintainAspectRatio:false, cutout:'75%', plugins:{legend:{display:false}}} });
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td style="text-align:center;">${monthsTH[i]}</td>
+                    <td>${calc.baseIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td>${calc.totalOtHours.toFixed(1)} ชม.</td>
+                    <td>${calc.totalOtMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="font-weight:700; color:var(--color-primary-hover);">${calc.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>`;
+                tbody.appendChild(tr);
+            }
+
+            document.getElementById('totalBase').innerText = totalBaseSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('totalHoursText').innerText = totalHoursSum.toFixed(1) + ' ชม.';
+            document.getElementById('totalOt').innerText = totalOtSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('totalNet').innerText = totalNetSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            const expenses = Math.min(totalGrossSum * 0.5, 100000);
+            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - totalSSSum);
+
+            let tax = 0;
+            if (taxableIncome > 5000000) tax += (taxableIncome - 5000000) * 0.35 + 1265000;
+            else if (taxableIncome > 2000000) tax += (taxableIncome - 2000000) * 0.30 + 365000;
+            else if (taxableIncome > 1000000) tax += (taxableIncome - 1000000) * 0.25 + 115000;
+            else if (taxableIncome > 750000) tax += (taxableIncome - 750000) * 0.20 + 65000;
+            else if (taxableIncome > 500000) tax += (taxableIncome - 500000) * 0.15 + 27500;
+            else if (taxableIncome > 300000) tax += (taxableIncome - 300000) * 0.10 + 7500;
+            else if (taxableIncome > 150000) tax += (taxableIncome - 150000) * 0.05;
+
+            document.getElementById('taxGross').innerText = totalGrossSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxExp').innerText = expenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxSS').innerText = totalSSSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxAmount').innerText = tax.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
         }
-        document.getElementById('otSummaryMonth').addEventListener('change', renderCharts);
 
-        // ⚡ Quick Calc Binding (Bug Fixed)
-        window.computeQuickOT = function() {
+        // 📈 Charts with Gradient Setup
+        function renderCharts() {
+            const monthlyHours = [];
+            for (let i = 0; i < 12; i++) monthlyHours.push(calculateMonth(i).totalOtHours);
+
+            const ctx1 = document.getElementById('otChart').getContext('2d');
+            
+            // Create Gradient for Bar Chart
+            const gradient = ctx1.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, '#db2777'); // Deep pink top
+            gradient.addColorStop(1, '#fbcfe8'); // Light pink bottom
+
+            if (otChart) otChart.destroy();
+            otChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: monthsTH.map(m => m.substring(0, 3)),
+                    datasets: [{ label: 'ชั่วโมง OT', data: monthlyHours, backgroundColor: gradient, borderRadius: 8, hoverBackgroundColor: '#db2777' }]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false, 
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(157, 23, 77, 0.9)', titleFont: { size: 14, family: 'Sarabun' }, bodyFont: { size: 14, family: 'Sarabun', weight: 'bold' }, padding: 12, cornerRadius: 10 } },
+                    scales: { x: { grid: { display: false } }, y: { beginAtZero: true, border: { dash: [5, 5] }, grid: { color: 'rgba(244, 114, 182, 0.2)' } } }
+                }
+            });
+
+            const maxOtMonth = Math.max(...monthlyHours);
+            const alertBox = document.getElementById('overworkAlert');
+            if (maxOtMonth > 36) {
+                alertBox.style.display = 'block'; alertBox.style.color = '#ef4444'; alertBox.style.borderColor = '#fca5a5';
+                alertBox.innerText = `⚠️ มีเดือนที่ OT สูงถึง ${maxOtMonth.toFixed(1)} ชม. อย่าลืมพักผ่อนด้วยน้า!`;
+            } else if (maxOtMonth > 0) {
+                alertBox.style.display = 'block'; alertBox.style.color = '#db2777'; alertBox.style.borderColor = '#fbcfe8';
+                alertBox.innerText = `🌸 ชั่วโมง OT อยู่ในเกณฑ์เหมาะสม (ไม่เกิน 36 ชม.)`;
+            } else { alertBox.style.display = 'none'; }
+
+            renderPieChart();
+        }
+
+        function renderPieChart() {
+            const selectedM = document.getElementById('otSummaryMonth').value;
+            let sum15 = 0, sum20 = 0, sum30 = 0, totalMoney = 0;
+            if (selectedM === 'all') {
+                for (let i = 0; i < 12; i++) { const c = calculateMonth(i); sum15 += c.h15; sum20 += c.h20; sum30 += c.h30; totalMoney += c.totalOtMoney; }
+            } else {
+                const c = calculateMonth(parseInt(selectedM)); sum15 = c.h15; sum20 = c.h20; sum30 = c.h30; totalMoney = c.totalOtMoney;
+            }
+
+            const totalHours = sum15 + sum20 + sum30;
+            document.getElementById('pieTotalHours').innerText = totalHours.toFixed(1);
+            document.getElementById('leg15').innerText = sum15.toFixed(1) + ' ชม.';
+            document.getElementById('leg20').innerText = sum20.toFixed(1) + ' ชม.';
+            document.getElementById('leg30').innerText = sum30.toFixed(1) + ' ชม.';
+            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+
+            const ctx2 = document.getElementById('otPieChart').getContext('2d');
+            if (otPieChart) otPieChart.destroy();
+            
+            if(totalHours > 0) {
+                otPieChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: { labels: ['1.5x', '2.0x', '3.0x'], datasets: [{ data: [sum15, sum20, sum30], backgroundColor: ['#f472b6', '#fb923c', '#ef4444'], borderWidth: 2, borderColor: '#fff', hoverOffset: 5 }] },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } }
+                });
+            }
+        }
+
+        document.getElementById('otSummaryMonth').addEventListener('change', renderPieChart);
+
+        // 🧮 Quick Calc
+        function computeQuickOT() {
             const salary = parseFloat(document.getElementById('quickSalary').value) || 0;
             const hourlyRate = salary / 240;
             document.getElementById('quickRateDisplay').innerText = hourlyRate.toFixed(2);
@@ -595,42 +759,30 @@
             document.getElementById('res20Money').innerText = m20.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res20Time').innerText = h20.toFixed(1) + ' ชม.';
             document.getElementById('res30Money').innerText = m30.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res30Time').innerText = h30.toFixed(1) + ' ชม.';
             document.getElementById('resTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+            document.getElementById('resTotalHoursText').innerText = `รวมเวลา: ${totalHours.toFixed(1)} ชั่วโมง`;
         }
+
         ['quickSalary', 'qOt15h', 'qOt15m', 'qOt20h', 'qOt20m', 'qOt30h', 'qOt30m'].forEach(id => {
-            const input = document.getElementById(id); if (input) input.addEventListener('input', computeQuickOT);
+            const input = document.getElementById(id);
+            if (input) input.addEventListener('input', computeQuickOT);
         });
 
-        // 📥 Slip Generation (Bug Fixed)
-        window.generateSlip = function() {
-            const m = document.getElementById('monthSelect').value; const c = calculateMonth(m);
-            const data = yearlyData[m] || {};
-            document.getElementById('slipUser').innerText = document.getElementById('displayUser').innerText;
-            document.getElementById('slipMonthYear').innerText = `${monthsTH[m]} ${currentYear+543}`;
-            document.getElementById('slipBase').innerText = c.baseInc.toLocaleString() + ' ฿';
-            document.getElementById('slipOT').innerText = c.totalOtMoney.toLocaleString() + ' ฿';
-            document.getElementById('s15').innerText = c.m15.toLocaleString(); document.getElementById('s20').innerText = c.m20.toLocaleString(); document.getElementById('s30').innerText = c.m30.toLocaleString();
-            document.getElementById('slipGross').innerText = c.gross.toLocaleString() + ' ฿';
-            document.getElementById('slipDeduct').innerText = ((data.leave??684)+(data.ss??875)).toLocaleString() + ' ฿';
-            document.getElementById('slipNet').innerText = c.net.toLocaleString() + ' ฿';
-            
-            const slipWrap = document.getElementById('slipWrapper');
-            slipWrap.style.left = '0'; // Bring to front briefly for rendering
-            
-            html2canvas(document.getElementById('slipTemplate'), {scale: 2, backgroundColor: null}).then(canvas => {
-                slipWrap.style.left = '-9999px'; // Hide again
-                const link = document.createElement('a'); link.download = `Slip_${monthsTH[m]}_${currentYear}.png`;
-                link.href = canvas.toDataURL(); link.click();
-                showToast("📥 ดาวน์โหลดสลิปสำเร็จ!");
-            });
-        };
+        document.getElementById('copySummaryBtn').addEventListener('click', () => {
+            const text = `🌸 สรุปค่า OT ด่วน\n- OT 1.5x (${document.getElementById('res15Time').innerText}): ${document.getElementById('res15Money').innerText}\n- OT 2.0x (${document.getElementById('res20Time').innerText}): ${document.getElementById('res20Money').innerText}\n- OT 3.0x (${document.getElementById('res30Time').innerText}): ${document.getElementById('res30Money').innerText}\n💰 รวมยอด OT ทั้งสิ้น: ${document.getElementById('resTotalMoney').innerText} (${document.getElementById('resTotalHoursText').innerText.replace('รวมเวลา: ', '')})`;
+            navigator.clipboard.writeText(text).then(() => { showPopup("คัดลอกสรุปข้อความเรียบร้อยแล้ว! นำไปวางใน Line ได้เลย", "📋"); });
+        });
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                currentUid = user.uid; document.getElementById('displayUser').innerText = user.email;
-                document.getElementById('authSection').style.display = 'none'; document.getElementById('appSection').style.display = 'block';
+                currentUid = user.uid;
+                document.getElementById('displayUser').innerText = user.email;
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('appSection').style.display = 'block';
                 initYearSelector(); loadYearData(); computeQuickOT();
             } else {
-                currentUid = null; document.getElementById('authSection').style.display = 'block'; document.getElementById('appSection').style.display = 'none';
+                currentUid = null;
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('appSection').style.display = 'none';
             }
         });
     </script>
