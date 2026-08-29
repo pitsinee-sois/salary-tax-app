@@ -6,6 +6,8 @@
     <title>Salary & Tax System (Sakura Dashboard)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- ไลบรารีสำหรับแปลงการ์ดเป็นรูปภาพ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
@@ -25,6 +27,18 @@
             --color-danger: #e11d48;
         }
 
+        body.night-mode {
+            --bg-main: linear-gradient(135deg, #1e1b2e 0%, #2d1f3d 100%);
+            --bg-card: rgba(45, 31, 61, 0.75);
+            --bg-input: rgba(45, 31, 61, 0.9);
+            --text-main: #fbcfe8;
+            --text-muted: #f472b6;
+            --color-primary: #ec4899;
+            --color-primary-hover: #f472b6;
+            --color-header: #f9a8d4;
+            --border-color: rgba(244, 114, 182, 0.2);
+        }
+
         body { 
             font-family: 'Sarabun', sans-serif; 
             background: var(--bg-main); 
@@ -34,6 +48,7 @@
             min-height: 100vh; 
             overflow-x: hidden; 
             background-attachment: fixed;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
         a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, span[role="button"]:focus-visible {
@@ -46,28 +61,26 @@
 
         #sakuraLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; overflow: hidden; }
         .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
+        body.night-mode .sakura-branch { opacity: 0.3; filter: drop-shadow(0 10px 15px rgba(236, 72, 153, 0.1)); }
+        
         .petal {
             position: absolute; background: linear-gradient(135deg, #ffb7c5, #ff8da1);
             border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8;
             box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
             animation: fall linear infinite, sway ease-in-out infinite alternate;
         }
+        body.night-mode .petal { background: linear-gradient(135deg, #f472b6, #db2777); opacity: 0.5; }
         @keyframes fall { 0% { top: -10%; opacity: 0; transform: rotate(0deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; transform: rotate(360deg); } }
         @keyframes sway { 0% { transform: translateX(0px) rotate(0deg); } 100% { transform: translateX(40px) rotate(45deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        .dashboard-wrapper { 
-            width: 100%; 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            position: relative; z-index: 10; 
-        }
+        .dashboard-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
 
         .top-nav {
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
+            background: var(--bg-card); backdrop-filter: blur(20px);
             padding: 15px 30px; border-radius: 24px; border: 2px solid var(--border-color);
             box-shadow: 0 15px 35px rgba(244, 114, 182, 0.1); margin-bottom: 25px;
             animation: fadeUp 0.6s ease-out forwards; flex-wrap: wrap; gap: 15px;
@@ -76,8 +89,8 @@
         
         .tab-nav { display: flex; gap: 10px; background: rgba(244, 114, 182, 0.1); padding: 5px; border-radius: 20px; }
         .tab-btn { padding: 12px 25px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun', sans-serif; font-size: 1.05rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
-        .tab-btn:hover { background: rgba(255, 255, 255, 0.5); }
-        .tab-btn.active { background: #fff; color: var(--color-primary-hover); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2); }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .tab-btn.active { background: var(--bg-input); color: var(--color-primary-hover); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2); }
         
         .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
         .tab-content.active { display: block; }
@@ -90,27 +103,40 @@
             border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; 
             box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.15); transition: 0.3s; 
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: #fff; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: var(--color-primary); }
         .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
-        .chart-wrapper { height: 320px; width: 100%; margin-top: 15px;}
+        .stat-overview-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 15px; }
+        .stat-mini-box { background: var(--bg-input); padding: 18px; border-radius: 24px; border: 1px solid var(--border-color); box-shadow: 0 8px 20px rgba(244,114,182,0.08); transition: 0.3s; }
+        .stat-mini-box:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(244,114,182,0.15); }
+        .stat-mini-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 700; margin-bottom: 5px; display: block; }
+        .stat-mini-val { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
+        .stat-mini-sub { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; display: block; }
+        
+        .progress-bar-container { width: 100%; background: rgba(244,114,182,0.15); height: 10px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); border-radius: 10px; transition: width 0.6s ease; }
+
+        /* 🌸 ช่องตั้งเป้าหมายเงินเก็บ */
+        .goal-box-wrapper { margin-top: 20px; background: var(--bg-input); padding: 20px; border-radius: 24px; border: 1px solid var(--border-color); }
+
         .pie-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0;}
         .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
         
-        .ot-custom-legend { display: flex; justify-content: space-around; background: rgba(255,255,255,0.9); padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(244,114,182,0.05); flex-wrap: wrap; gap: 10px; }
+        .ot-custom-legend { display: flex; justify-content: space-around; background: var(--bg-input); padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(244,114,182,0.05); flex-wrap: wrap; gap: 10px; }
         .legend-item { display: flex; flex-direction: column; align-items: center; font-weight: 700; font-size: 0.85rem; color: var(--text-muted); }
         .legend-val { font-size: 1.1rem; font-weight: 800; color: var(--text-main); margin-top: 3px; }
         .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 5px; }
         .legend-money-bar { text-align: center; margin-top: 12px; font-weight: 800; color: var(--color-primary-hover); background: rgba(244,114,182,0.08); padding: 10px; border-radius: 16px; }
 
         .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .tax-box { background: rgba(255,255,255,0.85); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.5); }
-        .tax-box:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 10px 20px rgba(244, 114, 182, 0.15);}
+        .tax-box { background: var(--bg-input); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid var(--border-color); }
+        .tax-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(244, 114, 182, 0.15);}
         .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
         .tax-value { display: block; font-size: 1.6rem; font-weight: 800; color: var(--text-main); }
         .tax-value.deduct { color: #ec4899; }
         .tax-total-box { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(253, 164, 175, 0.15)); border: 2px solid rgba(244, 114, 182, 0.4); }
         .tax-total-box .tax-value { color: #be123c; font-size: 2.2rem; }
+        body.night-mode .tax-total-box .tax-value { color: #f472b6; }
 
         .form-group { margin-bottom: 20px; width: 100%; }
         label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); padding-left: 5px; }
@@ -120,8 +146,7 @@
             background-color: var(--bg-input); color: var(--text-main); font-weight: 600;
             transition: 0.3s; box-shadow: inset 0 2px 5px rgba(244, 114, 182, 0.05); 
         }
-        input:focus, select:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2); outline: none; transform: translateY(-2px); }
-        input:invalid { border-color: #fca5a5; }
+        input:focus, select:focus { border-color: var(--color-primary); background-color: var(--bg-input); box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2); outline: none; transform: translateY(-2px); }
         .field-hint { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 6px; padding-left: 5px; display: block; }
         
         .password-wrap { position: relative; }
@@ -140,29 +165,44 @@
         .dirty-dot { display: none; width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; margin-left: 6px; box-shadow: 0 0 0 3px rgba(245,158,11,0.25); }
         .dirty-dot.show { display: inline-block; }
 
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.1); border: 2px solid var(--border-color); }
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: var(--bg-card); box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.1); border: 2px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
         th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed rgba(244, 114, 182, 0.2); font-size: 1.05rem;}
-        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid rgba(244, 114, 182, 0.3); background: rgba(253, 242, 248, 0.5);}
+        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid rgba(244, 114, 182, 0.3); background: rgba(253, 242, 248, 0.3);}
+        body.night-mode th { background: rgba(45, 31, 61, 0.5); }
         tbody tr { transition: 0.2s; cursor: pointer; }
-        tbody tr:hover { background: rgba(244, 114, 182, 0.08); transform: scale(1.01); }
-        tbody tr:hover td { color: var(--color-primary-hover); font-weight: 700; }
+        tbody tr:hover { background: rgba(244, 114, 182, 0.08); }
         tbody tr.current-month td { background: rgba(244, 114, 182, 0.06); }
         .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); font-size: 1.15rem; }
 
-        .breakdown-row { background: rgba(255, 240, 245, 0.95) !important; display: none; }
+        .breakdown-row { background: var(--bg-card) !important; display: none; }
         .breakdown-row.show { display: table-row; }
         .breakdown-content { padding: 20px; text-align: left; color: var(--text-main); font-size: 0.95rem; }
         .breakdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .breakdown-box { background: #fff; padding: 15px; border-radius: 16px; border: 1px solid rgba(244, 114, 182, 0.3); box-shadow: 0 4px 10px rgba(244, 114, 182, 0.05); }
-        .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed #fbcfe8; padding-bottom: 5px; }
+        .breakdown-box { background: var(--bg-input); padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(244, 114, 182, 0.05); }
+        .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; }
         .breakdown-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
 
-        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255, 240, 245, 0.7); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        /* 🌸 ป๊อปอัปสลิปเงินเดือนน่ารักๆ */
+        .slip-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .slip-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        
+        .cute-slip-card {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            border: 4px dashed #f472b6; border-radius: 36px; padding: 35px; width: 90%; max-width: 420px;
+            color: #831843; box-shadow: 0 25px 50px rgba(244,114,182,0.3); position: relative; font-family: 'Sarabun', sans-serif;
+        }
+        .cute-slip-header { text-align: center; border-bottom: 2px dashed #f472b6; padding-bottom: 15px; margin-bottom: 20px; }
+        .cute-slip-title { font-size: 1.5rem; font-weight: 800; color: #9d174d; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .cute-slip-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; font-size: 1.05rem; }
+        .cute-slip-divider { border-top: 2px solid #f472b6; margin: 15px 0; }
+        .cute-slip-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.3rem; color: #be123c; background: rgba(255,255,255,0.7); padding: 12px 15px; border-radius: 16px; }
+
+        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
         .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
-        .cute-popup-box { background: rgba(255,255,255,0.95); border: 4px solid var(--color-primary); padding: 40px; border-radius: 36px; text-align: center; max-width: 400px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 30px 60px rgba(244, 114, 182, 0.25); }
+        .cute-popup-box { background: var(--bg-card); border: 4px solid var(--color-primary); padding: 40px; border-radius: 36px; text-align: center; max-width: 400px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 30px 60px rgba(244, 114, 182, 0.25); }
         .cute-popup-overlay.show .cute-popup-box { transform: scale(1); animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .popup-btn-row { display: flex; gap: 12px; margin-top: 10px; }
+        .popup-btn-row { display: flex; gap: 12px; margin-top: 15px; }
         .popup-btn-row .btn { margin: 0; }
         .btn-secondary { background: rgba(244,114,182,0.12); color: var(--color-primary-hover); }
         .btn-secondary:hover { background: rgba(244,114,182,0.2); }
@@ -170,7 +210,7 @@
         #authSection { max-width: 450px; margin: 10vh auto; }
         #appSection { display: none; }
         #initialLoading { text-align: center; padding: 15vh 0; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; }
-        #loadingOverlay { display: none; text-align: center; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 20px; }
+        #loadingOverlay { display: none; text-align: center; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; background: var(--bg-card); padding: 15px; border-radius: 20px; }
         .user-chip { font-weight: 700; color: var(--color-header); background: rgba(244,114,182,0.12); padding: 8px 16px; border-radius: 16px; font-size: 0.95rem; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
         @media (max-width: 1024px) {
@@ -178,7 +218,6 @@
             .dashboard-wrapper { padding: 0; }
             .top-nav { flex-direction: column; text-align: center; padding: 20px; }
             .tab-nav { width: 100%; justify-content: center; flex-wrap: wrap; }
-            .chart-wrapper { height: 260px; }
             .sakura-branch { width: 300px; right: -30px; top: -10px; }
             .user-chip { max-width: 100%; }
         }
@@ -214,11 +253,33 @@
         </div>
     </div>
 
+    <!-- 🌸 ป๊อปอัปสลิปเงินเดือนสำหรับเซฟรูป -->
+    <div id="slipModal" class="slip-modal-overlay">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
+            <div id="cuteSlipCard" class="cute-slip-card">
+                <div class="cute-slip-header">
+                    <div class="cute-slip-title">🌸 สลิปเงินเดือนจำลอง 🌸</div>
+                    <div id="slipMonthYear" style="font-size: 0.95rem; font-weight: 700; color: #be185d; margin-top: 5px;">เดือนมกราคม 2026</div>
+                </div>
+                <div class="cute-slip-row"><span>รายได้รวม (Base + OT):</span> <span id="slipGross">0.00 ฿</span></div>
+                <div class="cute-slip-row"><span>หักลางาน/อื่นๆ:</span> <span id="slipLeave" style="color: #e11d48;">-0.00 ฿</span></div>
+                <div class="cute-slip-row"><span>หักประกันสังคม:</span> <span id="slipSS" style="color: #e11d48;">-0.00 ฿</span></div>
+                <div class="cute-slip-divider"></div>
+                <div class="cute-slip-total"><span>รับสุทธิ:</span> <span id="slipNet">0.00 ฿</span></div>
+                <div style="text-align: center; margin-top: 20px; font-size: 0.8rem; font-weight: 700; color: #db2777;">✨ ขอบคุณที่ทำงานหนักมาตลอดน้า! ✨</div>
+            </div>
+            <div style="display: flex; gap: 10px; width: 90%; max-width: 420px;">
+                <button class="btn btn-secondary" onclick="closeSlipModal()">ปิดหน้าต่าง</button>
+                <button class="btn btn-primary" onclick="downloadSlipImage()">📥 ดาวน์โหลดรูปสลิป</button>
+            </div>
+        </div>
+    </div>
+
     <div id="initialLoading">🌸 กำลังโหลด...</div>
 
     <div id="authSection" class="card" style="display:none;">
         <div style="text-align: center; margin-bottom: 25px;">
-            <div style="width: 80px; height: 80px; background: #fff; border: 3px solid var(--color-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 2.8rem; box-shadow: 0 10px 20px rgba(244,114,182,0.2);" id="authEmoji">🌸</div>
+            <div style="width: 80px; height: 80px; background: var(--bg-input); border: 3px solid var(--color-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 2.8rem; box-shadow: 0 10px 20px rgba(244,114,182,0.2);" id="authEmoji">🌸</div>
             <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin-bottom: 5px; font-size: 1.8rem;">ยินดีต้อนรับ!</h2>
             <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">ระบบบันทึกเงินเดือน & ประเมินภาษี</p>
         </div>
@@ -255,14 +316,19 @@
             <h1 class="app-title">🌸 Salary & Tax Pro</h1>
             
             <div class="tab-nav">
-                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด & บันทึก</button>
+                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด</button>
                 <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณ OT ด่วน</button>
             </div>
 
-            <div style="display:flex; align-items:center; gap:15px; flex-wrap: wrap;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap: wrap;">
+                <!-- 🌸 ปุ่มสลับ Sakura Night Mode ตามเวลาพระอาทิตย์ขึ้น-ตก (หรือกดสลับเองได้) -->
+                <button id="themeToggleBtn" title="สลับโหมดกลางวัน/กลางคืน" style="background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--border-color); border-radius: 16px; padding: 10px 14px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px;">
+                    <span id="themeIcon">🌅</span> <span id="themeText" style="font-size: 0.9rem;">Auto Theme</span>
+                </button>
+                
                 <span class="user-chip" id="displayUser" title=""></span>
-                <select id="displayYear" aria-label="เลือกปีที่แสดง" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 800; background: #fff; border: 2px solid var(--border-color); color: var(--color-primary-hover); cursor: pointer;"></select>
-                <button id="logoutBtn" style="background: rgba(255,255,255,0.5); color: #e11d48; border: 2px solid #fda4af; border-radius: 16px; padding: 10px 20px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer; transition: 0.3s;">🚪 ออกจากระบบ</button>
+                <select id="displayYear" aria-label="เลือกปีที่แสดง" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 800; background: var(--bg-input); border: 2px solid var(--border-color); color: var(--color-primary-hover); cursor: pointer;"></select>
+                <button id="logoutBtn" style="background: var(--bg-input); color: #e11d48; border: 2px solid #fda4af; border-radius: 16px; padding: 10px 20px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer; transition: 0.3s;">🚪 ออก</button>
             </div>
         </div>
         
@@ -272,15 +338,48 @@
             
             <div class="grid-dashboard">
                 <div class="card">
-                    <h3><span>📈 กราฟชั่วโมงโอทีรายเดือน</span></h3>
-                    <div class="chart-wrapper"><canvas id="otChart"></canvas></div>
-                    <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:800; padding:12px; border-radius:16px; border: 2px dashed var(--border-color); background: rgba(255,255,255,0.5);"></div>
+                    <h3><span>📊 สรุปสถิติ OT และเป้าหมายเงินเก็บ</span></h3>
+                    
+                    <div class="stat-overview-container">
+                        <div class="stat-mini-box">
+                            <span class="stat-mini-label">⏱️ ชม. OT ทั้งปี</span>
+                            <span class="stat-mini-val" id="kpiTotalHours">0.0</span>
+                            <span class="stat-mini-sub">ชั่วโมงสะสม</span>
+                        </div>
+                        <div class="stat-mini-box">
+                            <span class="stat-mini-label">🔥 เดือนพีคสุด</span>
+                            <span class="stat-mini-val" id="kpiPeakMonth" style="font-size: 1.2rem; color: #db2777;">-</span>
+                            <span class="stat-mini-sub" id="kpiPeakHours">0 ชม.</span>
+                        </div>
+                        <div class="stat-mini-box">
+                            <span class="stat-mini-label">💰 รายได้สุทธิสะสม</span>
+                            <span class="stat-mini-val" id="kpiTotalNetYear" style="font-size: 1.3rem;">0.00</span>
+                            <span class="stat-mini-sub">บาททั้งปี</span>
+                        </div>
+                    </div>
+
+                    <!-- 🌸 ฟังก์ชันเป้าหมายเงินเก็บ (Savings Goal Calculator) -->
+                    <div class="goal-box-wrapper">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                            <label for="savingsGoalInput" style="margin:0; font-size:1rem; color: var(--color-header);">🎯 ตั้งเป้าหมายเงินเก็บทั้งปี (บาท)</label>
+                            <input type="number" id="savingsGoalInput" value="100000" min="0" step="1000" style="width: 150px; padding: 8px 12px; font-size: 1rem; border-radius: 12px;">
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 0.95rem; margin-top: 8px;">
+                            <span id="goalStatusText" style="color: var(--text-muted);">ความคืบหน้าเงินเก็บสุทธิ</span>
+                            <span id="goalPercentText" style="color: var(--color-primary-hover);">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="goalProgressBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:800; padding:12px; border-radius:16px; border: 2px dashed var(--border-color); background: var(--bg-input);"></div>
                 </div>
 
                 <div class="card">
                     <h3 style="border:none;">
                         <span>🍩 สัดส่วนโอที</span>
-                        <select id="otSummaryMonth" aria-label="เลือกเดือนสำหรับสัดส่วนโอที" style="width: auto; padding: 6px 15px; border-radius: 14px; background: #fff; cursor: pointer; font-size: 1rem;">
+                        <select id="otSummaryMonth" aria-label="เลือกเดือนสำหรับสัดส่วนโอที" style="width: auto; padding: 6px 15px; border-radius: 14px; background: var(--bg-input); cursor: pointer; font-size: 1rem;">
                             <option value="all">🌟 รวมทั้งปี</option>
                             <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
                             <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
@@ -312,7 +411,7 @@
                 <h3 style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                     <span>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</span>
                     <div style="display:flex; align-items:center; gap:8px; font-size:0.95rem; font-weight:normal;">
-                        <label for="withholdingTaxIn" style="margin:0; font-size:0.95rem; color:var(--text-muted);">ภาษีหัก ณ ที่จ่ายสะสมทั้งปี:</label>
+                        <label for="withholdingTaxIn" style="margin:0; font-size:0.95rem; color:var(--text-muted);">ภาษีหัก ณ ที่จ่ายสะสม:</label>
                         <input type="number" id="withholdingTaxIn" value="0" min="0" step="any" style="width:130px; padding:8px 12px; font-size:1rem; border-radius:12px;" placeholder="0.00">
                     </div>
                 </h3>
@@ -323,15 +422,17 @@
                     <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
                     <div class="tax-box tax-total-box"><span class="tax-label" id="taxFinalLabel" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
                 </div>
-                <p class="field-hint" style="margin-top: 15px; text-align: center;">* สามารถกรอกยอด "ภาษีหัก ณ ที่จ่าย" ที่ถูกหักไว้แล้วจากบริษัท (เช่น 3%) เพื่อนำมาหักลบกับภาษีที่ต้องจ่ายจริงสิ้นปีได้ทันที</p>
             </div>
 
             <div class="grid-forms">
                 <div class="card">
-                    <h3 style="color: var(--color-primary-hover);">💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></h3>
+                    <h3 style="color: var(--color-primary-hover);">
+                        <span>💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
+                        <button class="btn btn-secondary" onclick="openSlipModal()" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin: 0;">🌸 ดูสลิปเดือนนี้</button>
+                    </h3>
                     <div class="form-group">
                         <label for="monthSelect">📅 เลือกเดือนที่จะบันทึก</label>
-                        <select id="monthSelect" style="border: 2px solid var(--color-primary); background: #fff;">
+                        <select id="monthSelect" style="border: 2px solid var(--color-primary); background: var(--bg-input);">
                             <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
                             <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
                             <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
@@ -385,7 +486,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: rgba(255,255,255,0.5);">💡 คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้ ค่าอาหาร เบี้ยเลี้ยง และรายการหัก</p>
+                <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: var(--bg-card);">💡 คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้</p>
             </div>
         </div>
 
@@ -397,7 +498,7 @@
                     <div class="form-group">
                         <label for="quickSalary">💰 ฐานเงินเดือน (เพื่อคำนวณเรท/ชม.)</label>
                         <input type="number" id="quickSalary" value="20000" min="0" placeholder="ระบุเงินเดือน">
-                        <div style="background: rgba(255,255,255,0.7); padding: 15px; border-radius: 16px; margin-top: 15px; border: 1px dashed var(--color-primary); text-align: center;">
+                        <div style="background: var(--bg-input); padding: 15px; border-radius: 16px; margin-top: 15px; border: 1px dashed var(--color-primary); text-align: center;">
                             <span style="color: var(--text-muted); font-weight: 700;">อัตราค่าแรงต่อชั่วโมง</span><br>
                             <span id="quickRateDisplay" style="color: var(--color-primary-hover); font-weight: 800; font-size: 1.8rem;">83.33</span><span style="font-weight: 700; color: var(--text-muted);"> บาท/ชม.</span>
                         </div>
@@ -452,7 +553,7 @@
                         </div>
                     </div>
 
-                    <button class="btn" id="copySummaryBtn" style="margin-top: 20px; background: rgba(255,255,255,0.8); color: var(--color-primary-hover); border: 2px solid var(--color-primary); box-shadow: 0 5px 15px rgba(244,114,182,0.1);">📋 คัดลอกสรุปข้อความ (ส่งไลน์)</button>
+                    <button class="btn" id="copySummaryBtn" style="margin-top: 20px; background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--color-primary); box-shadow: 0 5px 15px rgba(244,114,182,0.1);">📋 คัดลอกสรุปข้อความ (ส่งไลน์)</button>
                 </div>
             </div>
         </div>
@@ -482,12 +583,43 @@
         let currentUid = null;
         let currentYear = new Date().getFullYear();
         let yearlyData = {}; 
-        let otChart = null;
         let otPieChart = null;
         let formDirty = false;
+        let isAutoTheme = true; // เริ่มต้นใช้โหมดออโต้ตามเวลา
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
+        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn', 'savingsGoalInput'];
+
+        // 🌸 ฟังก์ชันจัดการ Theme ตามเวลา (พระอาทิตย์ขึ้น 06:00 - ตก 18:00)
+        function checkAutoTheme() {
+            if (!isAutoTheme) return;
+            const hour = new Date().getHours();
+            const isNight = hour < 6 || hour >= 18;
+            if (isNight) {
+                document.body.classList.add('night-mode');
+                document.getElementById('themeIcon').innerText = '🌙';
+                document.getElementById('themeText').innerText = 'Auto Night';
+            } else {
+                document.body.classList.remove('night-mode');
+                document.getElementById('themeIcon').innerText = '🌅';
+                document.getElementById('themeText').innerText = 'Auto Day';
+            }
+        }
+        checkAutoTheme();
+        setInterval(checkAutoTheme, 60000); // เช็กทุก 1 นาที
+
+        // ปุ่มกดสลับโหมด Manual / Auto
+        document.getElementById('themeToggleBtn').addEventListener('click', () => {
+            isAutoTheme = false;
+            const isDark = document.body.classList.toggle('night-mode');
+            if (isDark) {
+                document.getElementById('themeIcon').innerText = '🌙';
+                document.getElementById('themeText').innerText = 'Dark Mode';
+            } else {
+                document.getElementById('themeIcon').innerText = '☀️';
+                document.getElementById('themeText').innerText = 'Light Mode';
+            }
+        });
 
         function createSakuraPetals() {
             const layer = document.getElementById('sakuraLayer');
@@ -516,9 +648,7 @@
             if (tabId === 'dashboardTab') renderCharts();
         };
 
-        let popupConfirmResolve = null;
         window.showPopup = function(msg, icon = "🌸") {
-            popupConfirmResolve = null;
             const row = document.getElementById('popupBtnRow');
             row.innerHTML = '<button class="btn btn-primary" id="popupOkBtn" style="margin:0;">โอเคจ้า!</button>';
             document.getElementById('popupOkBtn').addEventListener('click', closePopup);
@@ -526,22 +656,32 @@
             document.getElementById('popupMsg').innerText = msg;
             document.getElementById('customPopup').classList.add('show');
         }
-        window.showConfirm = function(msg, icon = "⚠️", confirmText = "ยืนยัน", cancelText = "ยกเลิก") {
-            return new Promise((resolve) => {
-                popupConfirmResolve = resolve;
-                const row = document.getElementById('popupBtnRow');
-                row.innerHTML = `
-                    <button class="btn btn-secondary" id="popupCancelBtn" style="margin:0;">${cancelText}</button>
-                    <button class="btn btn-primary" id="popupConfirmBtn" style="margin:0;">${confirmText}</button>`;
-                document.getElementById('popupIcon').innerText = icon;
-                document.getElementById('popupMsg').innerText = msg;
-                document.getElementById('customPopup').classList.add('show');
-                document.getElementById('popupCancelBtn').addEventListener('click', () => { closePopup(); resolve(false); });
-                document.getElementById('popupConfirmBtn').addEventListener('click', () => { closePopup(); resolve(true); });
-            });
-        }
         window.closePopup = function() {
             document.getElementById('customPopup').classList.remove('show');
+        }
+
+        // 🌸 ฟังก์ชันเปิด-ปิด และดาวน์โหลดสลิปเงินเดือน
+        window.openSlipModal = function() {
+            const m = document.getElementById('monthSelect').value;
+            const c = calculateMonth(parseInt(m));
+            document.getElementById('slipMonthYear').innerText = `เดือน${monthsTH[m]} ${currentYear + 543}`;
+            document.getElementById('slipGross').innerText = c.grossIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+            document.getElementById('slipLeave').innerText = `- ${c.leave.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿`;
+            document.getElementById('slipSS').innerText = `- ${c.ss.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿`;
+            document.getElementById('slipNet').innerText = c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+            document.getElementById('slipModal').classList.add('show');
+        }
+        window.closeSlipModal = function() {
+            document.getElementById('slipModal').classList.remove('show');
+        }
+        window.downloadSlipImage = function() {
+            const slipCard = document.getElementById('cuteSlipCard');
+            html2canvas(slipCard, { scale: 2, backgroundColor: null }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Salary_Slip_${monthsTH[document.getElementById('monthSelect').value]}_${currentYear}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
         }
 
         function markDirty() {
@@ -554,11 +694,9 @@
         }
         INCOME_FIELD_IDS.forEach(id => {
             const el = document.getElementById(id);
-            if (el) el.addEventListener('input', markDirty);
+            if (el) el.addEventListener('input', () => { markDirty(); if(id==='savingsGoalInput') renderTableAndTax(); });
         });
-        document.getElementById('withholdingTaxIn').addEventListener('input', () => {
-            renderTableAndTax();
-        });
+        document.getElementById('withholdingTaxIn').addEventListener('input', () => renderTableAndTax());
 
         document.getElementById('togglePw').addEventListener('click', () => {
             const pw = document.getElementById('password');
@@ -584,23 +722,8 @@
             try {
                 await sendPasswordResetEmail(auth, email);
                 showPopup("ระบบส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่อีเมลของคุณแล้วจ้า!", "📩");
-            } catch(err) { showPopup(friendlyAuthError(err), "❌"); }
+            } catch(err) { showPopup("เกิดข้อผิดพลาด กรุณาลองใหม่ครับ", "❌"); }
         });
-
-        function friendlyAuthError(err) {
-            const code = err && err.code ? err.code : '';
-            const map = {
-                'auth/invalid-email': 'รูปแบบอีเมลไม่ถูกต้องครับ',
-                'auth/user-not-found': 'ไม่พบบัญชีนี้ในระบบครับ',
-                'auth/wrong-password': 'รหัสผ่านไม่ถูกต้องครับ',
-                'auth/invalid-credential': 'อีเมลหรือรหัสผ่านไม่ถูกต้องครับ',
-                'auth/email-already-in-use': 'อีเมลนี้ถูกใช้สมัครแล้วครับ',
-                'auth/weak-password': 'รหัสผ่านสั้นเกินไป (อย่างน้อย 6 ตัวอักษร)',
-                'auth/too-many-requests': 'ลองผิดหลายครั้งเกินไป กรุณารอสักครู่แล้วลองใหม่ครับ',
-                'auth/network-request-failed': 'เชื่อมต่ออินเทอร์เน็ตไม่ได้ กรุณาลองใหม่ครับ'
-            };
-            return map[code] || (err && err.message) || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้งครับ';
-        }
 
         document.getElementById('authForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -608,32 +731,18 @@
             const password = document.getElementById('password').value;
             const authBtn = document.getElementById('authBtn');
             authBtn.disabled = true;
-            const originalText = document.getElementById('authBtnText').innerText;
-            document.getElementById('authBtnText').innerText = "กำลังดำเนินการ...";
             try {
                 if(isSignUpMode) {
                     const confirmPassword = document.getElementById('confirmPassword').value;
-                    if(password !== confirmPassword) { showPopup("รหัสผ่านไม่ตรงกันครับ", "⚠️"); return; }
-                    if(password.length < 6) { showPopup("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษรครับ", "⚠️"); return; }
+                    if(password !== confirmPassword) { showPopup("รหัสผ่านไม่ตรงกันครับ", "⚠️"); authBtn.disabled = false; return; }
                     await createUserWithEmailAndPassword(auth, email, password);
-                    showPopup("สมัครสมาชิกสำเร็จแล้ว!", "🎉");
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
                 }
-            } catch(err) { showPopup(friendlyAuthError(err), "❌"); }
-            finally {
-                authBtn.disabled = false;
-                document.getElementById('authBtnText').innerText = originalText;
-            }
+            } catch(err) { showPopup("อีเมลหรือรหัสผ่านไม่ถูกต้องครับ", "❌"); authBtn.disabled = false; }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', async () => {
-            if (formDirty) {
-                const ok = await showConfirm("คุณยังไม่ได้บันทึกข้อมูลเดือนนี้ ต้องการออกจากระบบโดยไม่บันทึกหรือไม่?", "⚠️", "ออกโดยไม่บันทึก", "อยู่ต่อ");
-                if (!ok) return;
-            }
-            signOut(auth);
-        });
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
         function initYearSelector() {
             const select = document.getElementById('displayYear');
@@ -647,13 +756,8 @@
             }
         }
 
-        document.getElementById('displayYear').addEventListener('change', async (e) => {
-            const newYear = parseInt(e.target.value);
-            if (formDirty) {
-                const ok = await showConfirm("คุณยังไม่ได้บันทึกข้อมูลเดือนนี้ ต้องการเปลี่ยนปีโดยไม่บันทึกหรือไม่?", "⚠️", "เปลี่ยนโดยไม่บันทึก", "อยู่ต่อ");
-                if (!ok) { e.target.value = currentYear; return; }
-            }
-            currentYear = newYear;
+        document.getElementById('displayYear').addEventListener('change', (e) => {
+            currentYear = parseInt(e.target.value);
             markClean();
             loadYearData();
         });
@@ -668,7 +772,7 @@
                 loadMonthToForm();
                 renderAll();
             } catch (err) {
-                showPopup("เกิดข้อผิดพลาดในการโหลดข้อมูล: " + (err.message || err), "❌");
+                showPopup("เกิดข้อผิดพลาดในการโหลดข้อมูล", "❌");
             } finally {
                 document.getElementById('loadingOverlay').style.display = 'none';
             }
@@ -694,19 +798,13 @@
             document.getElementById('ot60h').value = data.ot60h ?? '';
             document.getElementById('ot60m').value = data.ot60m ?? '';
             
-            // Load withholding tax global for the year stored in meta if exists, or first time
             document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
+            document.getElementById('savingsGoalInput').value = yearlyData.savingsGoal ?? 100000;
 
             markClean();
         }
 
-        document.getElementById('monthSelect').addEventListener('change', async (e) => {
-            if (formDirty) {
-                const ok = await showConfirm("คุณยังไม่ได้บันทึกข้อมูลเดือนนี้ ต้องการเปลี่ยนเดือนโดยไม่บันทึกหรือไม่?", "⚠️", "เปลี่ยนโดยไม่บันทึก", "อยู่ต่อ");
-                if (!ok) return;
-            }
-            loadMonthToForm();
-        });
+        document.getElementById('monthSelect').addEventListener('change', () => loadMonthToForm());
 
         document.getElementById('saveBtn').addEventListener('click', async () => {
             if (!currentUid) return;
@@ -733,6 +831,7 @@
                 ot60m: parseFloat(document.getElementById('ot60m').value) || 0
             };
             yearlyData.withholdingTax = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
+            yearlyData.savingsGoal = parseFloat(document.getElementById('savingsGoalInput').value) || 100000;
 
             document.getElementById('loadingOverlay').style.display = 'block';
             try {
@@ -741,7 +840,7 @@
                 markClean();
                 renderAll();
             } catch (err) {
-                showPopup("เกิดข้อผิดพลาดในการบันทึก: " + (err.message || err), "❌");
+                showPopup("เกิดข้อผิดพลาดในการบันทึก", "❌");
             } finally {
                 document.getElementById('loadingOverlay').style.display = 'none';
                 saveBtn.disabled = false;
@@ -834,7 +933,7 @@
                                 <h4>✂️ รายการหักออก</h4>
                                 <div class="breakdown-item"><span>หักลางาน/อื่นๆ:</span> <span style="color:#e11d48;">- ${c.leave.toLocaleString()} ฿</span></div>
                                 <div class="breakdown-item"><span>หักประกันสังคม:</span> <span style="color:#e11d48;">- ${c.ss.toLocaleString()} ฿</span></div>
-                                <div style="margin-top:10px; border-top:1px solid #fbcfe8; padding-top:5px;" class="breakdown-item"><strong>รายได้สุทธิ:</strong> <strong style="color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</strong></div>
+                                <div style="margin-top:10px; border-top:1px dashed var(--border-color); padding-top:5px;" class="breakdown-item"><strong>รับสุทธิ:</strong> <strong style="color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</strong></div>
                             </div>
                         </div>
                     </div>
@@ -853,6 +952,13 @@
             document.getElementById('totalHoursText').innerText = totalHoursSum.toFixed(1) + ' ชม.';
             document.getElementById('totalOt').innerText = totalOtSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('totalNet').innerText = totalNetSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            // คำนวณเป้าหมายเงินเก็บ
+            const goalInput = parseFloat(document.getElementById('savingsGoalInput').value) || 100000;
+            const goalPercent = goalInput > 0 ? Math.min(100, (totalNetSum / goalInput) * 100) : 0;
+            document.getElementById('goalPercentText').innerText = goalPercent.toFixed(0) + '%';
+            document.getElementById('goalProgressBar').style.width = goalPercent + '%';
+            document.getElementById('goalStatusText').innerText = `เก็บได้ ${totalNetSum.toLocaleString('th-TH', {maximumFractionDigits:0})} จากเป้า ${goalInput.toLocaleString()} บาท`;
 
             const expenses = Math.min(totalGrossSum * 0.5, 100000);
             const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - totalSSSum);
@@ -876,48 +982,45 @@
             const taxAmountEl = document.getElementById('taxAmount');
             const taxLabelEl = document.getElementById('taxFinalLabel');
             if (finalTaxNet >= 0) {
-                taxLabelEl.innerText = "ภาษีที่ต้องชำระสุทธิ (หลังหัก ณ ที่จ่าย)";
+                taxLabelEl.innerText = "ภาษีที่ต้องชำระสุทธิ";
                 taxAmountEl.innerText = finalTaxNet.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
-                taxAmountEl.style.color = '#be123c';
             } else {
                 taxLabelEl.innerText = "ยอดภาษีที่ควรได้คืน ( Refund )";
                 taxAmountEl.innerText = Math.abs(finalTaxNet).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
-                taxAmountEl.style.color = '#10b981'; // เขียวสดใสแสดงว่าได้เงินคืน
+                taxAmountEl.style.color = '#10b981';
             }
         }
 
         function renderCharts() {
             const monthlyHours = [];
-            for (let i = 0; i < 12; i++) monthlyHours.push(calculateMonth(i).totalOtHours);
-
-            const ctx1 = document.getElementById('otChart').getContext('2d');
-            const gradient = ctx1.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, '#db2777'); 
-            gradient.addColorStop(1, '#fbcfe8'); 
-
-            if (otChart) otChart.destroy();
-            otChart = new Chart(ctx1, {
-                type: 'bar',
-                data: {
-                    labels: monthsTH.map(m => m.substring(0, 3)),
-                    datasets: [{ label: 'ชั่วโมง OT', data: monthlyHours, backgroundColor: gradient, borderRadius: 8, hoverBackgroundColor: '#db2777' }]
-                },
-                options: { 
-                    responsive: true, maintainAspectRatio: false, 
-                    plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(157, 23, 77, 0.9)', titleFont: { size: 14, family: 'Sarabun' }, bodyFont: { size: 14, family: 'Sarabun', weight: 'bold' }, padding: 12, cornerRadius: 10 } },
-                    scales: { x: { grid: { display: false } }, y: { beginAtZero: true, border: { dash: [5, 5] }, grid: { color: 'rgba(244, 114, 182, 0.2)' } } }
+            let maxHours = 0;
+            let peakMonthName = "ไม่มีข้อมูล";
+            let totalYearNet = 0;
+            
+            for (let i = 0; i < 12; i++) {
+                const c = calculateMonth(i);
+                monthlyHours.push(c.totalOtHours);
+                totalYearNet += c.netIncome;
+                if (c.totalOtHours > maxHours) {
+                    maxHours = c.totalOtHours;
+                    peakMonthName = monthsTH[i];
                 }
-            });
+            }
 
-            const maxOtMonth = Math.max(...monthlyHours);
+            const totalYearHours = monthlyHours.reduce((a, b) => a + b, 0);
+            document.getElementById('kpiTotalHours').innerText = totalYearHours.toFixed(1);
+            document.getElementById('kpiPeakMonth').innerText = peakMonthName;
+            document.getElementById('kpiPeakHours').innerText = maxHours.toFixed(1) + ' ชม.';
+            document.getElementById('kpiTotalNetYear').innerText = totalYearNet.toLocaleString('th-TH', {maximumFractionDigits:0});
+
             const alertBox = document.getElementById('overworkAlert');
-            if (maxOtMonth > 36) {
-                alertBox.style.display = 'block'; alertBox.style.color = '#ef4444'; alertBox.style.borderColor = '#fca5a5';
-                alertBox.innerText = `⚠️ มีเดือนที่ OT สูงถึง ${maxOtMonth.toFixed(1)} ชม. อย่าลืมพักผ่อนด้วยน้า!`;
-            } else if (maxOtMonth > 0) {
-                alertBox.style.display = 'block'; alertBox.style.color = '#db2777'; alertBox.style.borderColor = '#fbcfe8';
-                alertBox.innerText = `🌸 ชั่วโมง OT อยู่ในเกณฑ์เหมาะสม (ไม่เกิน 36 ชม.)`;
-            } else { alertBox.style.display = 'none'; }
+            if (maxHours > 36) {
+                alertBox.style.color = '#ef4444';
+                alertBox.innerText = `⚠️ เดือน ${peakMonthName} มี OT สูงถึง ${maxHours.toFixed(1)} ชม. อย่าลืมพักผ่อนด้วยน้า!`;
+            } else {
+                alertBox.style.color = 'var(--text-muted)';
+                alertBox.innerText = `🌸 สถิติชั่วโมง OT อยู่ในเกณฑ์สมดุลและปลอดภัย`;
+            }
 
             renderPieChart();
         }
@@ -982,13 +1085,9 @@
         });
 
         document.getElementById('copySummaryBtn').addEventListener('click', () => {
-            const text = `🌸 สรุปค่า OT ด่วน\n- OT 1.5x (${document.getElementById('res15Time').innerText}): ${document.getElementById('res15Money').innerText}\n- OT 2.0x (${document.getElementById('res20Time').innerText}): ${document.getElementById('res20Money').innerText}\n- OT 3.0x (${document.getElementById('res30Time').innerText}): ${document.getElementById('res30Money').innerText}\n- OT 6.0x (${document.getElementById('res60Time').innerText}): ${document.getElementById('res60Money').innerText}\n💰 รวมยอด OT ทั้งสิ้น: ${document.getElementById('resTotalMoney').innerText} (${document.getElementById('resTotalHoursText').innerText.replace('รวมเวลา: ', '')})`;
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text)
-                    .then(() => showPopup("คัดลอกสรุปข้อความเรียบร้อยแล้ว! นำไปวางใน Line ได้เลย", "📋"))
-                    .catch(() => showPopup("คัดลอกไม่สำเร็จ กรุณาลองใหม่ครับ", "❌"));
-            } else {
-                showPopup("เบราว์เซอร์นี้ไม่รองรับการคัดลอกอัตโนมัติครับ", "❌");
+            const text = `🌸 สรุปค่า OT ด่วน\n- OT 1.5x (${document.getElementById('res15Time').innerText}): ${document.getElementById('res15Money').innerText}\n- OT 2.0x (${document.getElementById('res20Time').innerText}): ${document.getElementById('res20Money').innerText}\n- OT 3.0x (${document.getElementById('res30Time').innerText}): ${document.getElementById('res30Money').innerText}\n- OT 6.0x (${document.getElementById('res60Time').innerText}): ${document.getElementById('res60Money').innerText}\n💰 รวมยอด OT ทั้งสิ้น: ${document.getElementById('resTotalMoney').innerText}`;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => showPopup("คัดลอกสรุปข้อความเรียบร้อยแล้ว!", "📋"));
             }
         });
 
@@ -997,7 +1096,6 @@
             if (user) {
                 currentUid = user.uid;
                 document.getElementById('displayUser').innerText = user.email || '';
-                document.getElementById('displayUser').title = user.email || '';
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('appSection').style.display = 'block';
                 initYearSelector(); loadYearData(); computeQuickOT();
