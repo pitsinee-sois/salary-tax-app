@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- PWA Theme Color -->
     <meta name="theme-color" content="#f472b6">
-    <title>Sakura Salary Pro (Ultimate Edition)</title>
+    <title>Sakura Salary Pro (Perfect Edition)</title>
     
-    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
@@ -16,7 +14,11 @@
         
         * { box-sizing: border-box; }
 
-        /* 🌸 โทนสีซากุระ (Light & Dark) */
+        /* ซ่อนลูกศรในช่องตัวเลข */
+        input[type="number"]::-webkit-inner-spin-button, 
+        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type="number"] { -moz-appearance: textfield; }
+
         :root {
             --bg-main: linear-gradient(135deg, #ffe4e1 0%, #fff0f5 100%); 
             --bg-card: rgba(255, 255, 255, 0.7); 
@@ -45,26 +47,18 @@
 
         body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 2vh 20px; min-height: 100vh; overflow-x: hidden; background-attachment: fixed; transition: background 0.5s ease; }
 
-        /* 🌳 Scenery Effect */
         #sakuraLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; overflow: hidden; }
         .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; transition: filter 0.5s; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
         [data-theme="yozakura"] .sakura-branch { filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.6)) brightness(0.8); }
         
-        .petal {
-            position: absolute; background: linear-gradient(135deg, var(--petal-color1), var(--petal-color2));
-            border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8;
-            box-shadow: 0 2px 8px var(--petal-color1);
-            animation: fall linear infinite, sway ease-in-out infinite alternate;
-        }
+        .petal { position: absolute; background: linear-gradient(135deg, var(--petal-color1), var(--petal-color2)); border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8; box-shadow: 0 2px 8px var(--petal-color1); animation: fall linear infinite, sway ease-in-out infinite alternate; }
         @keyframes fall { 0% { top: -10%; opacity: 0; transform: rotate(0deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; transform: rotate(360deg); } }
         @keyframes sway { 0% { transform: translateX(0px) rotate(0deg); } 100% { transform: translateX(40px) rotate(45deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        /* 📱 Layout */
         .dashboard-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
 
-        /* 🗂️ Nav */
         .top-nav { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); backdrop-filter: blur(20px); padding: 15px 30px; border-radius: 24px; border: 2px solid var(--border-color); box-shadow: 0 15px 35px rgba(0,0,0,0.05); margin-bottom: 25px; animation: fadeUp 0.6s ease-out forwards; flex-wrap: wrap; gap: 15px; }
         .app-title { font-size: 1.8rem; font-weight: 800; color: var(--color-header); display: flex; align-items: center; gap: 10px; margin: 0; }
         
@@ -75,25 +69,21 @@
         .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
         .tab-content.active { display: block; }
 
-        /* 📦 Grid & Cards */
-        .grid-dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px; }
-        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .grid-dashboard, .grid-forms { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .grid-forms { grid-template-columns: 1fr 1fr; }
         
         .card { background: var(--bg-card); backdrop-filter: blur(15px); border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; box-shadow: 0 15px 40px -10px rgba(0,0,0,0.1); transition: 0.3s; }
         .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
 
-        /* 🎯 Goal Tracker */
         .goal-bar-bg { width: 100%; background: var(--bg-input); height: 25px; border-radius: 12.5px; overflow: hidden; margin-top: 15px; border: 1px solid var(--border-color); position: relative;}
         .goal-bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
         .goal-text { position: absolute; width: 100%; text-align: center; top: 0; line-height: 25px; font-size: 0.9rem; font-weight: 800; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
 
-        /* 📊 Charts */
         .chart-wrapper { height: 320px; width: 100%; margin-top: 15px;}
         .pie-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0;}
         .pie-center-label { position: absolute; text-align: center; pointer-events: none;}
         .ot-custom-legend { display: flex; justify-content: space-around; background: var(--bg-input); padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         
-        /* 🧾 Tax Grid */
         .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .tax-box { background: var(--bg-input); padding: 20px; border-radius: 24px; text-align: center; border: 1px solid var(--border-color); }
         .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
@@ -101,7 +91,6 @@
         .tax-value.deduct { color: #ec4899; }
         .tax-total-box { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(253, 164, 175, 0.15)); border: 2px solid rgba(244, 114, 182, 0.4); }
 
-        /* 🎛️ Form */
         .form-group { margin-bottom: 15px; width: 100%; }
         label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); }
         input, select { width: 100%; padding: 14px 20px; border: 2px solid transparent; border-radius: 16px; font-family: 'Sarabun'; font-size: 1.1rem; background-color: var(--bg-input); color: var(--text-main); font-weight: 600; transition: 0.3s; }
@@ -121,8 +110,14 @@
         tbody tr:hover { background: rgba(244, 114, 182, 0.1); }
         .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); }
 
-        /* 🧾 Slip Element (Hidden initially) */
-        #slipTemplate { position: absolute; top: -9999px; left: -9999px; width: 600px; background: linear-gradient(135deg, #fff0f5, #ffe4e1); padding: 40px; border-radius: 20px; color: #831843; font-family: 'Sarabun'; text-align: center; }
+        /* 🍞 Toast Notification */
+        #toast { visibility: hidden; min-width: 250px; background-color: var(--color-header); color: #fff; text-align: center; border-radius: 12px; padding: 16px; position: fixed; z-index: 100000; right: 30px; bottom: 30px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        #toast.show { visibility: visible; animation: slideInRight 0.5s, fadeOut 0.5s 2.5s forwards; }
+        @keyframes fadeOut { from {opacity: 1;} to {opacity: 0;} }
+
+        /* 🧾 Slip Template */
+        #slipWrapper { position: absolute; z-index: -9999; top: 0; left: -9999px; } /* ซ่อนไว้แต่ให้เรนเดอร์ได้เสถียร */
+        #slipTemplate { width: 600px; background: linear-gradient(135deg, #fff0f5, #ffe4e1); padding: 40px; border-radius: 20px; color: #831843; font-family: 'Sarabun'; text-align: center; }
         .slip-header { font-size: 2rem; font-weight: 800; color: #9d174d; margin-bottom: 20px; border-bottom: 2px dashed #f472b6; padding-bottom: 10px; }
         .slip-row { display: flex; justify-content: space-between; font-size: 1.2rem; margin-bottom: 10px; font-weight: 600; }
         .slip-total { font-size: 1.8rem; font-weight: 800; color: #db2777; margin-top: 20px; border-top: 3px solid #db2777; padding-top: 15px; }
@@ -136,7 +131,6 @@
 </head>
 <body>
 
-    <!-- 🌸 Background Effect -->
     <div id="sakuraLayer">
         <svg class="sakura-branch" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
             <path d="M450,-50 Q400,100 250,150 T50,300" fill="none" stroke="#5c4033" stroke-width="8" stroke-linecap="round"/>
@@ -148,19 +142,13 @@
         </svg>
     </div>
 
-    <!-- 🐰 Popup -->
-    <div id="customPopup" class="cute-popup-overlay" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
-        <div style="background: var(--bg-card); backdrop-filter: blur(20px); padding: 40px; border-radius: 30px; text-align: center; border: 3px solid var(--color-primary); width: 90%; max-width: 350px;">
-            <div id="popupIcon" style="font-size: 4rem; margin-bottom: 10px;">🌸</div>
-            <div id="popupMsg" style="font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 20px;"></div>
-            <button class="btn btn-primary" onclick="document.getElementById('customPopup').style.display='none'">โอเคจ้า!</button>
-        </div>
-    </div>
+    <!-- 🍞 Toast -->
+    <div id="toast">✅ ข้อความแจ้งเตือน</div>
 
     <!-- 🔐 Login Section -->
     <div id="authSection" class="card" style="max-width: 450px; margin: 10vh auto;">
         <div style="text-align: center; margin-bottom: 25px;">
-            <div style="font-size: 4rem; margin-bottom: 10px;" id="authEmoji">🌸</div>
+            <div style="font-size: 4rem; margin-bottom: 10px;">🌸</div>
             <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin: 0; font-size: 1.8rem;">ยินดีต้อนรับ!</h2>
             <p id="authSubtitle" style="color: var(--text-muted); margin-top: 5px; font-weight: 500;">ระบบบันทึกเงินเดือน & ประเมินภาษี (Pro)</p>
         </div>
@@ -179,18 +167,14 @@
 
     <!-- 💻 Main App Section -->
     <div id="appSection" class="dashboard-wrapper">
-        
-        <!-- 🗂️ Header -->
         <div class="top-nav">
             <h1 class="app-title">🌸 Salary & Tax Pro</h1>
-            
             <div class="tab-nav">
                 <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด</button>
                 <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณด่วน</button>
             </div>
-
             <div style="display:flex; align-items:center; gap:10px;">
-                <button onclick="toggleDarkMode()" id="darkModeBtn" style="background:var(--bg-input); border:none; padding:10px 15px; border-radius:14px; font-family:'Sarabun'; font-weight:700; color:var(--text-main); cursor:pointer;">🌙 โหมดกลางคืน</button>
+                <button onclick="toggleDarkMode()" id="darkModeBtn" style="background:var(--bg-input); border:none; padding:10px 15px; border-radius:14px; font-weight:700; color:var(--text-main); cursor:pointer;">🌙 โหมดกลางคืน</button>
                 <select id="displayYear" style="padding:10px; border-radius: 14px; font-weight: 800; background: var(--bg-input); color: var(--color-primary); border:none;"></select>
                 <button id="logoutBtn" style="background: rgba(225,29,72,0.1); color: #e11d48; border: none; border-radius: 14px; padding: 10px 15px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer;">🚪 ออกจากระบบ</button>
             </div>
@@ -198,23 +182,20 @@
 
         <div id="loadingOverlay" style="text-align: center; color: var(--color-primary); font-weight: bold; margin-bottom: 20px; display: none;">กำลังซิงค์ข้อมูล... ⏳</div>
 
-        <!-- 📌 TAB 1: DASHBOARD & RECORD -->
+        <!-- 📌 TAB 1: DASHBOARD -->
         <div id="dashboardTab" class="tab-content active">
-            
-            <!-- 📈 Chart & Goal Grid -->
             <div class="grid-dashboard">
                 <div class="card" style="display: flex; flex-direction: column;">
                     <h3><span>📈 กราฟชั่วโมงโอทีรายเดือน</span></h3>
                     <div class="chart-wrapper" style="flex-grow: 1;"><canvas id="otChart"></canvas></div>
                     
-                    <!-- 🎯 Goal Tracker (New Feature) -->
                     <div style="margin-top: 20px; padding-top: 20px; border-top: 2px dashed var(--border-color);">
                         <h4 style="margin: 0 0 10px 0; color: var(--color-header); display: flex; justify-content: space-between;">
                             <span>🎯 เป้าหมายจากเงิน OT</span>
                             <span id="goalPercentText" style="color: var(--color-primary);">0%</span>
                         </h4>
                         <div style="display: flex; gap: 10px;">
-                            <input type="text" id="goalName" placeholder="ชื่อเป้าหมาย (เช่น ซื้อไอโฟน)" style="flex: 2; padding: 10px;">
+                            <input type="text" id="goalName" placeholder="ชื่อเป้าหมาย (เช่น ทริปญี่ปุ่น)" style="flex: 2; padding: 10px;">
                             <input type="number" id="goalAmount" placeholder="ยอดเงินเป้าหมาย" style="flex: 1; padding: 10px;">
                             <button onclick="saveGoal()" class="btn btn-primary" style="width: auto; padding: 10px 20px;">บันทึก</button>
                         </div>
@@ -249,14 +230,11 @@
                 </div>
             </div>
 
-            <!-- 🧾 Tax Planner (Advanced) -->
             <div class="card" style="margin-bottom: 25px;">
                 <h3 style="margin-bottom: 15px;">
                     <span>🧾 ประเมินภาษีเงินได้ (ภ.ง.ด. 91)</span>
                     <button onclick="toggleTaxOptions()" class="btn btn-outline" style="width: auto; padding: 5px 15px; font-size: 0.9rem; border-radius: 12px;">⚙️ ปรับแต่งค่าลดหย่อน</button>
                 </h3>
-                
-                <!-- Hidden Tax Options -->
                 <div id="advancedTaxOptions" style="display: none; background: var(--bg-input); padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px dashed var(--color-primary);">
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
                         <div><label>เบี้ยประกันชีวิต/สุขภาพ</label><input type="number" id="taxInsure" placeholder="สูงสุด 100,000"></div>
@@ -265,7 +243,6 @@
                         <div><label style="color: transparent;">.</label><button onclick="saveTaxDeductions()" class="btn btn-primary" style="padding: 14px;">บันทึกค่าลดหย่อน</button></div>
                     </div>
                 </div>
-
                 <div class="tax-grid">
                     <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
                     <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย 50%</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
@@ -275,7 +252,6 @@
                 </div>
             </div>
 
-            <!-- 📝 Inputs Form Grid -->
             <div class="grid-forms">
                 <div class="card">
                     <h3 style="color: var(--color-primary-hover);">💰 บันทึกรายได้ (เดือน)</h3>
@@ -304,13 +280,11 @@
                     
                     <div style="margin-top: auto; display: flex; gap: 15px;">
                         <button id="saveBtn" class="btn btn-primary" style="flex: 2;">💾 บันทึกข้อมูล</button>
-                        <!-- 📥 Slip Button -->
                         <button onclick="generateSlip()" class="btn btn-outline" style="flex: 1; font-size: 1rem;">📥 โหลดสลิป</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 📋 Table -->
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>เดือน</th><th>รายได้รวม (฿)</th><th>ชั่วโมง OT</th><th>เงิน OT (฿)</th><th>รับสุทธิ (฿)</th></tr></thead>
@@ -354,23 +328,25 @@
         </div>
     </div>
 
-    <!-- 🧾 Hidden Slip Template -->
-    <div id="slipTemplate">
-        <div class="slip-header">🌸 Sakura Salary Slip 🌸</div>
-        <div class="slip-row" style="color: #64748b; font-size: 1rem;"><span id="slipUser">user@email.com</span><span id="slipMonthYear">มกราคม 2567</span></div>
-        <div style="border-top: 2px solid #fbcfe8; margin: 15px 0;"></div>
-        <div class="slip-row"><span>รายได้ (Base + อื่นๆ)</span><span id="slipBase">0.00 ฿</span></div>
-        <div class="slip-row" style="color: #f472b6;"><span>ค่าล่วงเวลา (OT รวม)</span><span id="slipOT">0.00 ฿</span></div>
-        <div style="font-size: 0.9rem; color: #94a3b8; text-align: left; padding-left: 20px;">
-            - OT 1.5x: <span id="s15">0</span> ฿ | 2.0x: <span id="s20">0</span> ฿ | 3.0x: <span id="s30">0</span> ฿
+    <!-- 🧾 Slip Template Wrapper -->
+    <div id="slipWrapper">
+        <div id="slipTemplate">
+            <div class="slip-header">🌸 Sakura Salary Slip 🌸</div>
+            <div class="slip-row" style="color: #64748b; font-size: 1rem;"><span id="slipUser">user@email.com</span><span id="slipMonthYear">มกราคม 2567</span></div>
+            <div style="border-top: 2px solid #fbcfe8; margin: 15px 0;"></div>
+            <div class="slip-row"><span>รายได้ (Base + อื่นๆ)</span><span id="slipBase">0.00 ฿</span></div>
+            <div class="slip-row" style="color: #f472b6;"><span>ค่าล่วงเวลา (OT รวม)</span><span id="slipOT">0.00 ฿</span></div>
+            <div style="font-size: 0.9rem; color: #94a3b8; text-align: left; padding-left: 20px;">
+                - OT 1.5x: <span id="s15">0</span> ฿ | 2.0x: <span id="s20">0</span> ฿ | 3.0x: <span id="s30">0</span> ฿
+            </div>
+            <div class="slip-row" style="color: #10b981; margin-top: 15px;"><span>รายรับรวม (Gross)</span><span id="slipGross">0.00 ฿</span></div>
+            <div class="slip-row" style="color: #ec4899;"><span>รายการหัก (ประกันสังคม+ลางาน)</span><span id="slipDeduct">0.00 ฿</span></div>
+            <div class="slip-total">รับสุทธิ: <span id="slipNet">0.00 ฿</span></div>
+            <div style="margin-top: 20px; font-size: 0.8rem; color: #cbd5e1;">Generated by Sakura Salary Pro</div>
         </div>
-        <div class="slip-row" style="color: #10b981; margin-top: 15px;"><span>รายรับรวม (Gross)</span><span id="slipGross">0.00 ฿</span></div>
-        <div class="slip-row" style="color: #ec4899;"><span>รายการหัก (ประกันสังคม+ลางาน)</span><span id="slipDeduct">0.00 ฿</span></div>
-        <div class="slip-total">รับสุทธิ: <span id="slipNet">0.00 ฿</span></div>
-        <div style="margin-top: 20px; font-size: 0.8rem; color: #cbd5e1;">Generated by Sakura Salary Pro</div>
     </div>
 
-    <!-- 📱 PWA Manifest Injection -->
+    <!-- 📱 PWA Manifest -->
     <script>
         const manifest = {
             "name": "Sakura Salary Pro", "short_name": "SalaryPro", "start_url": ".", "display": "standalone",
@@ -402,17 +378,14 @@
         let isSignUpMode = false; let currentUid = null; let currentYear = new Date().getFullYear();
         let yearlyData = { deductions: {}, goal: { name: '', amount: 0 } }; 
         let otChart = null; let otPieChart = null;
-        let isDarkMode = false;
+        let isDarkMode = localStorage.getItem('darkMode') === 'true'; // ดึงค่า Dark Mode
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
-        // 🌸 Sakura Petals
         function createSakuraPetals() {
-            const layer = document.getElementById('sakuraLayer');
-            layer.innerHTML = layer.querySelector('svg').outerHTML; // Keep SVG
+            const layer = document.getElementById('sakuraLayer'); layer.innerHTML = layer.querySelector('svg').outerHTML; 
             for (let i = 0; i < 25; i++) {
                 const petal = document.createElement('div'); petal.classList.add('petal');
-                petal.style.width = petal.style.height = `${Math.random() * 8 + 8}px`;
-                petal.style.left = `${Math.random() * 100}vw`; 
+                petal.style.width = petal.style.height = `${Math.random() * 8 + 8}px`; petal.style.left = `${Math.random() * 100}vw`; 
                 petal.style.animationDuration = `${Math.random() * 12 + 10}s, ${Math.random() * 3 + 2}s`;
                 petal.style.animationDelay = `${Math.random() * -20}s, ${Math.random() * -5}s`;
                 layer.appendChild(petal);
@@ -420,21 +393,28 @@
         }
         createSakuraPetals();
 
-        // 🌙 Dark Mode Toggle
+        // 🌙 Dark Mode Toggle Logic
         window.toggleDarkMode = function() {
             isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            applyTheme();
+        };
+
+        function applyTheme() {
             document.documentElement.setAttribute('data-theme', isDarkMode ? 'yozakura' : 'sakura');
             document.getElementById('darkModeBtn').innerText = isDarkMode ? '☀️ โหมดสว่าง' : '🌙 โหมดกลางคืน';
             if(otChart) { Chart.defaults.color = isDarkMode ? '#f8fafc' : '#831843'; renderCharts(); }
-        };
+        }
+        applyTheme();
 
-        // 🐰 Custom Alert
-        window.showMsg = function(msg) {
-            document.getElementById('popupMsg').innerText = msg;
-            document.getElementById('customPopup').style.display = 'flex';
-        };
+        // 🍞 Toast Notification Logic
+        window.showToast = function(msg) {
+            const toast = document.getElementById("toast");
+            toast.innerText = msg;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
 
-        // 📑 Tabs
         window.switchTab = function(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -442,7 +422,6 @@
             if (tabId === 'dashboardTab') renderCharts();
         };
 
-        // 🔐 Auth
         document.getElementById('authToggle').addEventListener('click', () => {
             isSignUpMode = !isSignUpMode;
             document.getElementById('authTitle').innerText = isSignUpMode ? "สร้างบัญชีใหม่" : "ยินดีต้อนรับ!";
@@ -454,14 +433,13 @@
             e.preventDefault(); const email = document.getElementById('email').value; const pwd = document.getElementById('password').value;
             try {
                 if(isSignUpMode) {
-                    if(pwd !== document.getElementById('confirmPassword').value) return showMsg("รหัสผ่านไม่ตรงกัน");
-                    await createUserWithEmailAndPassword(auth, email, pwd); showMsg("สมัครสำเร็จ!");
+                    if(pwd !== document.getElementById('confirmPassword').value) return showToast("⚠️ รหัสผ่านไม่ตรงกัน");
+                    await createUserWithEmailAndPassword(auth, email, pwd); showToast("🎉 สมัครสมาชิกสำเร็จ!");
                 } else await signInWithEmailAndPassword(auth, email, pwd);
-            } catch(err) { showMsg("Error: " + err.message); }
+            } catch(err) { showToast("❌ Error: " + err.message); }
         });
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
 
-        // 📅 Data Initialization
         const monthSelect = document.getElementById('monthSelect');
         monthsTH.forEach((m, i) => { const opt = document.createElement('option'); opt.value = i; opt.innerText = m; monthSelect.appendChild(opt); });
 
@@ -483,7 +461,6 @@
                 if(!yearlyData.deductions) yearlyData.deductions = {};
                 if(!yearlyData.goal) yearlyData.goal = { name: '', amount: 0 };
                 
-                // Load Goal & Deductions to UI
                 document.getElementById('goalName').value = yearlyData.goal.name || '';
                 document.getElementById('goalAmount').value = yearlyData.goal.amount || '';
                 document.getElementById('taxInsure').value = yearlyData.deductions.insure || '';
@@ -491,7 +468,7 @@
                 document.getElementById('taxDonate').value = yearlyData.deductions.donate || '';
 
                 loadMonthToForm(); renderAll();
-            } catch (err) { showMsg("Error loading: " + err.message); } 
+            } catch (err) { showToast("❌ Load Error: " + err.message); } 
             finally { document.getElementById('loadingOverlay').style.display = 'none'; }
         }
 
@@ -512,24 +489,21 @@
                 yearlyData[m][key] = parseFloat(el.value) || 0;
             });
             document.getElementById('loadingOverlay').style.display = 'block';
-            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showMsg("บันทึกข้อมูลแล้ว!"); renderAll(); } 
-            catch (err) { showMsg("Error saving!"); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
+            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showToast("✅ บันทึกข้อมูลเรียบร้อย!"); renderAll(); } 
+            catch (err) { showToast("❌ Error saving!"); } finally { document.getElementById('loadingOverlay').style.display = 'none'; }
         });
 
-        // 🎯 Goal System
         window.saveGoal = async function() {
             yearlyData.goal = { name: document.getElementById('goalName').value, amount: parseFloat(document.getElementById('goalAmount').value) || 0 };
-            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showMsg("อัปเดตเป้าหมายแล้ว!"); renderAll(); } catch(e){}
+            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showToast("🎯 อัปเดตเป้าหมายแล้ว!"); renderAll(); } catch(e){}
         };
 
-        // 🧾 Advanced Tax Options
         window.toggleTaxOptions = () => { const el = document.getElementById('advancedTaxOptions'); el.style.display = el.style.display === 'none' ? 'block' : 'none'; };
         window.saveTaxDeductions = async function() {
             yearlyData.deductions = { insure: parseFloat(document.getElementById('taxInsure').value)||0, fund: parseFloat(document.getElementById('taxFund').value)||0, donate: parseFloat(document.getElementById('taxDonate').value)||0 };
-            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showMsg("บันทึกค่าลดหย่อนแล้ว!"); renderAll(); } catch(e){}
+            try { await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData); showToast("🧾 บันทึกค่าลดหย่อนแล้ว!"); renderAll(); } catch(e){}
         };
 
-        // 🧮 Calculations
         function calculateMonth(m) {
             const data = yearlyData[m] || {};
             const baseInc = (data.base||0) + (data.license||0) + (data.house||0) + ((data.foodDays||0)*50) + ((data.allowanceDays||0)*150) + (data.welfare ?? 684);
@@ -554,16 +528,14 @@
             document.getElementById('totalBase').innerText = tBase.toLocaleString(); document.getElementById('totalHoursText').innerText = tHours.toFixed(1) + ' ชม.';
             document.getElementById('totalOt').innerText = tOt.toLocaleString(); document.getElementById('totalNet').innerText = tNet.toLocaleString();
 
-            // Goal Progress
             const goal = yearlyData.goal || {amount:0};
             if(goal.amount > 0) {
                 const pct = Math.min((tOt / goal.amount) * 100, 100);
                 document.getElementById('goalProgressBar').style.width = pct + '%';
                 document.getElementById('goalPercentText').innerText = pct.toFixed(1) + '%';
-                document.getElementById('goalTextOverlay').innerText = `OT สะสม: ${tOt.toLocaleString()} / ${goal.amount.toLocaleString()}`;
+                document.getElementById('goalTextOverlay').innerText = `OT สะสม: ${tOt.toLocaleString(undefined,{maximumFractionDigits:0})} / ${goal.amount.toLocaleString()}`;
             }
 
-            // Tax
             const exp = Math.min(tGross * 0.5, 100000);
             const ded = yearlyData.deductions || {};
             const extraDeduct = Math.min(ded.insure||0, 100000) + (ded.fund||0) + (ded.donate||0);
@@ -592,7 +564,6 @@
             if(otChart) otChart.destroy();
             otChart = new Chart(ctx, { type: 'bar', data: { labels: monthsTH.map(m=>m.substring(0,3)), datasets: [{ label:'OT', data: mHours, backgroundColor: grad, borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: {legend:{display:false}}, scales: { y: {beginAtZero:true} } } });
 
-            // Pie
             const selM = document.getElementById('otSummaryMonth').value;
             let m15=0, m20=0, m30=0, tOt=0;
             if(selM === 'all') { for(let i=0;i<12;i++){ const c=calculateMonth(i); m15+=c.m15; m20+=c.m20; m30+=c.m30; tOt+=c.totalOtMoney; } } 
@@ -607,7 +578,29 @@
         }
         document.getElementById('otSummaryMonth').addEventListener('change', renderCharts);
 
-        // 📥 Download Slip
+        // ⚡ Quick Calc Binding (Bug Fixed)
+        window.computeQuickOT = function() {
+            const salary = parseFloat(document.getElementById('quickSalary').value) || 0;
+            const hourlyRate = salary / 240;
+            document.getElementById('quickRateDisplay').innerText = hourlyRate.toFixed(2);
+
+            const h15 = (parseFloat(document.getElementById('qOt15h').value) || 0) + ((parseFloat(document.getElementById('qOt15m').value) || 0) / 60);
+            const h20 = (parseFloat(document.getElementById('qOt20h').value) || 0) + ((parseFloat(document.getElementById('qOt20m').value) || 0) / 60);
+            const h30 = (parseFloat(document.getElementById('qOt30h').value) || 0) + ((parseFloat(document.getElementById('qOt30m').value) || 0) / 60);
+
+            const m15 = h15 * 1.5 * hourlyRate, m20 = h20 * 2.0 * hourlyRate, m30 = h30 * 3.0 * hourlyRate;
+            const totalMoney = m15 + m20 + m30, totalHours = h15 + h20 + h30;
+
+            document.getElementById('res15Money').innerText = m15.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res15Time').innerText = h15.toFixed(1) + ' ชม.';
+            document.getElementById('res20Money').innerText = m20.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res20Time').innerText = h20.toFixed(1) + ' ชม.';
+            document.getElementById('res30Money').innerText = m30.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res30Time').innerText = h30.toFixed(1) + ' ชม.';
+            document.getElementById('resTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+        }
+        ['quickSalary', 'qOt15h', 'qOt15m', 'qOt20h', 'qOt20m', 'qOt30h', 'qOt30m'].forEach(id => {
+            const input = document.getElementById(id); if (input) input.addEventListener('input', computeQuickOT);
+        });
+
+        // 📥 Slip Generation (Bug Fixed)
         window.generateSlip = function() {
             const m = document.getElementById('monthSelect').value; const c = calculateMonth(m);
             const data = yearlyData[m] || {};
@@ -620,13 +613,14 @@
             document.getElementById('slipDeduct').innerText = ((data.leave??684)+(data.ss??875)).toLocaleString() + ' ฿';
             document.getElementById('slipNet').innerText = c.net.toLocaleString() + ' ฿';
             
-            const slip = document.getElementById('slipTemplate');
-            slip.style.top = '0'; slip.style.left = '0'; slip.style.zIndex = '-100'; // Bring to viewport for render
+            const slipWrap = document.getElementById('slipWrapper');
+            slipWrap.style.left = '0'; // Bring to front briefly for rendering
             
-            html2canvas(slip, {scale: 2, backgroundColor: null}).then(canvas => {
-                slip.style.top = '-9999px'; // Hide again
+            html2canvas(document.getElementById('slipTemplate'), {scale: 2, backgroundColor: null}).then(canvas => {
+                slipWrap.style.left = '-9999px'; // Hide again
                 const link = document.createElement('a'); link.download = `Slip_${monthsTH[m]}_${currentYear}.png`;
                 link.href = canvas.toDataURL(); link.click();
+                showToast("📥 ดาวน์โหลดสลิปสำเร็จ!");
             });
         };
 
@@ -634,7 +628,7 @@
             if (user) {
                 currentUid = user.uid; document.getElementById('displayUser').innerText = user.email;
                 document.getElementById('authSection').style.display = 'none'; document.getElementById('appSection').style.display = 'block';
-                initYearSelector(); loadYearData();
+                initYearSelector(); loadYearData(); computeQuickOT();
             } else {
                 currentUid = null; document.getElementById('authSection').style.display = 'block'; document.getElementById('appSection').style.display = 'none';
             }
