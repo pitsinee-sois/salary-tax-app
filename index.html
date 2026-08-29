@@ -12,7 +12,6 @@
         
         * { box-sizing: border-box; }
 
-        /* 🌸 โทนสีซากุระแบบ Premium */
         :root {
             --bg-main: linear-gradient(135deg, #ffe4e1 0%, #fff0f5 100%); 
             --bg-card: rgba(255, 255, 255, 0.7); 
@@ -37,7 +36,6 @@
             background-attachment: fixed;
         }
 
-        /* ♿ Accessible focus ring — keep it visible, keep it on-brand */
         a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, span[role="button"]:focus-visible {
             outline: 3px solid var(--color-primary-hover);
             outline-offset: 2px;
@@ -46,7 +44,6 @@
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
 
-        /* 🌳 Sakura Scenery Effect */
         #sakuraLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; overflow: hidden; }
         .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
         .petal {
@@ -61,15 +58,13 @@
         @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* 📱 FULL SCREEN DASHBOARD LAYOUT */
         .dashboard-wrapper { 
             width: 100%; 
-            max-width: 1400px; /* ขยายให้เต็มจอมากขึ้น */
+            max-width: 1400px; 
             margin: 0 auto; 
             position: relative; z-index: 10; 
         }
 
-        /* 🗂️ Header & Navigation */
         .top-nav {
             display: flex; justify-content: space-between; align-items: center;
             background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
@@ -87,11 +82,9 @@
         .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
         .tab-content.active { display: block; }
 
-        /* 📦 Grid Systems */
         .grid-dashboard { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px; }
         .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         
-        /* 🃏 Glass Cards */
         .card { 
             background: var(--bg-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; 
@@ -100,7 +93,6 @@
         .card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: #fff; }
         .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
-        /* 📊 Charts */
         .chart-wrapper { height: 320px; width: 100%; margin-top: 15px;}
         .pie-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0;}
         .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
@@ -111,7 +103,6 @@
         .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 5px; }
         .legend-money-bar { text-align: center; margin-top: 12px; font-weight: 800; color: var(--color-primary-hover); background: rgba(244,114,182,0.08); padding: 10px; border-radius: 16px; }
 
-        /* 🧾 Tax Grid */
         .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
         .tax-box { background: rgba(255,255,255,0.85); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid rgba(255,255,255,0.5); }
         .tax-box:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 10px 20px rgba(244, 114, 182, 0.15);}
@@ -119,9 +110,8 @@
         .tax-value { display: block; font-size: 1.6rem; font-weight: 800; color: var(--text-main); }
         .tax-value.deduct { color: #ec4899; }
         .tax-total-box { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(253, 164, 175, 0.15)); border: 2px solid rgba(244, 114, 182, 0.4); }
-        .tax-total-box .tax-value { color: #be185d; font-size: 2.2rem; }
+        .tax-total-box .tax-value { color: #be123c; font-size: 2.2rem; }
 
-        /* 🎛️ Form Elements */
         .form-group { margin-bottom: 20px; width: 100%; }
         label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); padding-left: 5px; }
         input, select { 
@@ -150,18 +140,25 @@
         .dirty-dot { display: none; width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; margin-left: 6px; box-shadow: 0 0 0 3px rgba(245,158,11,0.25); }
         .dirty-dot.show { display: inline-block; }
 
-        /* 📋 Table */
         .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: rgba(255, 255, 255, 0.85); box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.1); border: 2px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
         th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed rgba(244, 114, 182, 0.2); font-size: 1.05rem;}
         th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid rgba(244, 114, 182, 0.3); background: rgba(253, 242, 248, 0.5);}
-        tbody tr { transition: 0.2s; }
+        tbody tr { transition: 0.2s; cursor: pointer; }
         tbody tr:hover { background: rgba(244, 114, 182, 0.08); transform: scale(1.01); }
         tbody tr:hover td { color: var(--color-primary-hover); font-weight: 700; }
         tbody tr.current-month td { background: rgba(244, 114, 182, 0.06); }
         .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); font-size: 1.15rem; }
 
-        /* 🐰 Popups & Auth */
+        /* 💡 Breakdown Details Panel styling */
+        .breakdown-row { background: rgba(255, 240, 245, 0.95) !important; display: none; }
+        .breakdown-row.show { display: table-row; }
+        .breakdown-content { padding: 20px; text-align: left; color: var(--text-main); font-size: 0.95rem; }
+        .breakdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .breakdown-box { background: #fff; padding: 15px; border-radius: 16px; border: 1px solid rgba(244, 114, 182, 0.3); box-shadow: 0 4px 10px rgba(244, 114, 182, 0.05); }
+        .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed #fbcfe8; padding-bottom: 5px; }
+        .breakdown-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
+
         .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(255, 240, 245, 0.7); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
         .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
         .cute-popup-box { background: rgba(255,255,255,0.95); border: 4px solid var(--color-primary); padding: 40px; border-radius: 36px; text-align: center; max-width: 400px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 30px 60px rgba(244, 114, 182, 0.25); }
@@ -177,7 +174,6 @@
         #loadingOverlay { display: none; text-align: center; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 20px; }
         .user-chip { font-weight: 700; color: var(--color-header); background: rgba(244,114,182,0.12); padding: 8px 16px; border-radius: 16px; font-size: 0.95rem; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-        /* 📱 Responsive */
         @media (max-width: 1024px) {
             .grid-dashboard, .grid-forms { grid-template-columns: 1fr; }
             .dashboard-wrapper { padding: 0; }
@@ -191,7 +187,6 @@
 </head>
 <body>
 
-    <!-- 🌸 Sakura Background Effect -->
     <div id="sakuraLayer">
         <svg class="sakura-branch" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M450,-50 Q400,100 250,150 T50,300" fill="none" stroke="#5c4033" stroke-width="8" stroke-linecap="round"/>
@@ -210,7 +205,6 @@
         </svg>
     </div>
 
-    <!-- 🐰 Popup -->
     <div id="customPopup" class="cute-popup-overlay" role="alertdialog" aria-modal="true" aria-labelledby="popupMsg">
         <div class="cute-popup-box">
             <div class="cute-popup-icon" id="popupIcon" style="font-size: 5rem; margin-bottom: 10px;">🌸</div>
@@ -221,10 +215,8 @@
         </div>
     </div>
 
-    <!-- ⏳ Initial auth check -->
     <div id="initialLoading">🌸 กำลังโหลด...</div>
 
-    <!-- 🔐 Login Section -->
     <div id="authSection" class="card" style="display:none;">
         <div style="text-align: center; margin-bottom: 25px;">
             <div style="width: 80px; height: 80px; background: #fff; border: 3px solid var(--color-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 2.8rem; box-shadow: 0 10px 20px rgba(244,114,182,0.2);" id="authEmoji">🌸</div>
@@ -258,10 +250,8 @@
         </div>
     </div>
 
-    <!-- 💻 Main App Section -->
     <div id="appSection" class="dashboard-wrapper">
         
-        <!-- 🗂️ Header -->
         <div class="top-nav">
             <h1 class="app-title">🌸 Salary & Tax Pro</h1>
             
@@ -279,10 +269,8 @@
         
         <div id="loadingOverlay">กำลังซิงค์ข้อมูล... ⏳</div>
 
-        <!-- 📌 TAB 1: DASHBOARD & RECORD -->
         <div id="dashboardTab" class="tab-content active">
             
-            <!-- 📈 Chart Grid -->
             <div class="grid-dashboard">
                 <div class="card">
                     <h3><span>📈 กราฟชั่วโมงโอทีรายเดือน</span></h3>
@@ -320,7 +308,6 @@
                 </div>
             </div>
 
-            <!-- 🧾 Tax Grid -->
             <div class="card" style="margin-bottom: 25px;">
                 <h3>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</h3>
                 <div class="tax-grid">
@@ -333,9 +320,7 @@
                 <p class="field-hint" style="margin-top: 15px; text-align: center;">* ประมาณการเบื้องต้นเท่านั้น ไม่รวมค่าลดหย่อนอื่น เช่น ประกันชีวิต กองทุน หรือบุตร กรุณาตรวจสอบกับกรมสรรพากรอีกครั้ง</p>
             </div>
 
-            <!-- 📝 Inputs Form Grid -->
             <div class="grid-forms">
-                <!-- ฝั่งซ้าย: รายได้ -->
                 <div class="card">
                     <h3 style="color: var(--color-primary-hover);">💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></h3>
                     <div class="form-group">
@@ -361,7 +346,6 @@
                     </div>
                 </div>
 
-                <!-- ฝั่งขวา: ชั่วโมง OT -->
                 <div class="card">
                     <h3 style="color: var(--color-primary-hover);">⏱️ บันทึกชั่วโมงโอที</h3>
                     <div class="form-group">
@@ -381,7 +365,6 @@
                 </div>
             </div>
 
-            <!-- 📋 Table -->
             <div class="table-responsive">
                 <table>
                     <thead><tr><th>เดือน</th><th>รายได้รวม (บาท)</th><th>ชั่วโมง OT</th><th>เงิน OT (บาท)</th><th>รับสุทธิ (บาท)</th></tr></thead>
@@ -392,10 +375,10 @@
                         </tr>
                     </tfoot>
                 </table>
+                <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: rgba(255,255,255,0.5);">💡 คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้ ค่าอาหาร เบี้ยเลี้ยง และรายการหัก</p>
             </div>
         </div>
 
-        <!-- 📌 TAB 2: QUICK OT CALCULATOR -->
         <div id="calcTab" class="tab-content">
             <div class="grid-forms">
                 <div class="card">
@@ -482,12 +465,11 @@
         let yearlyData = {}; 
         let otChart = null;
         let otPieChart = null;
-        let formDirty = false; // tracks unsaved edits in the income/OT form
+        let formDirty = false;
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
         const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m'];
 
-        // 🌸 Sakura Petals Generator
         function createSakuraPetals() {
             const layer = document.getElementById('sakuraLayer');
             const petalCount = 25; 
@@ -507,7 +489,6 @@
         }
         createSakuraPetals();
 
-        // 📑 Tabs
         window.switchTab = function(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -516,7 +497,6 @@
             if (tabId === 'dashboardTab') renderCharts();
         };
 
-        // 🐰 Popup — supports a simple "OK" mode and a "confirm" mode (two buttons)
         let popupConfirmResolve = null;
         window.showPopup = function(msg, icon = "🌸") {
             popupConfirmResolve = null;
@@ -545,7 +525,6 @@
             document.getElementById('customPopup').classList.remove('show');
         }
 
-        // ✏️ Track unsaved edits so switching months never silently drops data
         function markDirty() {
             formDirty = true;
             document.getElementById('dirtyDot').classList.add('show');
@@ -559,7 +538,6 @@
             if (el) el.addEventListener('input', markDirty);
         });
 
-        // 🔐 Auth
         document.getElementById('togglePw').addEventListener('click', () => {
             const pw = document.getElementById('password');
             const btn = document.getElementById('togglePw');
@@ -635,7 +613,6 @@
             signOut(auth);
         });
 
-        // 📅 Data Logic
         function initYearSelector() {
             const select = document.getElementById('displayYear');
             select.innerHTML = '';
@@ -696,13 +673,9 @@
         }
 
         document.getElementById('monthSelect').addEventListener('change', async (e) => {
-            const targetMonth = e.target.value;
             if (formDirty) {
                 const ok = await showConfirm("คุณยังไม่ได้บันทึกข้อมูลเดือนนี้ ต้องการเปลี่ยนเดือนโดยไม่บันทึกหรือไม่?", "⚠️", "เปลี่ยนโดยไม่บันทึก", "อยู่ต่อ");
-                if (!ok) {
-                    // revert selection to the month whose data is currently shown
-                    return; // simplest safe behavior: keep the newly selected value but reload will overwrite unsaved edits only if confirmed
-                }
+                if (!ok) return;
             }
             loadMonthToForm();
         });
@@ -745,23 +718,34 @@
         });
 
         function calculateMonth(m) {
-            const data = yearlyData[m] || { base:0, license:0, house:0, foodDays:0, allowanceDays:0, welfare:0, leave:0, ss:0, ot15h:0, ot15m:0, ot20h:0, ot20m:0, ot30h:0, ot30m:0 };
-            const foodMoney = (data.foodDays || 0) * 50;
-            const allowanceMoney = (data.allowanceDays || 0) * 150;
-            const welfareMoney = data.welfare ?? 684;
-            const baseIncome = data.base + data.license + data.house + foodMoney + allowanceMoney + welfareMoney;
-            const hourlyRate = (data.base) / 240;
+            const raw = yearlyData[m] || {};
+            const base = raw.base || 0;
+            const license = raw.license || 0;
+            const house = raw.house || 0;
+            const foodDays = raw.foodDays || 0;
+            const foodMoney = foodDays * 50;
+            const allowanceDays = raw.allowanceDays || 0;
+            const allowanceMoney = allowanceDays * 150;
+            const welfare = raw.welfare ?? 684;
+            const leave = raw.leave ?? 684;
+            const ss = raw.ss ?? 875;
 
-            const h15 = (data.ot15h || 0) + ((data.ot15m || 0) / 60);
-            const h20 = (data.ot20h || 0) + ((data.ot20m || 0) / 60);
-            const h30 = (data.ot30h || 0) + ((data.ot30m || 0) / 60);
+            const baseIncome = base + license + house + foodMoney + allowanceMoney + welfare;
+            const hourlyRate = base / 240;
+
+            const h15 = (raw.ot15h || 0) + ((raw.ot15m || 0) / 60);
+            const h20 = (raw.ot20h || 0) + ((raw.ot20m || 0) / 60);
+            const h30 = (raw.ot30h || 0) + ((raw.ot30m || 0) / 60);
 
             const totalOtHours = h15 + h20 + h30;
             const totalOtMoney = (h15 * 1.5 * hourlyRate) + (h20 * 2.0 * hourlyRate) + (h30 * 3.0 * hourlyRate);
             const grossIncome = baseIncome + totalOtMoney;
-            const netIncome = grossIncome - (data.leave ?? 684) - (data.ss ?? 875);
+            const netIncome = grossIncome - leave - ss;
 
-            return { baseIncome, grossIncome, netIncome, totalOtHours, totalOtMoney, h15, h20, h30, ss: data.ss || 0 };
+            return { 
+                base, license, house, foodDays, foodMoney, allowanceDays, allowanceMoney, welfare, leave, ss,
+                baseIncome, grossIncome, netIncome, totalOtHours, totalOtMoney, h15, h20, h30 
+            };
         }
 
         function renderAll() {
@@ -778,19 +762,59 @@
             const currentMonthIdx = today.getMonth();
 
             for (let i = 0; i < 12; i++) {
-                const calc = calculateMonth(i);
-                totalBaseSum += calc.baseIncome; totalHoursSum += calc.totalOtHours;
-                totalOtSum += calc.totalOtMoney; totalNetSum += calc.netIncome;
-                totalSSSum += calc.ss; totalGrossSum += calc.grossIncome;
+                const c = calculateMonth(i);
+                totalBaseSum += c.baseIncome; totalHoursSum += c.totalOtHours;
+                totalOtSum += c.totalOtMoney; totalNetSum += c.netIncome;
+                totalSSSum += c.ss; totalGrossSum += c.grossIncome;
 
+                // Main Row
                 const tr = document.createElement('tr');
                 if (isCurrentYear && i === currentMonthIdx) tr.classList.add('current-month');
                 tr.innerHTML = `<td style="text-align:center;">${monthsTH[i]}</td>
-                    <td>${calc.baseIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                    <td>${calc.totalOtHours.toFixed(1)} ชม.</td>
-                    <td>${calc.totalOtMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
-                    <td style="font-weight:700; color:var(--color-primary-hover);">${calc.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>`;
+                    <td>${c.baseIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td>${c.totalOtHours.toFixed(1)} ชม.</td>
+                    <td>${c.totalOtMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="font-weight:700; color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>`;
+                
+                // Breakdown Details Row (Toggle on click)
+                const detailTr = document.createElement('tr');
+                detailTr.className = 'breakdown-row';
+                detailTr.id = `breakdown-${i}`;
+                detailTr.innerHTML = `<td colspan="5">
+                    <div class="breakdown-content">
+                        <div class="breakdown-grid">
+                            <div class="breakdown-box">
+                                <h4>💰 รายได้ตั้งต้น & เงินช่วยเหลือ</h4>
+                                <div class="breakdown-item"><span>ฐานเงินเดือน:</span> <span>${c.base.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>ค่าใบประกอบ (กว.):</span> <span>${c.license.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>ค่าที่พัก/อื่นๆ:</span> <span>${c.house.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>ค่าอาหาร (${c.foodDays} วัน):</span> <span>${c.foodMoney.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>เบี้ยเลี้ยง (${c.allowanceDays} วัน):</span> <span>${c.allowanceMoney.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>สวัสดิการ:</span> <span>${c.welfare.toLocaleString()} ฿</span></div>
+                            </div>
+                            <div class="breakdown-box">
+                                <h4>⏱️ รายละเอียด OT</h4>
+                                <div class="breakdown-item"><span>OT 1.5x (${c.h15.toFixed(1)} ชม.):</span> <span>${(c.h15 * 1.5 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 2.0x (${c.h20.toFixed(1)} ชม.):</span> <span>${(c.h20 * 2.0 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 3.0x (${c.h30.toFixed(1)} ชม.):</span> <span>${(c.h30 * 3.0 * (c.base/240)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                            </div>
+                            <div class="breakdown-box">
+                                <h4>✂️ รายการหักออก</h4>
+                                <div class="breakdown-item"><span>หักลางาน/อื่นๆ:</span> <span style="color:#e11d48;">- ${c.leave.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>หักประกันสังคม:</span> <span style="color:#e11d48;">- ${c.ss.toLocaleString()} ฿</span></div>
+                                <div style="margin-top:10px; border-top:1px solid #fbcfe8; padding-top:5px;" class="breakdown-item"><strong>รายได้สุทธิ:</strong> <strong style="color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>`;
+
+                tr.addEventListener('click', () => {
+                    const panel = document.getElementById(`breakdown-${i}`);
+                    panel.classList.toggle('show');
+                });
+
                 tbody.appendChild(tr);
+                tbody.appendChild(detailTr);
             }
 
             document.getElementById('totalBase').innerText = totalBaseSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -816,17 +840,14 @@
             document.getElementById('taxAmount').innerText = tax.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
         }
 
-        // 📈 Charts with Gradient Setup
         function renderCharts() {
             const monthlyHours = [];
             for (let i = 0; i < 12; i++) monthlyHours.push(calculateMonth(i).totalOtHours);
 
             const ctx1 = document.getElementById('otChart').getContext('2d');
-            
-            // Create Gradient for Bar Chart
             const gradient = ctx1.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, '#db2777'); // Deep pink top
-            gradient.addColorStop(1, '#fbcfe8'); // Light pink bottom
+            gradient.addColorStop(0, '#db2777'); 
+            gradient.addColorStop(1, '#fbcfe8'); 
 
             if (otChart) otChart.destroy();
             otChart = new Chart(ctx1, {
@@ -881,14 +902,12 @@
                     options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false } } }
                 });
             } else {
-                // clear the canvas so a stale doughnut doesn't linger when a month has zero OT
                 ctx2.clearRect(0, 0, ctx2.canvas.width, ctx2.canvas.height);
             }
         }
 
         document.getElementById('otSummaryMonth').addEventListener('change', renderPieChart);
 
-        // 🧮 Quick Calc
         function computeQuickOT() {
             const salary = parseFloat(document.getElementById('quickSalary').value) || 0;
             const hourlyRate = salary / 240;
