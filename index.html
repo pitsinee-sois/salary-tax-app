@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Sakura Full-Width Dashboard + OT Donut)</title>
+    <title>Salary & Tax System (Customizable Slip & Profile)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -87,7 +87,7 @@
         .app-title { font-size: 1.8rem; font-weight: 800; color: var(--color-header); display: flex; align-items: center; gap: 10px; margin: 0; }
         
         .tab-nav { display: flex; gap: 10px; background: rgba(244, 114, 182, 0.1); padding: 5px; border-radius: 20px; }
-        .tab-btn { padding: 12px 25px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun', sans-serif; font-size: 1.05rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
+        .tab-btn { padding: 12px 20px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun', sans-serif; font-size: 1rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
         .tab-btn:hover { background: rgba(255, 255, 255, 0.3); }
         .tab-btn.active { background: var(--bg-input); color: var(--color-primary-hover); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2); }
         
@@ -247,7 +247,7 @@
             <div id="cuteSlipCard" class="cute-slip-card">
                 <div class="slip-header-top">
                     <div>
-                        <div class="slip-company">🌸 บริษัท ไทย เช็มคอน จำกัด</div>
+                        <div class="slip-company" id="slipCompanyName">🌸 บริษัท ไทย เช็มคอน จำกัด</div>
                         <div style="font-size: 0.8rem; font-weight: 700; color: #be185d; margin-top: 2px;">วันที่พิมพ์: <span id="slipPrintDate">29/ส.ค./2569</span></div>
                     </div>
                     <div>
@@ -257,11 +257,11 @@
                 </div>
 
                 <div class="slip-info-grid">
-                    <div>รหัสพนักงาน: <strong>2026010</strong></div>
-                    <div>โอนเข้าบัญชี: <strong>ไทยพาณิชย์ จำกัด</strong></div>
+                    <div>รหัสพนักงาน: <strong id="slipEmpCode">2026010</strong></div>
+                    <div>โอนเข้าบัญชี: <strong id="slipBankName">ไทยพาณิชย์ จำกัด</strong></div>
                     <div style="grid-column: span 2;">ชื่อ-นามสกุล: <span id="slipUserEmail" style="font-weight: 800;">user@email.com</span></div>
-                    <div>แผนก: <strong>CONSTRUCTION</strong></div>
-                    <div>เลขที่บัญชี: <strong>5042687004</strong></div>
+                    <div>แผนก: <strong id="slipDepartment">CONSTRUCTION</strong></div>
+                    <div>เลขที่บัญชี: <strong id="slipBankAcc">5042687004</strong></div>
                 </div>
 
                 <div class="slip-table-container">
@@ -347,6 +347,7 @@
             
             <div class="tab-nav">
                 <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด</button>
+                <button class="tab-btn" onclick="switchTab('profileTab', this)">⚙️ ตั้งค่าบริษัท/สลิป</button>
                 <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณ OT ด่วน</button>
             </div>
 
@@ -382,7 +383,7 @@
                 </div>
             </div>
 
-            <!-- 🌸 การ์ดวงล้อสัดส่วน OT (ดีไซน์เดิมที่คุณต้องการ) -->
+            <!-- 🌸 การ์ดวงล้อสัดส่วน OT -->
             <div class="card" style="display: flex; flex-direction: column; align-items: center;">
                 <h3 style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
                     <span style="display: flex; align-items: center; gap: 8px;">🍩 สัดส่วนโอที</span>
@@ -494,6 +495,41 @@
             </div>
         </div>
 
+        <!-- 🌸 แท็บตั้งค่าบริษัทและข้อมูลสลิปส่วนตัว -->
+        <div id="profileTab" class="tab-content">
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <h3 style="color: var(--color-primary-hover);">🏢 ตั้งค่าข้อมูลบริษัทและบัญชีเงินเดือนส่วนตัว</h3>
+                <p class="field-hint" style="margin-bottom: 20px;">ข้อมูลเหล่านี้จะถูกบันทึกผูกไว้กับบัญชีของคุณ และนำไปแสดงบนใบสลิปเงินเดือนโดยอัตโนมัติ</p>
+                
+                <div class="form-group">
+                    <label for="pCompanyName">ชื่อบริษัท / หน่วยงาน</label>
+                    <input type="text" id="pCompanyName" placeholder="เช่น บริษัท ไทย เช็มคอน จำกัด">
+                </div>
+                <div class="grid-forms" style="margin-bottom: 0;">
+                    <div class="form-group">
+                        <label for="pEmpCode">รหัสพนักงาน</label>
+                        <input type="text" id="pEmpCode" placeholder="เช่น 2026010">
+                    </div>
+                    <div class="form-group">
+                        <label for="pDepartment">แผนก / สังกัด</label>
+                        <input type="text" id="pDepartment" placeholder="เช่น CONSTRUCTION">
+                    </div>
+                </div>
+                <div class="grid-forms" style="margin-bottom: 0;">
+                    <div class="form-group">
+                        <label for="pBankName">ธนาคารที่รับเงินโอน</label>
+                        <input type="text" id="pBankName" placeholder="เช่น ไทยพาณิชย์ จำกัด">
+                    </div>
+                    <div class="form-group">
+                        <label for="pBankAcc">เลขที่บัญชีธนาคาร</label>
+                        <input type="text" id="pBankAcc" placeholder="เช่น 5042687004">
+                    </div>
+                </div>
+
+                <button id="saveProfileBtn" class="btn btn-primary" style="margin-top: 25px;"><span id="saveProfileBtnText">💾 บันทึกข้อมูลบริษัท/สลิปของฉัน</span></button>
+            </div>
+        </div>
+
         <div id="calcTab" class="tab-content">
             <div class="grid-forms">
                 <div class="card" style="margin-bottom:0;">
@@ -588,6 +624,13 @@
         let currentUserEmail = "";
         let currentYear = new Date().getFullYear();
         let yearlyData = {}; 
+        let userProfile = {
+            companyName: "บริษัท ไทย เช็มคอน จำกัด",
+            empCode: "2026010",
+            department: "CONSTRUCTION",
+            bankName: "ไทยพาณิชย์ จำกัด",
+            bankAcc: "5042687004"
+        };
         let formDirty = false;
         let isAutoTheme = true;
         let otDonutChartInstance = null;
@@ -670,6 +713,13 @@
             document.getElementById('slipMonthYear').innerText = `${monthsTH[m]} ${currentYear + 543}`;
             document.getElementById('slipUserEmail').innerText = currentUserEmail || 'user@email.com';
             
+            // ดึงข้อมูลโปรไฟล์ผู้ใช้มาใส่ในสลิป
+            document.getElementById('slipCompanyName').innerText = `🌸 ${userProfile.companyName || 'บริษัท ไทย เช็มคอน จำกัด'}`;
+            document.getElementById('slipEmpCode').innerText = userProfile.empCode || '-';
+            document.getElementById('slipDepartment').innerText = userProfile.department || '-';
+            document.getElementById('slipBankName').innerText = userProfile.bankName || '-';
+            document.getElementById('slipBankAcc').innerText = userProfile.bankAcc || '-';
+
             document.getElementById('slipBase').innerText = c.base.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipLicense').innerText = c.license.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipHouse').innerText = c.house.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -727,7 +777,6 @@
         });
         document.getElementById('monthSelect').addEventListener('change', () => {
             loadMonthToForm();
-            // ถ้าเลือกมุมมองวงล้อเป็นแบบเดือนนั้นๆ ให้ซิงค์ตามไปด้วย
             const viewVal = document.getElementById('otViewSelect').value;
             if (viewVal !== 'year') {
                 document.getElementById('otViewSelect').value = document.getElementById('monthSelect').value;
@@ -798,13 +847,26 @@
         document.getElementById('displayYear').addEventListener('change', (e) => {
             currentYear = parseInt(e.target.value);
             markClean();
-            loadYearData();
+            loadUserData();
         });
 
-        async function loadYearData() {
+        async function loadUserData() {
             if (!currentUid) return;
             document.getElementById('loadingOverlay').style.display = 'block';
             try {
+                // โหลดข้อมูลโปรไฟล์ (ชื่อบริษัท, เลขบัญชี ฯลฯ)
+                const profileRef = doc(db, "users", currentUid, "settings", "profile");
+                const profileSnap = await getDoc(profileRef);
+                if (profileSnap.exists()) {
+                    userProfile = profileSnap.data();
+                }
+                document.getElementById('pCompanyName').value = userProfile.companyName || "";
+                document.getElementById('pEmpCode').value = userProfile.empCode || "";
+                document.getElementById('pDepartment').value = userProfile.department || "";
+                document.getElementById('pBankName').value = userProfile.bankName || "";
+                document.getElementById('pBankAcc').value = userProfile.bankAcc || "";
+
+                // โหลดข้อมูลรายได้ประจำปี
                 const docRef = doc(db, "users", currentUid, "years", currentYear.toString());
                 const docSnap = await getDoc(docRef);
                 yearlyData = docSnap.exists() ? docSnap.data() : {};
@@ -816,6 +878,31 @@
                 document.getElementById('loadingOverlay').style.display = 'none';
             }
         }
+
+        document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+            if (!currentUid) return;
+            const btn = document.getElementById('saveProfileBtn');
+            btn.disabled = true;
+            document.getElementById('saveProfileBtnText').innerHTML = '<span class="spinner" style="display:inline-block; vertical-align:middle;"></span> กำลังบันทึก...';
+            
+            userProfile = {
+                companyName: document.getElementById('pCompanyName').value.trim(),
+                empCode: document.getElementById('pEmpCode').value.trim(),
+                department: document.getElementById('pDepartment').value.trim(),
+                bankName: document.getElementById('pBankName').value.trim(),
+                bankAcc: document.getElementById('pBankAcc').value.trim()
+            };
+
+            try {
+                await setDoc(doc(db, "users", currentUid, "settings", "profile"), userProfile);
+                showPopup("บันทึกข้อมูลบริษัทและบัญชีของคุณเรียบร้อยแล้ว!", "🏢");
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการบันทึกข้อมูล", "❌");
+            } finally {
+                btn.disabled = false;
+                document.getElementById('saveProfileBtnText').innerText = '💾 บันทึกข้อมูลบริษัท/สลิปของฉัน';
+            }
+        });
 
         function loadMonthToForm() {
             const m = document.getElementById('monthSelect').value;
@@ -925,7 +1012,6 @@
             updateOtDonutChart();
         }
 
-        // 🌸 อัปเดตกราฟวงล้อสัดส่วน OT แบบเลือกดูทั้งปีหรือรายเดือน
         function updateOtDonutChart() {
             const viewMode = document.getElementById('otViewSelect').value;
             let sum15 = 0, sum20 = 0, sum30 = 0, sum60 = 0;
@@ -976,7 +1062,6 @@
             const ctx = document.getElementById('otDonutChart').getContext('2d');
             if (otDonutChartInstance) otDonutChartInstance.destroy();
 
-            // ป้องกันกราฟพังเวลากราฟว่างเปล่า (ให้โชว์สีเทาอ่อนเต็มวง)
             const chartData = (totalHours === 0) ? [1] : [sum15, sum20, sum30, sum60];
             const chartColors = (totalHours === 0) ? ['#f1f5f9'] : ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'];
 
@@ -1140,7 +1225,7 @@
                 document.getElementById('displayUser').innerText = currentUserEmail;
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('appSection').style.display = 'block';
-                initYearSelector(); loadYearData(); computeQuickOT();
+                initYearSelector(); loadUserData(); computeQuickOT();
             } else {
                 currentUid = null;
                 currentUserEmail = "";
