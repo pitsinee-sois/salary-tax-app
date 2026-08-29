@@ -105,24 +105,25 @@
         .card:hover { transform: translateY(-5px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: var(--color-primary); }
         .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
-        .stat-overview-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 15px; }
-        .stat-mini-box { background: var(--bg-input); padding: 18px; border-radius: 24px; border: 1px solid var(--border-color); box-shadow: 0 8px 20px rgba(244,114,182,0.08); transition: 0.3s; }
-        .stat-mini-box:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(244,114,182,0.15); }
-        .stat-mini-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 700; margin-bottom: 5px; display: block; }
-        .stat-mini-val { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
-        .stat-mini-sub { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-top: 4px; display: block; }
+        /* 🌸 ดีไซน์การ์ดเปรียบเทียบเดือนต่อเดือน (MoM Comparison) */
+        .mom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .mom-box { background: var(--bg-input); padding: 18px; border-radius: 24px; border: 1px solid var(--border-color); text-align: center; }
+        .mom-label { font-size: 0.9rem; color: var(--text-muted); font-weight: 700; display: block; margin-bottom: 5px; }
+        .mom-val { font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+        .mom-sub { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-top: 3px; display: block; }
         
-        .progress-bar-container { width: 100%; background: rgba(244,114,182,0.15); height: 10px; border-radius: 10px; margin-top: 12px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); border-radius: 10px; transition: width 0.6s ease; }
+        .mom-diff-banner { margin-top: 15px; background: var(--bg-input); padding: 16px; border-radius: 20px; text-align: center; border: 2px dashed var(--border-color); font-weight: 800; font-size: 1.05rem; }
 
         /* 🌸 กระปุกเป้าหมายเงินเก็บหลายรายการ (K-Pocket Style) */
         .goals-header { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; margin-bottom: 15px; }
-        .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; max-height: 280px; overflow-y: auto; padding-right: 5px; }
-        .goal-card { background: var(--bg-input); padding: 18px; border-radius: 24px; border: 1px solid var(--border-color); position: relative; box-shadow: 0 5px 15px rgba(244,114,182,0.06); }
-        .goal-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .goal-title { font-weight: 800; font-size: 1.1rem; color: var(--color-header); }
-        .goal-delete-btn { background: none; border: none; color: #e11d48; cursor: pointer; font-size: 1rem; padding: 0; }
-        .goal-amounts { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 8px; }
+        .goals-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-height: 240px; overflow-y: auto; padding-right: 5px; }
+        .goal-card { background: var(--bg-input); padding: 15px; border-radius: 20px; border: 1px solid var(--border-color); position: relative; box-shadow: 0 5px 15px rgba(244,114,182,0.06); }
+        .goal-card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .goal-title { font-weight: 800; font-size: 1rem; color: var(--color-header); }
+        .goal-delete-btn { background: none; border: none; color: #e11d48; cursor: pointer; font-size: 0.9rem; padding: 0; }
+        .goal-amounts { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 6px; }
+        .progress-bar-container { width: 100%; background: rgba(244,114,182,0.15); height: 8px; border-radius: 10px; margin-top: 8px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #f472b6, #db2777); border-radius: 10px; transition: width 0.6s ease; }
 
         .pie-container { position: relative; height: 220px; display: flex; justify-content: center; align-items: center; margin: 20px 0;}
         .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
@@ -188,7 +189,7 @@
         .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; }
         .breakdown-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
 
-        /* 🌸 สลิปเงินเดือนดีไซน์ใหม่ ละเอียดเหมือนต้นแบบ แต่คงความน่ารัก */
+        /* 🌸 สลิปเงินเดือนดีไซน์ใหม่ ละเอียดเหมือนต้นแบบ */
         .slip-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
         .slip-modal-overlay.show { opacity: 1; pointer-events: auto; }
         
@@ -270,7 +271,7 @@
         </div>
     </div>
 
-    <!-- 🌸 ป๊อปอัปสลิปเงินเดือนดีไซน์ใหม่ ละเอียดเหมือนต้นแบบ -->
+    <!-- 🌸 ป๊อปอัปสลิปเงินเดือน -->
     <div id="slipModal" class="slip-modal-overlay">
         <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
             <div id="cuteSlipCard" class="cute-slip-card">
@@ -294,7 +295,6 @@
                 </div>
 
                 <div class="slip-table-container">
-                    <!-- ฝั่งรายได้ -->
                     <div class="slip-col">
                         <h4>รายการได้</h4>
                         <div class="slip-row-item"><span>เงินเดือน</span> <span id="slipBase">20,000.00</span></div>
@@ -308,7 +308,6 @@
                         <div class="slip-row-item"><span>OT 3.0x</span> <span id="slipOt30">0.00</span></div>
                         <div class="slip-row-item"><span>OT 6.0x</span> <span id="slipOt60">0.00</span></div>
                     </div>
-                    <!-- ฝั่งรายการหัก -->
                     <div class="slip-col">
                         <h4>รายการหัก</h4>
                         <div class="slip-row-item"><span>หักลางาน/อื่นๆ</span> <span id="slipLeave" style="color:#e11d48;">684.00</span></div>
@@ -397,37 +396,38 @@
         <div id="dashboardTab" class="tab-content active">
             
             <div class="grid-dashboard">
+                <!-- 🌸 เปลี่ยนฝั่งซ้ายเป็น "การ์ดเปรียบเทียบเดือนต่อเดือน (MoM Comparison)" -->
                 <div class="card">
-                    <h3><span>📊 สรุปสถิติ OT และกระปุกเป้าหมายเงินเก็บ (K-Pocket)</span></h3>
+                    <h3>
+                        <span>📈 เปรียบเทียบรายได้เดือนนี้ vs เดือนก่อนหน้า</span>
+                        <select id="momMonthSelect" aria-label="เลือกเดือนเปรียบเทียบ" style="width: auto; padding: 6px 15px; border-radius: 14px; background: var(--bg-input); cursor: pointer; font-size: 1rem;">
+                            <!-- เติมผ่าน JS -->
+                        </select>
+                    </h3>
                     
-                    <div class="stat-overview-container">
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">⏱️ ชม. OT ทั้งปี</span>
-                            <span class="stat-mini-val" id="kpiTotalHours">0.0</span>
-                            <span class="stat-mini-sub">ชั่วโมงสะสม</span>
+                    <div class="mom-grid">
+                        <div class="mom-box">
+                            <span class="mom-label" id="momPrevLabel">เดือนก่อนหน้า</span>
+                            <span class="mom-val" id="momPrevVal">0.00</span>
+                            <span class="mom-sub" id="momPrevOt">0 ชม. OT</span>
                         </div>
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">🔥 เดือนพีคสุด</span>
-                            <span class="stat-mini-val" id="kpiPeakMonth" style="font-size: 1.2rem; color: #db2777;">-</span>
-                            <span class="stat-mini-sub" id="kpiPeakHours">0 ชม.</span>
-                        </div>
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">💰 รายได้สุทธิสะสม</span>
-                            <span class="stat-mini-val" id="kpiTotalNetYear" style="font-size: 1.3rem;">0.00</span>
-                            <span class="stat-mini-sub">บาททั้งปี</span>
+                        <div class="mom-box">
+                            <span class="mom-label" id="momCurrLabel">เดือนนี้</span>
+                            <span class="mom-val" id="momCurrVal" style="color: var(--color-primary-hover);">0.00</span>
+                            <span class="mom-sub" id="momCurrOt">0 ชม. OT</span>
                         </div>
                     </div>
 
-                    <!-- 🌸 ส่วนกระปุกเป้าหมายเงินเก็บหลายรายการ -->
+                    <div class="mom-diff-banner" id="momDiffBanner">
+                        ✨ รายได้สุทธิเปลี่ยนแปลง: 0.00 บาท
+                    </div>
+
+                    <!-- กระปุกเป้าหมายเงินเก็บ K-Pocket -->
                     <div class="goals-header">
-                        <span style="font-weight: 800; color: var(--color-header); font-size: 1.1rem;">🎯 กระปุกเป้าหมายเงินเก็บของคุณ</span>
-                        <button class="btn btn-primary" onclick="openAddGoalModal()" style="width: auto; padding: 8px 16px; font-size: 0.9rem; margin: 0;">+ สร้างกระปุกใหม่</button>
+                        <span style="font-weight: 800; color: var(--color-header); font-size: 1.05rem;">🎯 กระปุกเป้าหมายเงินเก็บ (K-Pocket)</span>
+                        <button class="btn btn-primary" onclick="openAddGoalModal()" style="width: auto; padding: 6px 14px; font-size: 0.85rem; margin: 0;">+ สร้างกระปุก</button>
                     </div>
-                    <div id="goalsContainer" class="goals-grid">
-                        <!-- รายการกระปุกจะถูกสร้างผ่าน JS -->
-                    </div>
-
-                    <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:800; padding:12px; border-radius:16px; border: 2px dashed var(--border-color); background: var(--bg-input);"></div>
+                    <div id="goalsContainer" class="goals-grid"></div>
                 </div>
 
                 <div class="card">
@@ -732,7 +732,7 @@
             document.getElementById('customPopup').classList.remove('show');
         }
 
-        // 🌸 จัดการสลิปเงินเดือนดีไซน์ใหม่
+        // 🌸 จัดการสลิปเงินเดือน
         window.openSlipModal = function() {
             const m = document.getElementById('monthSelect').value;
             const c = calculateMonth(parseInt(m));
@@ -773,9 +773,7 @@
 
             document.getElementById('slipModal').classList.add('show');
         }
-        window.closeSlipModal = function() {
-            document.getElementById('slipModal').classList.remove('show');
-        }
+        window.closeSlipModal = function() { document.getElementById('slipModal').classList.remove('show'); }
         window.downloadSlipImage = function() {
             const slipCard = document.getElementById('cuteSlipCard');
             html2canvas(slipCard, { scale: 2, backgroundColor: null }).then(canvas => {
@@ -786,7 +784,7 @@
             });
         }
 
-        // 🌸 ฟังก์ชันจัดการกระปุกเป้าหมายเงินเก็บ (K-Pocket)
+        // 🌸 กระปุกเป้าหมาย K-Pocket
         window.openAddGoalModal = function() { document.getElementById('addGoalModal').classList.add('show'); }
         window.closeAddGoalModal = function() { document.getElementById('addGoalModal').classList.remove('show'); }
         window.saveNewGoal = async function() {
@@ -815,7 +813,7 @@
             for(let i=0; i<12; i++) totalNetYear += calculateMonth(i).netIncome;
 
             if(goals.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 600; padding: 15px;">ยังไม่มีกระปุกเป้าหมาย คลิกปุ่ม "+ สร้างกระปุกใหม่" ด้านบนได้เลยจ้า!</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-weight: 600; padding: 10px;">ยังไม่มีกระปุกเป้าหมาย</div>`;
                 return;
             }
 
@@ -828,16 +826,68 @@
                         <span class="goal-title">🎯 ${g.name}</span>
                         <button class="goal-delete-btn" onclick="deleteGoal(${g.id})" title="ลบกระปุก">🗑️</button>
                     </div>
-                    <div class="progress-bar-container" style="margin-top: 5px;">
+                    <div class="progress-bar-container">
                         <div class="progress-bar-fill" style="width: ${percent}%;"></div>
                     </div>
                     <div class="goal-amounts">
-                        <span>เก็บได้: ${totalNetYear.toLocaleString('th-TH', {maximumFractionDigits:0})} ฿</span>
-                        <span>เป้า: ${g.target.toLocaleString()} ฿ (${percent.toFixed(0)}%)</span>
+                        <span>${totalNetYear.toLocaleString('th-TH', {maximumFractionDigits:0})} ฿</span>
+                        <span>เป้า: ${g.target.toLocaleString()} (${percent.toFixed(0)}%)</span>
                     </div>
                 `;
                 container.appendChild(card);
             });
+        }
+
+        // 🌸 เติมตัวเลือกเดือนในช่องเปรียบเทียบ MoM
+        function initMoMSelector() {
+            const select = document.getElementById('momMonthSelect');
+            select.innerHTML = '';
+            monthsTH.forEach((mName, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.innerText = mName;
+                if(idx === new Date().getMonth()) opt.selected = true;
+                select.appendChild(opt);
+            });
+        }
+        initMoMSelector();
+
+        document.getElementById('momMonthSelect').addEventListener('change', renderMoMComparison);
+
+        function renderMoMComparison() {
+            const currIdx = parseInt(document.getElementById('momMonthSelect').value);
+            const prevIdx = currIdx === 0 ? 0 : currIdx - 1;
+
+            const currData = calculateMonth(currIdx);
+            const prevData = calculateMonth(prevIdx);
+
+            document.getElementById('momCurrLabel').innerText = `เดือน${monthsTH[currIdx]}`;
+            document.getElementById('momPrevLabel').innerText = currIdx === 0 ? "ไม่มีเดือนก่อนหน้า" : `เดือน${monthsTH[prevIdx]}`;
+
+            document.getElementById('momCurrVal').innerText = currData.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+            document.getElementById('momCurrOt').innerText = `${currData.totalOtHours.toFixed(1)} ชม. OT`;
+
+            if (currIdx === 0) {
+                document.getElementById('momPrevVal').innerText = "-";
+                document.getElementById('momPrevOt').innerText = "-";
+                document.getElementById('momDiffBanner').innerText = `✨ เดือนเริ่มต้นปี (รายได้สุทธิ: ${currData.netIncome.toLocaleString('th-TH', {maximumFractionDigits:2})} ฿)`;
+            } else {
+                document.getElementById('momPrevVal').innerText = prevData.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+                document.getElementById('momPrevOt').innerText = `${prevData.totalOtHours.toFixed(1)} ชม. OT`;
+
+                const diff = currData.netIncome - prevData.netIncome;
+                const diffBanner = document.getElementById('momDiffBanner');
+                if (diff > 0) {
+                    diffBanner.style.color = '#10b981';
+                    diffBanner.innerText = `📈 เดือนนี้ได้มากกว่าเดือนก่อน +${diff.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท 🎉`;
+                } else if (diff < 0) {
+                    diffBanner.style.color = '#e11d48';
+                    diffBanner.innerText = `📉 เดือนนี้น้อยกว่าเดือนก่อน ${diff.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท`;
+                } else {
+                    diffBanner.style.color = 'var(--text-main)';
+                    diffBanner.innerText = `⚖️ รายได้สุทธิเท่ากับเดือนก่อนหน้าพอดี`;
+                }
+            }
         }
 
         function markDirty() {
@@ -1044,6 +1094,7 @@
             renderTableAndTax();
             renderCharts();
             renderGoals();
+            renderMoMComparison();
         }
 
         function renderTableAndTax() {
@@ -1147,35 +1198,9 @@
 
         function renderCharts() {
             const monthlyHours = [];
-            let maxHours = 0;
-            let peakMonthName = "ไม่มีข้อมูล";
-            let totalYearNet = 0;
-            
             for (let i = 0; i < 12; i++) {
-                const c = calculateMonth(i);
-                monthlyHours.push(c.totalOtHours);
-                totalYearNet += c.netIncome;
-                if (c.totalOtHours > maxHours) {
-                    maxHours = c.totalOtHours;
-                    peakMonthName = monthsTH[i];
-                }
+                monthlyHours.push(calculateMonth(i).totalOtHours);
             }
-
-            const totalYearHours = monthlyHours.reduce((a, b) => a + b, 0);
-            document.getElementById('kpiTotalHours').innerText = totalYearHours.toFixed(1);
-            document.getElementById('kpiPeakMonth').innerText = peakMonthName;
-            document.getElementById('kpiPeakHours').innerText = maxHours.toFixed(1) + ' ชม.';
-            document.getElementById('kpiTotalNetYear').innerText = totalYearNet.toLocaleString('th-TH', {maximumFractionDigits:0});
-
-            const alertBox = document.getElementById('overworkAlert');
-            if (maxHours > 36) {
-                alertBox.style.color = '#ef4444';
-                alertBox.innerText = `⚠️ เดือน ${peakMonthName} มี OT สูงถึง ${maxHours.toFixed(1)} ชม. อย่าลืมพักผ่อนด้วยน้า!`;
-            } else {
-                alertBox.style.color = 'var(--text-muted)';
-                alertBox.innerText = `🌸 สถิติชั่วโมง OT อยู่ในเกณฑ์สมดุลและปลอดภัย`;
-            }
-
             renderPieChart();
         }
 
