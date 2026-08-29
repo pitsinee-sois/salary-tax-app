@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Customizable Slip & Profile)</title>
+    <title>Salary & Tax System (Default 0 Fields)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -448,8 +448,8 @@
                     <div class="form-group"><label for="licenseIn">ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div class="form-group"><label for="houseIn">ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div style="display:flex; gap:15px;">
-                        <div class="form-group"><label for="foodDaysIn">ค่าอาหาร (วันละ 50)</label><input type="number" id="foodDaysIn" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
-                        <div class="form-group"><label for="allowanceDaysIn">เบี้ยเลี้ยง (วันละ 150)</label><input type="number" id="allowanceDaysIn" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
+                        <div class="form-group"><label for="foodDaysIn">ค่าอาหาร (วันละ 50)</label><input type="number" id="foodDaysIn" value="0" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
+                        <div class="form-group"><label for="allowanceDaysIn">เบี้ยเลี้ยง (วันละ 150)</label><input type="number" id="allowanceDaysIn" value="0" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
                     </div>
                     <div class="form-group"><label for="welfareIn">สวัสดิการ</label><input type="number" id="welfareIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div style="display:flex; gap:15px;">
@@ -462,19 +462,19 @@
                     <h3 style="color: var(--color-primary-hover);">⏱️ บันทึกชั่วโมงโอที</h3>
                     <div class="form-group">
                         <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot15h" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot15m" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="ot15h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot15m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
                     </div>
                     <div class="form-group">
                         <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot20h" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot20m" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="ot20h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot20m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
                     </div>
                     <div class="form-group">
                         <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot30h" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot30m" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="ot30h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot30m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
                     </div>
                     <div class="form-group">
                         <label style="color: #8b5cf6;">⭐ OT 6.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot60h" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot60m" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="ot60h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot60m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
                     </div>
                     
                     <button id="saveBtn" class="btn btn-primary" style="margin-top: 30px; height: 75px; font-size: 1.4rem;"><span id="saveBtnText">💾 บันทึกข้อมูลลงระบบ</span></button>
@@ -546,19 +546,19 @@
 
                     <div class="form-group" style="margin-top: 25px;">
                         <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt15h" min="0" placeholder="ชม."><input type="number" id="qOt15m" min="0" max="59" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="qOt15h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt15m" value="0" min="0" max="59" placeholder="นาที"></div>
                     </div>
                     <div class="form-group">
                         <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt20h" min="0" placeholder="ชม."><input type="number" id="qOt20m" min="0" max="59" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="qOt20h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt20m" value="0" min="0" max="59" placeholder="นาที"></div>
                     </div>
                     <div class="form-group">
                         <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt30h" min="0" placeholder="ชม."><input type="number" id="qOt30m" min="0" max="59" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="qOt30h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt30m" value="0" min="0" max="59" placeholder="นาที"></div>
                     </div>
                     <div class="form-group">
                         <label style="color: #8b5cf6;">⭐ OT 6.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt60h" min="0" placeholder="ชม."><input type="number" id="qOt60m" min="0" max="59" placeholder="นาที"></div>
+                        <div class="ot-row"><input type="number" id="qOt60h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt60m" value="0" min="0" max="59" placeholder="นาที"></div>
                     </div>
                 </div>
 
@@ -713,7 +713,6 @@
             document.getElementById('slipMonthYear').innerText = `${monthsTH[m]} ${currentYear + 543}`;
             document.getElementById('slipUserEmail').innerText = currentUserEmail || 'user@email.com';
             
-            // ดึงข้อมูลโปรไฟล์ผู้ใช้มาใส่ในสลิป
             document.getElementById('slipCompanyName').innerText = `🌸 ${userProfile.companyName || 'บริษัท ไทย เช็มคอน จำกัด'}`;
             document.getElementById('slipEmpCode').innerText = userProfile.empCode || '-';
             document.getElementById('slipDepartment').innerText = userProfile.department || '-';
@@ -854,7 +853,6 @@
             if (!currentUid) return;
             document.getElementById('loadingOverlay').style.display = 'block';
             try {
-                // โหลดข้อมูลโปรไฟล์ (ชื่อบริษัท, เลขบัญชี ฯลฯ)
                 const profileRef = doc(db, "users", currentUid, "settings", "profile");
                 const profileSnap = await getDoc(profileRef);
                 if (profileSnap.exists()) {
@@ -866,7 +864,6 @@
                 document.getElementById('pBankName').value = userProfile.bankName || "";
                 document.getElementById('pBankAcc').value = userProfile.bankAcc || "";
 
-                // โหลดข้อมูลรายได้ประจำปี
                 const docRef = doc(db, "users", currentUid, "years", currentYear.toString());
                 const docSnap = await getDoc(docRef);
                 yearlyData = docSnap.exists() ? docSnap.data() : {};
@@ -910,19 +907,19 @@
             document.getElementById('baseIn').value = data.base ?? 0;
             document.getElementById('licenseIn').value = data.license ?? 0;
             document.getElementById('houseIn').value = data.house ?? 0;
-            document.getElementById('foodDaysIn').value = data.foodDays ?? '';
-            document.getElementById('allowanceDaysIn').value = data.allowanceDays ?? '';
+            document.getElementById('foodDaysIn').value = data.foodDays ?? 0;
+            document.getElementById('allowanceDaysIn').value = data.allowanceDays ?? 0;
             document.getElementById('welfareIn').value = data.welfare ?? 0;
             document.getElementById('leaveIn').value = data.leave ?? 0;
             document.getElementById('ssIn').value = data.ss ?? 0;
-            document.getElementById('ot15h').value = data.ot15h ?? '';
-            document.getElementById('ot15m').value = data.ot15m ?? '';
-            document.getElementById('ot20h').value = data.ot20h ?? '';
-            document.getElementById('ot20m').value = data.ot20m ?? '';
-            document.getElementById('ot30h').value = data.ot30h ?? '';
-            document.getElementById('ot30m').value = data.ot30m ?? '';
-            document.getElementById('ot60h').value = data.ot60h ?? '';
-            document.getElementById('ot60m').value = data.ot60m ?? '';
+            document.getElementById('ot15h').value = data.ot15h ?? 0;
+            document.getElementById('ot15m').value = data.ot15m ?? 0;
+            document.getElementById('ot20h').value = data.ot20h ?? 0;
+            document.getElementById('ot20m').value = data.ot20m ?? 0;
+            document.getElementById('ot30h').value = data.ot30h ?? 0;
+            document.getElementById('ot30m').value = data.ot30m ?? 0;
+            document.getElementById('ot60h').value = data.ot60h ?? 0;
+            document.getElementById('ot60m').value = data.ot60m ?? 0;
             
             document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
             markClean();
