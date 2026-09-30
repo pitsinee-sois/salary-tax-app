@@ -282,6 +282,7 @@
                         <h4>รายการหัก</h4>
                         <div class="slip-row-item"><span>หักลางาน/อื่นๆ</span> <span id="slipLeave" style="color:#e11d48;">0.00</span></div>
                         <div class="slip-row-item"><span>ประกันสังคม</span> <span id="slipSS" style="color:#e11d48;">0.00</span></div>
+                        <div class="slip-row-item"><span>สำรองเลี้ยงชีพ</span> <span id="slipProvident" style="color:#e11d48;">0.00</span></div>
                     </div>
                 </div>
 
@@ -379,6 +380,7 @@
                     <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
                     <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
                     <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">หักสำรองเลี้ยงชีพ</span><span class="tax-value deduct">- <span id="taxProvident">0.00</span></span></div>
                     <div class="tax-box tax-total-box"><span class="tax-label" id="taxFinalLabel" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
                 </div>
             </div>
@@ -456,6 +458,7 @@
                         <div class="form-group"><label for="leaveIn">หักลางาน/อื่นๆ</label><input type="number" id="leaveIn" value="0" min="0" step="any" placeholder="0"></div>
                         <div class="form-group"><label for="ssIn">หักประกันสังคม</label><input type="number" id="ssIn" value="0" min="0" step="any" placeholder="0"></div>
                     </div>
+                    <div class="form-group"><label for="providentIn">หักเงินสำรองเลี้ยงชีพ</label><input type="number" id="providentIn" value="600" min="0" step="any" placeholder="600"></div>
                 </div>
 
                 <div class="card" style="margin-bottom:0;">
@@ -636,7 +639,7 @@
         let otDonutChartInstance = null;
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
+        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','providentIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
 
         function checkAutoTheme() {
             if (!isAutoTheme) return;
@@ -734,9 +737,10 @@
 
             document.getElementById('slipLeave').innerText = c.leave.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipSS').innerText = c.ss.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipProvident').innerText = c.provident.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
 
             document.getElementById('slipGrossTotal').innerText = c.grossIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
-            const totalDeduct = c.leave + c.ss;
+            const totalDeduct = c.leave + c.ss + c.provident;
             document.getElementById('slipDeductTotal').innerText = totalDeduct.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
 
             let accGross = 0, accSS = 0;
@@ -912,6 +916,7 @@
             document.getElementById('welfareIn').value = data.welfare ?? 0;
             document.getElementById('leaveIn').value = data.leave ?? 0;
             document.getElementById('ssIn').value = data.ss ?? 0;
+            document.getElementById('providentIn').value = data.provident ?? 600;
             document.getElementById('ot15h').value = data.ot15h ?? 0;
             document.getElementById('ot15m').value = data.ot15m ?? 0;
             document.getElementById('ot20h').value = data.ot20h ?? 0;
@@ -937,6 +942,7 @@
                 welfare: parseFloat(document.getElementById('welfareIn').value) || 0,
                 leave: parseFloat(document.getElementById('leaveIn').value) || 0,
                 ss: parseFloat(document.getElementById('ssIn').value) || 0,
+                provident: parseFloat(document.getElementById('providentIn').value) || 0,
                 ot15h: parseFloat(document.getElementById('ot15h').value) || 0,
                 ot15m: parseFloat(document.getElementById('ot15m').value) || 0,
                 ot20h: parseFloat(document.getElementById('ot20h').value) || 0,
@@ -984,6 +990,7 @@
             const welfare = raw.welfare || 0;
             const leave = raw.leave || 0;
             const ss = raw.ss || 0;
+            const provident = raw.provident !== undefined ? raw.provident : 600;
 
             const baseIncome = base + license + house + foodMoney + allowanceMoney + welfare;
             const hourlyRate = base > 0 ? base / 240 : 0;
@@ -996,10 +1003,10 @@
             const totalOtHours = h15 + h20 + h30 + h60;
             const totalOtMoney = (h15 * 1.5 * hourlyRate) + (h20 * 2.0 * hourlyRate) + (h30 * 3.0 * hourlyRate) + (h60 * 6.0 * hourlyRate);
             const grossIncome = baseIncome + totalOtMoney;
-            const netIncome = grossIncome - leave - ss;
+            const netIncome = grossIncome - leave - ss - provident;
 
             return { 
-                base, license, house, foodDays, foodMoney, allowanceDays, allowanceMoney, welfare, leave, ss,
+                base, license, house, foodDays, foodMoney, allowanceDays, allowanceMoney, welfare, leave, ss, provident,
                 baseIncome, grossIncome, netIncome, totalOtHours, totalOtMoney, h15, h20, h30, h60 
             };
         }
@@ -1085,7 +1092,7 @@
         function renderTableAndTax() {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
-            let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalGrossSum = 0;
+            let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalProvidentSum = 0, totalGrossSum = 0;
             const today = new Date();
             const isCurrentYear = currentYear === today.getFullYear();
             const currentMonthIdx = today.getMonth();
@@ -1094,7 +1101,7 @@
                 const c = calculateMonth(i);
                 totalBaseSum += c.baseIncome; totalHoursSum += c.totalOtHours;
                 totalOtSum += c.totalOtMoney; totalNetSum += c.netIncome;
-                totalSSSum += c.ss; totalGrossSum += c.grossIncome;
+                totalSSSum += c.ss; totalProvidentSum += c.provident; totalGrossSum += c.grossIncome;
 
                 const tr = document.createElement('tr');
                 if (isCurrentYear && i === currentMonthIdx) tr.classList.add('current-month');
@@ -1130,6 +1137,7 @@
                                 <h4>✂️ รายการหักออก</h4>
                                 <div class="breakdown-item"><span>หักลางาน/อื่นๆ:</span> <span style="color:#e11d48;">- ${c.leave.toLocaleString()} ฿</span></div>
                                 <div class="breakdown-item"><span>หักประกันสังคม:</span> <span style="color:#e11d48;">- ${c.ss.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>หักสำรองเลี้ยงชีพ:</span> <span style="color:#e11d48;">- ${c.provident.toLocaleString()} ฿</span></div>
                                 <div style="margin-top:10px; border-top:1px dashed var(--border-color); padding-top:5px;" class="breakdown-item"><strong>รับสุทธิ:</strong> <strong style="color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</strong></div>
                             </div>
                         </div>
@@ -1151,7 +1159,7 @@
             document.getElementById('totalNet').innerText = totalNetSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
 
             const expenses = Math.min(totalGrossSum * 0.5, 100000);
-            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - totalSSSum);
+            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - totalSSSum - totalProvidentSum);
 
             let tax = 0;
             if (taxableIncome > 5000000) tax += (taxableIncome - 5000000) * 0.35 + 1265000;
@@ -1168,6 +1176,7 @@
             document.getElementById('taxGross').innerText = totalGrossSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('taxExp').innerText = expenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('taxSS').innerText = totalSSSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxProvident').innerText = totalProvidentSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             
             const taxAmountEl = document.getElementById('taxAmount');
             const taxLabelEl = document.getElementById('taxFinalLabel');
