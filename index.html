@@ -998,7 +998,8 @@
             const welfare = raw.welfare || 0;
             const leave = raw.leave || 0;
             const ss = raw.ss || 0;
-            const pvf = yearlyData[m] ? (raw.pvf !== undefined ? raw.pvf : 600) : 0;
+            const hasData = ['base','license','house','foodDays','allowanceDays','welfare','leave','ss','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m'].some(k => (raw[k] || 0) > 0);
+            const pvf = hasData ? (raw.pvf !== undefined ? raw.pvf : 600) : 0;
 
             const baseIncome = base + license + house + foodMoney + allowanceMoney + welfare;
             const hourlyRate = base > 0 ? base / 240 : 0;
