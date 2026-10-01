@@ -3,402 +3,606 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Perfect Animated Edition)</title>
+    <title>Salary & Tax System (Default 0 Fields)</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
         
         * { box-sizing: border-box; }
 
-        /* 🎨 ระบบตัวแปรสีสุดละมุน (Soft Pastel Colors) */
         :root {
-            --bg-main: #f8fafc; --bg-card: rgba(255, 255, 255, 0.85); --bg-input: #ffffff;
-            --text-main: #334155; --text-muted: #64748b; --color-primary: #60a5fa;
-            --color-primary-hover: #3b82f6; --color-header: #1e293b; --border-color: rgba(255,255,255,0.9);
-            --chart-bar: #60a5fa;
-        }
-        [data-theme="sakura"] {
-            --bg-main: #fdf2f8; --color-primary: #f472b6; --color-primary-hover: #ec4899; 
-            --color-header: #9d174d; --text-main: #831843; --text-muted: #be185d; --chart-bar: #f472b6;
-        }
-        [data-theme="orange"] {
-            --bg-main: #fff7ed; --color-primary: #fb923c; --color-primary-hover: #f97316; 
-            --color-header: #9a3412; --text-main: #7c2d12; --text-muted: #c2410c; --chart-bar: #fb923c;
-        }
-        [data-theme="fuji"] {
-            --bg-main: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 100%); --color-primary: #38bdf8; 
-            --color-primary-hover: #0ea5e9; --color-header: #075985; --text-main: #0c4a6e; --text-muted: #0369a1; --chart-bar: #38bdf8;
-        }
-        [data-theme="bamboo"] {
-            --bg-main: #f7fee7; --color-primary: #84cc16; --color-primary-hover: #65a30d; 
-            --color-header: #3f6212; --text-main: #3f6212; --text-muted: #4d7c0f; --chart-bar: #84cc16;
-        }
-        [data-theme="skyblue"] {
-            --bg-main: #f0f9ff; --color-primary: #38bdf8; --color-primary-hover: #0ea5e9; 
-            --color-header: #075985; --text-main: #0c4a6e; --text-muted: #0369a1; --chart-bar: #38bdf8;
-        }
-        [data-theme="matcha"] {
-            --bg-main: #f0fdf4; --color-primary: #34d399; --color-primary-hover: #10b981; 
-            --color-header: #065f46; --text-main: #064e3b; --text-muted: #047857; --chart-bar: #34d399;
-        }
-        [data-theme="ocean"] {
-            --bg-main: #f0fdfa; --color-primary: #2dd4bf; --color-primary-hover: #14b8a6; 
-            --color-header: #115e59; --text-main: #134e4a; --text-muted: #0f766e; --chart-bar: #2dd4bf;
-        }
-        [data-theme="purple"] {
-            --bg-main: #faf5ff; --color-primary: #c084fc; --color-primary-hover: #a855f7; 
-            --color-header: #5b21b6; --text-main: #4c1d95; --text-muted: #6d28d9; --chart-bar: #c084fc;
-        }
-        [data-theme="twotone"] {
-            --bg-main: linear-gradient(135deg, #fbcfe8 0%, #bfdbfe 100%); --color-primary: #a78bfa; 
-            --color-primary-hover: #8b5cf6; --color-header: #312e81; --text-main: #1e3a8a; --text-muted: #4338ca; --chart-bar: #a78bfa;
-            --bg-card: rgba(255, 255, 255, 0.7); --bg-input: rgba(255, 255, 255, 0.9);
-        }
-        [data-theme="dark"] {
-            --bg-main: #0f172a; --bg-card: rgba(30, 41, 59, 0.85); --bg-input: #1e293b;
-            --text-main: #f8fafc; --text-muted: #e2e8f0; --color-primary: #93c5fd;
-            --color-primary-hover: #60a5fa; --color-header: #bfdbfe; --border-color: rgba(71, 85, 105, 0.5); --chart-bar: #93c5fd;
-        }
-        [data-theme="ruby"] {
-            --bg-main: #fef2f2; --color-primary: #f87171; --color-primary-hover: #ef4444; 
-            --color-header: #991b1b; --text-main: #7f1d1d; --text-muted: #991b1b; --chart-bar: #f87171;
-        }
-        [data-theme="tokyo"] {
-            --bg-main: #09090b; --bg-card: rgba(39, 39, 42, 0.85); --bg-input: #18181b;
-            --text-main: #f4f4f5; --text-muted: #d4d4d8; --color-primary: #fb7185;
-            --color-primary-hover: #f43f5e; --color-header: #fda4af; --border-color: rgba(63, 63, 70, 0.5); --chart-bar: #fb7185;
+            --bg-main: linear-gradient(135deg, #ffe4e1 0%, #fff0f5 100%); 
+            --bg-card: rgba(255, 255, 255, 0.75); 
+            --bg-input: rgba(255, 255, 255, 0.9);
+            --text-main: #831843; 
+            --text-muted: #be185d; 
+            --color-primary: #f472b6;
+            --color-primary-hover: #db2777; 
+            --color-header: #9d174d; 
+            --border-color: rgba(255, 255, 255, 0.8);
+            --color-danger: #e11d48;
         }
 
-        /* 🌳 SCENERY LAYER (ฉากหลังที่แก้บัคแล้ว) */
-        #themeEffectLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1; overflow: hidden; }
-        
-        .scenery-element { position: absolute; background-repeat: no-repeat; opacity: 0.9; }
-        
-        .tree-avenue {
-            bottom: -5vh; width: 40vh; height: 75vh; max-width: 400px;
-            background-size: contain; background-position: bottom left;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));
-            animation: sway 5s ease-in-out infinite alternate;
+        body.night-mode {
+            --bg-main: linear-gradient(135deg, #1e1b2e 0%, #2d1f3d 100%);
+            --bg-card: rgba(45, 31, 61, 0.75);
+            --bg-input: rgba(45, 31, 61, 0.9);
+            --text-main: #fbcfe8;
+            --text-muted: #f472b6;
+            --color-primary: #ec4899;
+            --color-primary-hover: #f472b6;
+            --color-header: #f9a8d4;
+            --border-color: rgba(244, 114, 182, 0.2);
         }
-        .tree-left { left: -5vw; transform-origin: bottom left; }
-        .tree-right { right: -5vw; transform: scaleX(-1); transform-origin: bottom right; animation-direction: alternate-reverse;}
 
-        /* ✨ Keyframes แอนิเมชันสุดสมูท */
+        body { 
+            font-family: 'Sarabun', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 2vh 20px; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+            background-attachment: fixed;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, span[role="button"]:focus-visible {
+            outline: 3px solid var(--color-primary-hover);
+            outline-offset: 2px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
+
+        #sakuraLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; overflow: hidden; }
+        .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
+        body.night-mode .sakura-branch { opacity: 0.3; filter: drop-shadow(0 10px 15px rgba(236, 72, 153, 0.1)); }
+        
+        .petal {
+            position: absolute; background: linear-gradient(135deg, #ffb7c5, #ff8da1);
+            border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8;
+            box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
+            animation: fall linear infinite, sway ease-in-out infinite alternate;
+        }
+        body.night-mode .petal { background: linear-gradient(135deg, #f472b6, #db2777); opacity: 0.5; }
+        @keyframes fall { 0% { top: -10%; opacity: 0; transform: rotate(0deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; transform: rotate(360deg); } }
+        @keyframes sway { 0% { transform: translateX(0px) rotate(0deg); } 100% { transform: translateX(40px) rotate(45deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes sway { 0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); } }
-        @keyframes swayPlant { 0% { transform: skewX(-2deg); } 100% { transform: skewX(2deg); } }
-        @keyframes pulseSun { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* แก้บัคการร่วงหล่น ให้ทำงานได้ 100% */
-        @keyframes fallAnim { 
-            0% { transform: translate(0, -15vh) rotate(0deg); opacity: 0; } 
-            10% { opacity: 1; } 
-            90% { opacity: 1; } 
-            100% { transform: translate(-10vw, 115vh) rotate(360deg); opacity: 0; } 
-        }
-        @keyframes driftRightAnim { 
-            0% { transform: translateX(-15vw); opacity: 0; } 
-            10% { opacity: 1; } 
-            90% { opacity: 1; } 
-            100% { transform: translateX(115vw); opacity: 0; } 
-        }
-        @keyframes driftLeftAnim { 
-            0% { transform: translateX(115vw) scaleX(-1); opacity: 0; } 
-            10% { opacity: 1; } 
-            90% { opacity: 1; } 
-            100% { transform: translateX(-15vw) scaleX(-1); opacity: 0; } 
-        }
-        @keyframes floatUpAnim { from { transform: translateY(15vh); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes bubbleRiseAnim { 0% { transform: translateY(115vh) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 80% { opacity: 0.8; } 100% { transform: translateY(-15vh) scale(1.2); opacity: 0; } }
-        @keyframes twinkleAnim { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.2); } }
-        @keyframes floatRandomAnim { 0% { transform: translateY(0); } 100% { transform: translateY(-30px); } }
-        @keyframes shootingStarAnim { 0% { transform: translate(110vw, -10vh) rotate(-45deg); width: 0; opacity: 1; } 100% { transform: translate(-20vw, 110vh) rotate(-45deg); width: 250px; opacity: 0; } }
+        .dashboard-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
 
-        .particle { position: absolute; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
-
-        /* 📱 MAIN LAYOUT */
-        body { font-family: 'Sarabun', sans-serif; background: var(--bg-main); color: var(--text-main); margin: 0; padding: 4vh 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; overflow-x: hidden; transition: background 0.5s ease; }
-        
-        .container { 
-            width: 100%; max-width: 900px; 
-            background: var(--bg-card); 
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 2px solid var(--border-color); 
-            padding: 40px; border-radius: 40px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08); 
-            margin-bottom: 50px; position: relative; z-index: 10; 
-            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg-card); backdrop-filter: blur(20px);
+            padding: 15px 30px; border-radius: 24px; border: 2px solid var(--border-color);
+            box-shadow: 0 15px 35px rgba(244, 114, 182, 0.1); margin-bottom: 25px;
+            animation: fadeUp 0.6s ease-out forwards; flex-wrap: wrap; gap: 15px;
         }
+        .app-title { font-size: 1.8rem; font-weight: 800; color: var(--color-header); display: flex; align-items: center; gap: 10px; margin: 0; }
         
-        h1 { text-align: center; color: var(--color-header); margin-top: 0; margin-bottom: 35px; font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; }
+        .tab-nav { display: flex; gap: 10px; background: rgba(244, 114, 182, 0.1); padding: 5px; border-radius: 20px; }
+        .tab-btn { padding: 12px 20px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun', sans-serif; font-size: 1rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
+        .tab-btn:hover { background: rgba(255, 255, 255, 0.3); }
+        .tab-btn.active { background: var(--bg-input); color: var(--color-primary-hover); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2); }
+        
+        .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
+        .tab-content.active { display: block; }
 
-        /* 🐰 Cute Popup */
-        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
-        .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
-        .cute-popup-box { background: var(--bg-input); border: 4px solid var(--color-primary); padding: 40px 30px; border-radius: 36px; text-align: center; max-width: 360px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
-        .cute-popup-overlay.show .cute-popup-box { transform: scale(1); animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .cute-popup-icon { font-size: 4.5rem; margin-bottom: 15px; animation: pulseSun 2s infinite alternate; }
-        .cute-popup-msg { font-size: 1.15rem; font-weight: 700; line-height: 1.5; margin-bottom: 25px; color: var(--text-main); }
+        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         
-        /* 🎛️ Form Elements */
-        .form-group { margin-bottom: 22px; text-align: left; width: 100%; }
+        .card { 
+            background: var(--bg-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; 
+            box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.15); transition: 0.3s; margin-bottom: 25px;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: var(--color-primary); }
+        .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+        .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .tax-box { background: var(--bg-input); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid var(--border-color); }
+        .tax-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(244, 114, 182, 0.15);}
+        .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
+        .tax-value { display: block; font-size: 1.6rem; font-weight: 800; color: var(--text-main); }
+        .tax-value.deduct { color: #ec4899; }
+        .tax-total-box { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(253, 164, 175, 0.15)); border: 2px solid rgba(244, 114, 182, 0.4); }
+        .tax-total-box .tax-value { color: #be123c; font-size: 2.2rem; }
+        body.night-mode .tax-total-box .tax-value { color: #f472b6; }
+
+        .form-group { margin-bottom: 20px; width: 100%; }
         label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); padding-left: 5px; }
         input, select { 
             width: 100%; padding: 16px 20px; border: 2px solid transparent; 
-            border-radius: 20px; font-family: 'Sarabun', sans-serif; font-size: 1.05rem; 
+            border-radius: 20px; font-family: 'Sarabun', sans-serif; font-size: 1.1rem; 
             background-color: var(--bg-input); color: var(--text-main); font-weight: 600;
-            transition: 0.3s; box-shadow: inset 0 2px 6px rgba(0,0,0,0.02); 
+            transition: 0.3s; box-shadow: inset 0 2px 5px rgba(244, 114, 182, 0.05); 
         }
-        input:focus, select:focus { border-color: var(--color-primary); background-color: #fff; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); outline: none; transform: translateY(-2px); }
+        input:focus, select:focus { border-color: var(--color-primary); background-color: var(--bg-input); box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2); outline: none; transform: translateY(-2px); }
+        .field-hint { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 6px; padding-left: 5px; display: block; }
         
-        .btn { width: 100%; padding: 18px; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.15rem; color: white; margin-top: 10px; display: flex; justify-content: center; align-items: center; gap: 10px;}
-        .btn-primary { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover)); box-shadow: 0 10px 20px rgba(var(--color-primary), 0.3); }
-        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(var(--color-primary), 0.4); filter: brightness(1.05); }
-        
-        .toggle-area { margin-top: 30px; text-align: center; }
-        .toggle-text span { color: var(--color-primary); font-weight: 800; cursor: pointer; background: var(--bg-input); padding: 8px 15px; border-radius: 12px; transition: 0.2s;}
-        .toggle-text span:hover { filter: brightness(0.9); }
-        .forgot-text { font-size: 0.95rem; color: var(--text-muted); cursor: pointer; margin-top: 20px; display: inline-block; font-weight: 600; text-decoration: underline;}
-        
-        /* 📊 Dashboard Cards */
-        .dashboard-top { display: grid; grid-template-columns: 1.3fr 1fr; gap: 25px; margin-bottom: 25px; }
-        .card, .section-box { 
-            background: var(--bg-input); border: 2px solid transparent; 
-            border-radius: 32px; padding: 30px; transition: 0.3s; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.03);
-        }
-        .card:hover, .section-box:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); border-color: var(--border-color); }
-        h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; font-size: 1.25rem; display: flex; align-items: center; justify-content: space-between; font-weight: 800; }
-        
-        .chart-wrapper { height: 260px; width: 100%; margin-top: 15px;}
-        .pie-container { position: relative; height: 180px; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; margin-top: 10px;}
-        .pie-center-label { position: absolute; text-align: center; pointer-events: none; display: flex; flex-direction: column; align-items: center;}
-        
-        .ot-custom-legend { display: flex; justify-content: space-around; background: var(--bg-card); padding: 15px; border-radius: 20px; }
-        .legend-item { display: flex; flex-direction: column; align-items: center; font-weight: 700; font-size: 0.9rem; color: var(--text-muted); }
-        .legend-val { font-size: 1.2rem; font-weight: 800; color: var(--text-main); margin-top: 5px; }
-        .legend-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
-        #otSummaryMonth { width: auto; padding: 8px 15px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; background: var(--bg-card); border: 2px solid transparent; cursor: pointer; transition: 0.2s;}
-        
-        /* 🧾 Tax Grid */
-        .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .tax-box { background: var(--bg-card); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; }
-        .tax-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.04); background: #fff;}
-        .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
-        .tax-value { display: block; font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
-        .tax-value.deduct { color: #10b981; }
-        .tax-total-box { grid-column: 1 / -1; background: rgba(225, 29, 72, 0.08); border: 2px solid rgba(225, 29, 72, 0.15); }
-        .tax-total-box .tax-value { color: #e11d48; font-size: 2rem; }
-        
-        /* Tables & Inputs */
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+        .password-wrap { position: relative; }
+        .password-wrap input { padding-right: 55px; }
+        .toggle-pw { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.3rem; padding: 6px; line-height: 1; }
+
         .ot-row { display: flex; gap: 10px; }
-        .ot-row input { text-align: center; font-weight: 800; color: var(--color-primary); font-size: 1.15rem; }
+        .ot-row input { text-align: center; font-weight: 800; color: var(--color-primary-hover); font-size: 1.2rem; }
+
+        .btn { width: 100%; padding: 20px; border: none; border-radius: 24px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.25rem; color: white; display: flex; justify-content: center; align-items: center; gap: 10px;}
+        .btn-primary { background: linear-gradient(135deg, #f472b6, #db2777); box-shadow: 0 10px 25px rgba(219, 39, 119, 0.3); }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(219, 39, 119, 0.4); filter: brightness(1.1); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; filter: none; }
+        .btn-primary .spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
         
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: var(--bg-input); }
+        .dirty-dot { display: none; width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; margin-left: 6px; box-shadow: 0 0 0 3px rgba(245,158,11,0.25); }
+        .dirty-dot.show { display: inline-block; }
+
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: var(--bg-card); box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.1); border: 2px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed var(--border-color); font-size: 1.05rem;}
-        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid var(--border-color); }
-        tbody tr:hover td { background: rgba(0,0,0,0.02); color: var(--color-primary); font-weight: 700; }
-        .tfoot-bg { background: rgba(0,0,0,0.04); font-weight: 800; }
+        th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed rgba(244, 114, 182, 0.2); font-size: 1.05rem;}
+        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid rgba(244, 114, 182, 0.3); background: rgba(253, 242, 248, 0.3);}
+        body.night-mode th { background: rgba(45, 31, 61, 0.5); }
+        tbody tr { transition: 0.2s; cursor: pointer; }
+        tbody tr:hover { background: rgba(244, 114, 182, 0.08); }
+        tbody tr.current-month td { background: rgba(244, 114, 182, 0.06); }
+        .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); font-size: 1.15rem; }
 
-        #userBar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding: 20px 30px; background: var(--bg-input); border-radius: 28px; flex-wrap: wrap; gap: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.02);}
+        .breakdown-row { background: var(--bg-card) !important; display: none; }
+        .breakdown-row.show { display: table-row; }
+        .breakdown-content { padding: 20px; text-align: left; color: var(--text-main); font-size: 0.95rem; }
+        .breakdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
+        .breakdown-box { background: var(--bg-input); padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(244, 114, 182, 0.05); }
+        .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; }
+        .breakdown-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
+
+        /* 🌸 สลิปเงินเดือนดีไซน์ละเอียด */
+        .slip-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .slip-modal-overlay.show { opacity: 1; pointer-events: auto; }
         
-        .btn-logout {
-            background-color: #fff1f2; color: #e11d48; border: 2px solid #fecdd3;
-            border-radius: 25px; padding: 15px 30px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.1rem;
-            box-shadow: 0 4px 10px rgba(225, 29, 72, 0.1); width: auto; min-width: 200px;
+        .cute-slip-card {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
+            border: 4px solid #f472b6; border-radius: 28px; padding: 25px; width: 95%; max-width: 600px;
+            color: #831843; box-shadow: 0 25px 50px rgba(244,114,182,0.3); font-family: 'Sarabun', sans-serif;
         }
-        .btn-logout:hover { background-color: #ffe4e6; border-color: #fda4af; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(225, 29, 72, 0.2); }
+        .slip-header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #f472b6; padding-bottom: 12px; margin-bottom: 15px; }
+        .slip-company { font-size: 1.3rem; font-weight: 800; color: #9d174d; }
+        .slip-title { font-size: 1.1rem; font-weight: 800; color: #be185d; text-align: right; }
         
-        #appSection { display: none; }
-        #loadingOverlay { display: none; text-align: center; color: var(--color-primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 20px; }
+        .slip-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.9rem; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.6); padding: 12px; border-radius: 16px; }
+        
+        .slip-table-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 20px; border: 2px solid #fbcfe8; }
+        .slip-col h4 { margin: 0 0 10px 0; text-align: center; color: #9d174d; font-size: 1rem; border-bottom: 2px solid #f472b6; padding-bottom: 5px; }
+        .slip-row-item { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px; font-weight: 600; }
+        
+        .slip-total-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-weight: 800; font-size: 1rem; }
+        .slip-total-box-in { background: #fce7f3; padding: 10px 15px; border-radius: 14px; display: flex; justify-content: space-between; color: #9d174d; border: 1px solid #f472b6; }
+        
+        .slip-footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px; background: rgba(255,255,255,0.7); padding: 12px; border-radius: 16px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #831843; }
 
-        @media (max-width: 768px) {
-            body { padding: 2vh 10px; }
-            .container { padding: 30px 20px; border-radius: 32px; }
-            .dashboard-top { grid-template-columns: 1fr; }
-            #userBar { flex-direction: column; text-align: center; }
-            #userBar div { justify-content: center; width: 100%; }
-            h3 { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
+        .cute-popup-box { background: var(--bg-card); border: 4px solid var(--color-primary); padding: 40px; border-radius: 36px; text-align: center; max-width: 400px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 30px 60px rgba(244, 114, 182, 0.25); }
+        .cute-popup-overlay.show .cute-popup-box { transform: scale(1); animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .popup-btn-row { display: flex; gap: 12px; margin-top: 15px; }
+        .popup-btn-row .btn { margin: 0; }
+        .btn-secondary { background: rgba(244,114,182,0.12); color: var(--color-primary-hover); }
+        .btn-secondary:hover { background: rgba(244,114,182,0.2); }
+        
+        #authSection { max-width: 450px; margin: 10vh auto; }
+        #appSection { display: none; }
+        #initialLoading { text-align: center; padding: 15vh 0; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; }
+        #loadingOverlay { display: none; text-align: center; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; background: var(--bg-card); padding: 15px; border-radius: 20px; }
+        .user-chip { font-weight: 700; color: var(--color-header); background: rgba(244,114,182,0.12); padding: 8px 16px; border-radius: 16px; font-size: 0.95rem; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        @media (max-width: 1024px) {
+            .grid-forms { grid-template-columns: 1fr; }
+            .dashboard-wrapper { padding: 0; }
+            .top-nav { flex-direction: column; text-align: center; padding: 20px; }
+            .tab-nav { width: 100%; justify-content: center; flex-wrap: wrap; }
+            .sakura-branch { width: 300px; right: -30px; top: -10px; }
+            .user-chip { max-width: 100%; }
+            .slip-table-container { grid-template-columns: 1fr; }
+            .slip-total-bar { grid-template-columns: 1fr; }
+            .slip-footer-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 🌸 เลเยอร์วาดทิวทัศน์ (Vector Scenery Layer) -->
-    <div id="themeEffectLayer"></div>
+    <div id="sakuraLayer">
+        <svg class="sakura-branch" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M450,-50 Q400,100 250,150 T50,300" fill="none" stroke="#5c4033" stroke-width="8" stroke-linecap="round"/>
+            <path d="M350,70 Q300,150 150,120" fill="none" stroke="#5c4033" stroke-width="5" stroke-linecap="round"/>
+            <path d="M280,140 Q250,220 180,250" fill="none" stroke="#5c4033" stroke-width="4" stroke-linecap="round"/>
+            <g fill="#ffb7c5" stroke="#ff8da1" stroke-width="1.5">
+                <circle cx="350" cy="70" r="15"/> <circle cx="340" cy="60" r="15"/> <circle cx="360" cy="60" r="15"/> <circle cx="345" cy="80" r="15"/> <circle cx="355" cy="80" r="15"/>
+                <circle cx="250" cy="150" r="12"/> <circle cx="240" cy="140" r="12"/> <circle cx="260" cy="140" r="12"/> <circle cx="245" cy="160" r="12"/> <circle cx="255" cy="160" r="12"/>
+                <circle cx="150" cy="120" r="18"/> <circle cx="135" cy="110" r="18"/> <circle cx="165" cy="110" r="18"/> <circle cx="140" cy="135" r="18"/> <circle cx="160" cy="135" r="18"/>
+                <circle cx="180" cy="250" r="10"/> <circle cx="170" cy="240" r="10"/> <circle cx="190" cy="240" r="10"/> <circle cx="175" cy="260" r="10"/> <circle cx="185" cy="260" r="10"/>
+                <circle cx="80" cy="280" r="14"/> <circle cx="70" cy="270" r="14"/> <circle cx="90" cy="270" r="14"/> <circle cx="75" cy="290" r="14"/> <circle cx="85" cy="290" r="14"/>
+            </g>
+            <g fill="#ec4899">
+                <circle cx="350" cy="70" r="4"/> <circle cx="250" cy="150" r="3"/> <circle cx="150" cy="120" r="5"/> <circle cx="180" cy="250" r="2.5"/> <circle cx="80" cy="280" r="4"/>
+            </g>
+        </svg>
+    </div>
 
-    <!-- 🐰 Cute Popup (หน้าต่างเด้งดึ๋ง น่ารักๆ) -->
-    <div id="customPopup" class="cute-popup-overlay">
+    <div id="customPopup" class="cute-popup-overlay" role="alertdialog" aria-modal="true" aria-labelledby="popupMsg">
         <div class="cute-popup-box">
-            <div class="cute-popup-icon" id="popupIcon">✨</div>
+            <div class="cute-popup-icon" id="popupIcon" style="font-size: 5rem; margin-bottom: 10px;">🌸</div>
             <div class="cute-popup-msg" id="popupMsg">ข้อความแจ้งเตือน</div>
-            <button class="btn btn-primary" style="margin: 0; box-shadow: none;" onclick="closePopup()">โอเค เข้าใจแล้ว!</button>
+            <div class="popup-btn-row" id="popupBtnRow">
+                <button class="btn btn-primary" id="popupOkBtn" style="margin: 0;">โอเคจ้า!</button>
+            </div>
         </div>
     </div>
 
-    <!-- 🔐 หน้าเข้าสู่ระบบ (สมมาตร เป๊ะ) -->
-    <div id="authSection" class="container" style="max-width: 440px; margin-top: 8vh;">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <div style="width: 80px; height: 80px; background: var(--bg-input); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 3rem; box-shadow: 0 10px 20px rgba(0,0,0,0.05);" id="authEmoji">👋</div>
-            <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin-bottom: 5px; font-size: 1.8rem;">ยินดีต้อนรับ! ✨</h2>
-            <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">มาบันทึกเงินเดือนและโอทีกันเถอะ ~</p>
+    <!-- 🌸 ป๊อปอัปสลิปเงินเดือน -->
+    <div id="slipModal" class="slip-modal-overlay">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
+            <div id="cuteSlipCard" class="cute-slip-card">
+                <div class="slip-header-top">
+                    <div>
+                        <div class="slip-company" id="slipCompanyName">🌸 บริษัท ไทย เช็มคอน จำกัด</div>
+                        <div style="font-size: 0.8rem; font-weight: 700; color: #be185d; margin-top: 2px;">วันที่พิมพ์: <span id="slipPrintDate">29/ส.ค./2569</span></div>
+                    </div>
+                    <div>
+                        <div class="slip-title">ใบจ่ายเงินเดือน</div>
+                        <div id="slipMonthYear" style="font-size: 0.9rem; font-weight: 700; color: #be185d; text-align: right;">สิงหาคม 2569</div>
+                    </div>
+                </div>
+
+                <div class="slip-info-grid">
+                    <div>รหัสพนักงาน: <strong id="slipEmpCode">2026010</strong></div>
+                    <div>โอนเข้าบัญชี: <strong id="slipBankName">ไทยพาณิชย์ จำกัด</strong></div>
+                    <div style="grid-column: span 2;">ชื่อ-นามสกุล: <span id="slipUserEmail" style="font-weight: 800;">user@email.com</span></div>
+                    <div>แผนก: <strong id="slipDepartment">CONSTRUCTION</strong></div>
+                    <div>เลขที่บัญชี: <strong id="slipBankAcc">5042687004</strong></div>
+                </div>
+
+                <div class="slip-table-container">
+                    <div class="slip-col">
+                        <h4>รายการได้</h4>
+                        <div class="slip-row-item"><span>เงินเดือน</span> <span id="slipBase">0.00</span></div>
+                        <div class="slip-row-item"><span>ค่าใบประกอบ (กว.)</span> <span id="slipLicense">0.00</span></div>
+                        <div class="slip-row-item"><span>ค่าที่พัก/เดินทาง</span> <span id="slipHouse">0.00</span></div>
+                        <div class="slip-row-item"><span>ค่าอาหาร</span> <span id="slipFood">0.00</span></div>
+                        <div class="slip-row-item"><span>เบี้ยเลี้ยง</span> <span id="slipAllowance">0.00</span></div>
+                        <div class="slip-row-item"><span>สวัสดิการ</span> <span id="slipWelfare">0.00</span></div>
+                        <div class="slip-row-item"><span>OT 1.5x</span> <span id="slipOt15">0.00</span></div>
+                        <div class="slip-row-item"><span>OT 2.0x</span> <span id="slipOt20">0.00</span></div>
+                        <div class="slip-row-item"><span>OT 3.0x</span> <span id="slipOt30">0.00</span></div>
+                        <div class="slip-row-item"><span>OT 6.0x</span> <span id="slipOt60">0.00</span></div>
+                    </div>
+                    <div class="slip-col">
+                        <h4>รายการหัก</h4>
+                        <div class="slip-row-item"><span>หักลางาน/อื่นๆ</span> <span id="slipLeave" style="color:#e11d48;">0.00</span></div>
+                        <div class="slip-row-item"><span>ประกันสังคม</span> <span id="slipSS" style="color:#e11d48;">0.00</span></div>
+                        <div class="slip-row-item"><span>สำรองเลี้ยงชีพ</span> <span id="slipPvf" style="color:#e11d48;">600.00</span></div>
+                    </div>
+                </div>
+
+                <div class="slip-total-bar">
+                    <div class="slip-total-box-in"><span>รวมรายได้ทั้งหมด</span> <span id="slipGrossTotal">0.00</span></div>
+                    <div class="slip-total-box-in" style="background:#ffe4e1; color:#be123c;"><span>รวมรายจ่ายทั้งหมด</span> <span id="slipDeductTotal">0.00</span></div>
+                </div>
+
+                <div class="slip-footer-grid">
+                    <div>รายได้สะสม<br><span id="slipAccGross" style="font-weight:800; color:#9d174d;">0.00</span></div>
+                    <div>ประกันสังคมสะสม<br><span id="slipAccSS" style="font-weight:800; color:#e11d48;">0.00</span></div>
+                    <div>รวมรายได้สุทธิ<br><span id="slipNetTotal" style="font-weight:800; color:#be123c; font-size:1.05rem;">0.00</span></div>
+                    <div>ผู้รับเงิน<br><span style="font-size:0.75rem; color:#be185d;">(ลงชื่อแล้ว)</span></div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; width: 95%; max-width: 600px;">
+                <button class="btn btn-secondary" onclick="closeSlipModal()">ปิดหน้าต่าง</button>
+                <button class="btn btn-primary" onclick="downloadSlipImage()">📥 ดาวน์โหลดรูปสลิป</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="initialLoading">🌸 กำลังโหลด...</div>
+
+    <div id="authSection" class="card" style="display:none;">
+        <div style="text-align: center; margin-bottom: 25px;">
+            <div style="width: 80px; height: 80px; background: var(--bg-input); border: 3px solid var(--color-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 2.8rem; box-shadow: 0 10px 20px rgba(244,114,182,0.2);" id="authEmoji">🌸</div>
+            <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin-bottom: 5px; font-size: 1.8rem;">ยินดีต้อนรับ!</h2>
+            <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">ระบบบันทึกเงินเดือน & ประเมินภาษี</p>
         </div>
         
-        <form onsubmit="event.preventDefault(); handleAuth();">
+        <form id="authForm" novalidate>
             <div class="form-group">
-                <label>อีเมล (Email)</label>
-                <input type="email" id="email" placeholder="name@email.com" required>
+                <label for="email">อีเมล (Email)</label>
+                <input type="email" id="email" autocomplete="email" placeholder="name@email.com" required>
             </div>
             <div class="form-group">
-                <label>รหัสผ่าน (Password)</label>
-                <input type="password" id="password" placeholder="••••••••" required>
+                <label for="password">รหัสผ่าน (Password)</label>
+                <div class="password-wrap">
+                    <input type="password" id="password" autocomplete="current-password" placeholder="••••••••" minlength="6" required>
+                    <button type="button" class="toggle-pw" id="togglePw" aria-label="แสดง/ซ่อนรหัสผ่าน" tabindex="0">👁️</button>
+                </div>
+                <span class="field-hint">อย่างน้อย 6 ตัวอักษร</span>
             </div>
             <div class="form-group" id="confirmPasswordGroup" style="display: none;">
-                <label>ยืนยันรหัสผ่าน</label>
-                <input type="password" id="confirmPassword" placeholder="••••••••">
+                <label for="confirmPassword">ยืนยันรหัสผ่าน</label>
+                <input type="password" id="confirmPassword" autocomplete="new-password" placeholder="••••••••">
             </div>
-            <button type="submit" id="authBtn" class="btn btn-primary">เข้าสู่ระบบ</button>
+            <button type="submit" id="authBtn" class="btn btn-primary" style="margin-top: 20px;"><span id="authBtnText">เข้าสู่ระบบ</span></button>
         </form>
         
-        <div class="toggle-area">
-            <div id="authToggle" class="toggle-text" onclick="toggleAuth()" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span></div>
-            <div id="forgotToggle" class="forgot-text" onclick="handleResetPassword()">ลืมรหัสผ่าน? คลิกตั้งใหม่</div>
+        <div style="margin-top: 25px; text-align: center;">
+            <div id="authToggle" style="color: var(--text-muted); font-weight: 600;">ยังไม่มีบัญชีใช่ไหม? <span role="button" tabindex="0" style="color: var(--color-primary-hover); cursor: pointer; font-weight: 800;">สมัครสมาชิกที่นี่</span></div>
+            <div id="forgotToggle" role="button" tabindex="0" style="font-size: 0.95rem; color: var(--text-muted); cursor: pointer; margin-top: 15px; font-weight: 600; text-decoration: underline;">ลืมรหัสผ่าน? คลิกตั้งใหม่</div>
         </div>
     </div>
 
-    <!-- 💻 หน้าหลัก Dashboard -->
-    <div id="appSection" class="container">
-        <h1>💸 ระบบบันทึกเงินเดือน & ประเมินภาษี</h1>
+    <div id="appSection" class="dashboard-wrapper">
         
-        <div id="userBar">
-            <div style="font-size: 1.15rem; font-weight: 800;">👤 <strong id="displayUser" style="color: var(--color-primary);"></strong></div>
-            <div style="display:flex; align-items:center; gap:10px; flex-wrap: wrap;">
-                <span style="font-weight: 800; color: var(--text-muted);">🎨 ธีม:</span>
-                <select id="themeSelect" onchange="changeTheme()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);">
-                    <option value="sakura">🌸 Sakura Bloom (แนะนำ)</option>
-                    <option value="orange">🍁 Autumn Maple</option>
-                    <option value="fuji">🗻 Mt. Fuji View</option>
-                    <option value="bamboo">🎋 Zen Bamboo</option>
-                    <option value="skyblue">☁️ Sunny Sky</option>
-                    <option value="matcha">🍵 Matcha Garden</option>
-                    <option value="ocean">🌊 Deep Ocean</option>
-                    <option value="ruby">🍓 Berry Sweet</option>
-                    <option value="purple">🔮 Magic Lavender</option>
-                    <option value="twotone">🦄 Pastel Magic</option>
-                    <option value="tokyo">🌃 Tokyo Neon</option>
-                    <option value="dark">🌙 Starry Night</option>
-                </select>
-                <select id="displayYear" onchange="changeYear()" style="width:auto; padding:12px 15px; border-radius: 16px; font-weight: 700; background: var(--bg-card);"></select>
+        <div class="top-nav">
+            <h1 class="app-title">🌸 Salary & Tax Pro</h1>
+            
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด</button>
+                <button class="tab-btn" onclick="switchTab('profileTab', this)">⚙️ ตั้งค่าบริษัท/สลิป</button>
+                <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณ OT ด่วน</button>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap: wrap;">
+                <button id="themeToggleBtn" title="สลับโหมดกลางวัน/กลางคืน" style="background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--border-color); border-radius: 16px; padding: 10px 14px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px;">
+                    <span id="themeIcon">🌅</span> <span id="themeText" style="font-size: 0.9rem;">Auto Theme</span>
+                </button>
+                
+                <span class="user-chip" id="displayUser" title=""></span>
+                <select id="displayYear" aria-label="เลือกปีที่แสดง" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 800; background: var(--bg-input); border: 2px solid var(--border-color); color: var(--color-primary-hover); cursor: pointer;"></select>
+                <button id="logoutBtn" style="background: var(--bg-input); color: #e11d48; border: 2px solid #fda4af; border-radius: 16px; padding: 10px 20px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer; transition: 0.3s;">🚪 ออก</button>
             </div>
         </div>
         
         <div id="loadingOverlay">กำลังซิงค์ข้อมูล... ⏳</div>
 
-        <div class="dashboard-top">
+        <div id="dashboardTab" class="tab-content active">
+            
             <div class="card">
-                <h3>📊 สรุปชั่วโมงโอทีรายเดือน</h3>
-                <div class="chart-wrapper"><canvas id="otChart"></canvas></div>
-                <div id="overworkAlert" style="margin-top:20px; text-align:center; font-weight:800; padding:12px; border-radius:16px; border: 2px dashed var(--border-color);"></div>
+                <h3 style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <span>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</span>
+                    <div style="display:flex; align-items:center; gap:8px; font-size:0.95rem; font-weight:normal;">
+                        <label for="withholdingTaxIn" style="margin:0; font-size:0.95rem; color:var(--text-muted);">ภาษีหัก ณ ที่จ่ายสะสม:</label>
+                        <input type="number" id="withholdingTaxIn" value="0" min="0" step="any" style="width:130px; padding:8px 12px; font-size:1rem; border-radius:12px;" placeholder="0.00">
+                    </div>
+                </h3>
+                <div class="tax-grid">
+                    <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
+                    <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
+                    <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
+                    <div class="tax-box tax-total-box"><span class="tax-label" id="taxFinalLabel" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
+                </div>
             </div>
 
-            <div class="card">
-                <h3 style="border:none;">
-                    <span>🍩 สัดส่วนโอที</span>
-                    <select id="otSummaryMonth" onchange="updateOTSummaryCard()">
-                        <option value="all">🌟 รวมทั้งปี</option>
-                        <option value="0">ม.ค.</option><option value="1">ก.พ.</option><option value="2">มี.ค.</option>
-                        <option value="3">เม.ย.</option><option value="4">พ.ค.</option><option value="5">มิ.ย.</option>
-                        <option value="6">ก.ค.</option><option value="7">ส.ค.</option><option value="8">ก.ย.</option>
-                        <option value="9">ต.ค.</option><option value="10">พ.ย.</option><option value="11">ธ.ค.</option>
+            <!-- 🌸 การ์ดวงล้อสัดส่วน OT -->
+            <div class="card" style="display: flex; flex-direction: column; align-items: center;">
+                <h3 style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="display: flex; align-items: center; gap: 8px;">🍩 สัดส่วนโอที</span>
+                    <select id="otViewSelect" style="width: auto; padding: 8px 15px; font-size: 0.95rem; border-radius: 16px; font-weight: 800; background: var(--bg-input); border: 2px solid var(--color-primary); color: var(--color-primary-hover); cursor: pointer;">
+                        <option value="year">☀️ รวมทั้งปี</option>
+                        <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
+                        <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
+                        <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
+                        <option value="9">ตลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                     </select>
                 </h3>
                 
-                <div class="pie-container">
-                    <canvas id="otPieChart"></canvas>
-                    <div id="pieCenterText" class="pie-center-label">
-                        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 800;">รวมเวลา</div>
-                        <div id="pieTotalHours" style="font-size: 2.4rem; font-weight: 800; color: var(--color-primary); line-height: 1.1;">0</div>
-                        <div style="font-size: 0.95rem; color: var(--text-muted); font-weight: 800;">ชั่วโมง</div>
+                <div style="width: 280px; height: 280px; position: relative; margin: 15px 0;">
+                    <canvas id="otDonutChart"></canvas>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); display: block;" id="otCenterTitle">รวมเวลา</span>
+                        <span style="font-size: 2rem; font-weight: 800; color: var(--color-header); display: block; line-height: 1.1;" id="otCenterHours">0.0</span>
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block;">ชั่วโมง</span>
                     </div>
-                    <div id="noOtMessage" style="position: absolute; text-align: center; color: var(--text-muted); display: none; font-size: 1.15rem; font-weight: 700;">ไม่มีข้อมูลโอทีจ้า<br><small style="font-weight:600; font-size: 0.95rem;">(เลือกเดือนใหม่ดูนะ)</small></div>
                 </div>
 
-                <div id="otCustomLegend" class="ot-custom-legend">
-                    <div class="legend-item"><div class="legend-dot" style="background: #3b82f6;"></div><span>1.5x</span><span class="legend-val" id="leg15">0</span></div>
-                    <div class="legend-item"><div class="legend-dot" style="background: #f59e0b;"></div><span>2.0x</span><span class="legend-val" id="leg20">0</span></div>
-                    <div class="legend-item"><div class="legend-dot" style="background: #ef4444;"></div><span>3.0x</span><span class="legend-val" id="leg30">0</span></div>
+                <div style="width: 100%; max-width: 700px; background: var(--bg-input); padding: 15px 20px; border-radius: 20px; border: 2px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 10px; margin-top: 10px;">
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #f472b6; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#f472b6; border-radius:50%; display:inline-block;"></span> 1.5x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat15h">0.0 ชม.</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fb923c; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#fb923c; border-radius:50%; display:inline-block;"></span> 2.0x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat20h">0.0 ชม.</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #ef4444; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#ef4444; border-radius:50%; display:inline-block;"></span> 3.0x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat30h">0.0 ชม.</div>
+                    </div>
+                    <div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #8b5cf6; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#8b5cf6; border-radius:50%; display:inline-block;"></span> 6.0x</div>
+                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat60h">0.0 ชม.</div>
+                    </div>
                 </div>
+
+                <div style="width: 100%; max-width: 700px; background: linear-gradient(135deg, rgba(244,114,182,0.15), rgba(253,164,175,0.15)); border: 2px solid rgba(244,114,182,0.4); padding: 15px; border-radius: 20px; text-align: center; margin-top: 15px;">
+                    <span style="font-weight: 800; font-size: 1.2rem; color: var(--color-header);" id="otTotalMoneyText">💰 รวมเงิน OT: 0.00 บาท</span>
+                </div>
+            </div>
+
+            <div class="grid-forms">
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="color: var(--color-primary-hover);">
+                        <span>💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
+                        <button class="btn btn-secondary" onclick="openSlipModal()" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin: 0;">🌸 ดูสลิปเดือนนี้</button>
+                    </h3>
+                    <div class="form-group">
+                        <label for="monthSelect">📅 เลือกเดือนที่จะบันทึก</label>
+                        <select id="monthSelect" style="border: 2px solid var(--color-primary); background: var(--bg-input);">
+                            <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
+                            <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
+                            <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
+                            <option value="9">ตลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label for="baseIn">ฐานเงินเดือน</label><input type="number" id="baseIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <div class="form-group"><label for="licenseIn">ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <div class="form-group"><label for="houseIn">ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <div style="display:flex; gap:15px;">
+                        <div class="form-group"><label for="foodDaysIn">ค่าอาหาร (วันละ 50)</label><input type="number" id="foodDaysIn" value="0" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
+                        <div class="form-group"><label for="allowanceDaysIn">เบี้ยเลี้ยง (วันละ 150)</label><input type="number" id="allowanceDaysIn" value="0" min="0" max="31" placeholder="จำนวนวัน" step="any"></div>
+                    </div>
+                    <div class="form-group"><label for="welfareIn">สวัสดิการ</label><input type="number" id="welfareIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <div style="display:flex; gap:15px;">
+                        <div class="form-group"><label for="leaveIn">หักลางาน/อื่นๆ</label><input type="number" id="leaveIn" value="0" min="0" step="any" placeholder="0"></div>
+                        <div class="form-group"><label for="ssIn">หักประกันสังคม</label><input type="number" id="ssIn" value="0" min="0" step="any" placeholder="0"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pvfIn">หักสำรองเลี้ยงชีพ</label>
+                        <input type="number" id="pvfIn" value="600" min="0" step="any" placeholder="600">
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="color: var(--color-primary-hover);">⏱️ บันทึกชั่วโมงโอที</h3>
+                    <div class="form-group">
+                        <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
+                        <div class="ot-row"><input type="number" id="ot15h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot15m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="ot20h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot20m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="ot30h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot30m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #8b5cf6;">⭐ OT 6.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="ot60h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot60m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                    </div>
+                    
+                    <button id="saveBtn" class="btn btn-primary" style="margin-top: 30px; height: 75px; font-size: 1.4rem;"><span id="saveBtnText">💾 บันทึกข้อมูลลงระบบ</span></button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead><tr><th>เดือน</th><th>รายได้รวม (บาท)</th><th>ชั่วโมง OT</th><th>เงิน OT (บาท)</th><th>รับสุทธิ (บาท)</th></tr></thead>
+                    <tbody id="tableBody"></tbody>
+                    <tfoot>
+                        <tr class="tfoot-bg">
+                            <td style="text-align:center;">รวมทั้งปี</td><td id="totalBase">0.00</td><td id="totalHoursText">0 ชม.</td><td id="totalOt">0.00</td><td id="totalNet" style="color: var(--color-primary-hover);">0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: var(--bg-card);">💡 คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้</p>
+            </div>
+        </div>
+
+        <!-- 🌸 แท็บตั้งค่าบริษัทและข้อมูลสลิปส่วนตัว -->
+        <div id="profileTab" class="tab-content">
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <h3 style="color: var(--color-primary-hover);">🏢 ตั้งค่าข้อมูลบริษัทและบัญชีเงินเดือนส่วนตัว</h3>
+                <p class="field-hint" style="margin-bottom: 20px;">ข้อมูลเหล่านี้จะถูกบันทึกผูกไว้กับบัญชีของคุณ และนำไปแสดงบนใบสลิปเงินเดือนโดยอัตโนมัติ</p>
                 
-                <div style="text-align: center; background: var(--bg-card); padding: 15px; border-radius: 20px; margin-top: 15px; border: 2px dashed var(--color-primary);">
-                    <span style="font-weight: 800; color: var(--text-muted); font-size: 1rem;">💸 ยอดเงินโอทีที่ได้รับ<br></span>
-                    <span id="legTotalMoney" style="font-weight: 800; font-size: 1.6rem; color: var(--color-primary);">0.00 บาท</span>
+                <div class="form-group">
+                    <label for="pCompanyName">ชื่อบริษัท / หน่วยงาน</label>
+                    <input type="text" id="pCompanyName" placeholder="เช่น บริษัท ไทย เช็มคอน จำกัด">
+                </div>
+                <div class="grid-forms" style="margin-bottom: 0;">
+                    <div class="form-group">
+                        <label for="pEmpCode">รหัสพนักงาน</label>
+                        <input type="text" id="pEmpCode" placeholder="เช่น 2026010">
+                    </div>
+                    <div class="form-group">
+                        <label for="pDepartment">แผนก / สังกัด</label>
+                        <input type="text" id="pDepartment" placeholder="เช่น CONSTRUCTION">
+                    </div>
+                </div>
+                <div class="grid-forms" style="margin-bottom: 0;">
+                    <div class="form-group">
+                        <label for="pBankName">ธนาคารที่รับเงินโอน</label>
+                        <input type="text" id="pBankName" placeholder="เช่น ไทยพาณิชย์ จำกัด">
+                    </div>
+                    <div class="form-group">
+                        <label for="pBankAcc">เลขที่บัญชีธนาคาร</label>
+                        <input type="text" id="pBankAcc" placeholder="เช่น 5042687004">
+                    </div>
+                </div>
+
+                <button id="saveProfileBtn" class="btn btn-primary" style="margin-top: 25px;"><span id="saveProfileBtnText">💾 บันทึกข้อมูลบริษัท/สลิปของฉัน</span></button>
+            </div>
+        </div>
+
+        <div id="calcTab" class="tab-content">
+            <div class="grid-forms">
+                <div class="card" style="margin-bottom:0;">
+                    <h3 style="color: var(--color-primary-hover);">🧮 เครื่องคำนวณ OT ด่วน</h3>
+                    
+                    <div class="form-group">
+                        <label for="quickSalary">💰 ฐานเงินเดือน (เพื่อคำนวณเรท/ชม.)</label>
+                        <input type="number" id="quickSalary" value="20000" min="0" placeholder="ระบุเงินเดือน">
+                        <div style="background: var(--bg-input); padding: 15px; border-radius: 16px; margin-top: 15px; border: 1px dashed var(--color-primary); text-align: center;">
+                            <span style="color: var(--text-muted); font-weight: 700;">อัตราค่าแรงต่อชั่วโมง</span><br>
+                            <span id="quickRateDisplay" style="color: var(--color-primary-hover); font-weight: 800; font-size: 1.8rem;">83.33</span><span style="font-weight: 700; color: var(--text-muted);"> บาท/ชม.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 25px;">
+                        <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt15h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt15m" value="0" min="0" max="59" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt20h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt20m" value="0" min="0" max="59" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt30h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt30m" value="0" min="0" max="59" placeholder="นาที"></div>
+                    </div>
+                    <div class="form-group">
+                        <label style="color: #8b5cf6;">⭐ OT 6.0 เท่า</label>
+                        <div class="ot-row"><input type="number" id="qOt60h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt60m" value="0" min="0" max="59" placeholder="นาที"></div>
+                    </div>
+                </div>
+
+                <div class="card" style="display: flex; flex-direction: column; justify-content: center; margin-bottom:0;">
+                    <h3 style="text-align: center; justify-content: center;">ยอดเงิน OT ที่จะได้รับ</h3>
+                    
+                    <div class="tax-grid" style="margin-top: 10px;">
+                        <div class="tax-box" style="padding: 20px;">
+                            <span class="tax-label">OT 1.5x</span>
+                            <span class="tax-value" id="res15Money" style="color: #f472b6; font-size: 1.6rem;">0.00 ฿</span>
+                            <small id="res15Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box" style="padding: 20px;">
+                            <span class="tax-label">OT 2.0x</span>
+                            <span class="tax-value" id="res20Money" style="color: #fb923c; font-size: 1.6rem;">0.00 ฿</span>
+                            <small id="res20Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box" style="padding: 20px;">
+                            <span class="tax-label">OT 3.0x</span>
+                            <span class="tax-value" id="res30Money" style="color: #ef4444; font-size: 1.6rem;">0.00 ฿</span>
+                            <small id="res30Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box" style="padding: 20px;">
+                            <span class="tax-label">OT 6.0x</span>
+                            <span class="tax-value" id="res60Money" style="color: #8b5cf6; font-size: 1.6rem;">0.00 ฿</span>
+                            <small id="res60Time" style="color: var(--text-muted); font-weight: 700;">0 ชม.</small>
+                        </div>
+                        <div class="tax-box tax-total-box" style="padding: 25px 20px;">
+                            <span class="tax-label" style="color: var(--color-primary-hover); font-weight: 800; font-size: 1.1rem;">รวมยอดเงิน OT ทั้งสิ้น</span>
+                            <span class="tax-value" id="resTotalMoney" style="color: var(--color-primary-hover); font-size: 2.5rem;">0.00 บาท</span>
+                            <span class="tax-label" id="resTotalHoursText" style="margin-top: 8px; color: var(--text-main); font-size: 1rem;">รวมเวลา: 0 ชั่วโมง</span>
+                        </div>
+                    </div>
+
+                    <button class="btn" id="copySummaryBtn" style="margin-top: 20px; background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--color-primary); box-shadow: 0 5px 15px rgba(244,114,182,0.1);">📋 คัดลอกสรุปข้อความ (ส่งไลน์)</button>
                 </div>
             </div>
-        </div>
-
-        <div class="card" style="margin-bottom: 30px;">
-            <h3>🧾 ประเมินภาษีประจำปี (ภ.ง.ด. 91)</h3>
-            <div class="tax-grid">
-                <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
-                <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
-                <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
-                <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
-                <div class="tax-box tax-total-box"><span class="tax-label" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
-            </div>
-        </div>
-
-        <div class="input-grid section-box">
-            <div class="form-group" style="grid-column: 1 / -1;">
-                <label style="color: var(--color-header); font-size:1.3rem; border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">📝 บันทึกรายได้และรายการหัก</label>
-            </div>
-            
-            <div class="form-group">
-                <label>📅 เลือกเดือน</label>
-                <select id="monthSelect">
-                    <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
-                    <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
-                    <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
-                    <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
-                </select>
-            </div>
-            <div class="form-group"><label>💰 ฐานเงินเดือน</label><input type="number" id="baseIn" value="18000" step="any"></div>
-            <div class="form-group"><label>🏠 ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="2000" step="any"></div>
-            <div class="form-group"><label>🍲 ค่าอาหาร</label><input type="number" id="foodIn" value="0" step="any"></div>
-            <div class="form-group"><label>❌ หักลางาน/หักอื่น</label><input type="number" id="leaveIn" value="0" step="any"></div>
-            <div class="form-group"><label>🏥 หักประกันสังคม</label><input type="number" id="ssIn" value="875" step="any"></div>
-        </div>
-
-        <div class="input-grid section-box">
-            <div class="ot-header" style="grid-column: 1 / -1; margin-top: 10px; font-size: 1.3rem; color: var(--color-header); font-weight: 800; border-bottom: 2px dashed var(--border-color); padding-bottom: 15px; margin-bottom: 15px;">⏱️ บันทึกชั่วโมงโอที (ชั่วโมง / นาที)</div>
-            <div class="form-group"><label>OT 1.5</label><div class="ot-row"><input type="number" id="ot15h" step="any" placeholder="ชม."><input type="number" id="ot15m" step="any" placeholder="นาที"></div></div>
-            <div class="form-group"><label>OT 2.0</label><div class="ot-row"><input type="number" id="ot20h" step="any" placeholder="ชม."><input type="number" id="ot20m" step="any" placeholder="นาที"></div></div>
-            <div class="form-group"><label>OT 3.0</label><div class="ot-row"><input type="number" id="ot30h" step="any" placeholder="ชม."><input type="number" id="ot30m" step="any" placeholder="นาที"></div></div>
-        </div>
-
-        <button id="saveBtn" class="btn btn-primary" style="padding: 22px; font-size: 1.3rem; margin-bottom: 15px;" onclick="handleSaveData()">💾 บันทึกข้อมูลขึ้นระบบ</button>
-
-        <div class="table-responsive">
-            <table>
-                <thead><tr><th>เดือน</th><th>รายได้รวม</th><th>ชั่วโมง OT</th><th>เงิน OT</th><th>รับสุทธิ</th></tr></thead>
-                <tbody id="tableBody"></tbody>
-                <tfoot>
-                    <tr class="tfoot-bg">
-                        <td style="text-align:center;">รวมทั้งปี</td><td id="totalBase">0.00</td><td id="totalHoursText">0 ชม.</td><td id="totalOt">0.00</td><td id="totalNet" class="income">0.00</td>
-                    </tr>
-                </tfoot>
-            </table>
         </div>
         
-        <!-- ปุ่มออกจากระบบ -->
-        <div style="text-align: center; margin-top: 40px; padding-bottom: 10px;">
-            <button class="btn-logout" onclick="logout()">🚪 ออกจากระบบ</button>
-        </div>
     </div>
 
     <script type="module">
@@ -420,446 +624,625 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let isLoginMode = true;
-        const months = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
-        let currentData = Array(12).fill(null);
-        let currentUserUid = null;
-        let selectedYear = new Date().getFullYear().toString();
-        
-        let myChart = null;
-        let myPieChart = null;
-
-        window.showPopup = (msg, icon = '✨') => {
-            document.getElementById('popupIcon').innerText = icon;
-            document.getElementById('popupMsg').innerHTML = msg.replace(/\n/g, '<br>');
-            document.getElementById('customPopup').classList.add('show');
+        let isSignUpMode = false;
+        let currentUid = null;
+        let currentUserEmail = "";
+        let currentYear = new Date().getFullYear();
+        let yearlyData = {}; 
+        let userProfile = {
+            companyName: "บริษัท ไทย เช็มคอน จำกัด",
+            empCode: "2026010",
+            department: "CONSTRUCTION",
+            bankName: "ไทยพาณิชย์ จำกัด",
+            bankAcc: "5042687004"
         };
-        window.closePopup = () => { document.getElementById('customPopup').classList.remove('show'); };
+        let formDirty = false;
+        let isAutoTheme = true;
+        let otDonutChartInstance = null;
 
-        const yearSelect = document.getElementById('displayYear');
-        const currentYear = new Date().getFullYear();
-        for(let y = 2024; y <= currentYear + 50; y++) {
-            let opt = document.createElement('option');
-            opt.value = y; opt.text = `${y} (พ.ศ. ${y + 543})`;
-            if(y === currentYear) opt.selected = true;
-            yearSelect.appendChild(opt);
-        }
+        const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','pvfIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
 
-        // --- 🌳 โค้ดวาดฉากหลังแบบ Vector เวกเตอร์สมจริง และน่ารัก ---
-        const svgSakura = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 800'%3E%3Cpath d='M-10,800 Q30,400 100,50' stroke='%234a2e1b' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M0,500 Q150,450 250,250' stroke='%234a2e1b' stroke-width='25' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='50' r='80' fill='%23fbcfe8'/%3E%3Ccircle cx='150' cy='100' r='60' fill='%23f9a8d4'/%3E%3Ccircle cx='50' cy='120' r='90' fill='%23fce7f3'/%3E%3Ccircle cx='250' cy='250' r='80' fill='%23fbcfe8'/%3E%3Ccircle cx='200' cy='320' r='60' fill='%23f9a8d4'/%3E%3C/svg%3E";
-        const svgMaple = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 800'%3E%3Cpath d='M-10,800 Q30,400 100,50' stroke='%233e2723' stroke-width='40' fill='none' stroke-linecap='round'/%3E%3Cpath d='M0,500 Q150,450 250,250' stroke='%233e2723' stroke-width='25' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='100' cy='50' r='80' fill='%23ea580c'/%3E%3Ccircle cx='150' cy='100' r='60' fill='%23f97316'/%3E%3Ccircle cx='50' cy='120' r='90' fill='%23ef4444'/%3E%3Ccircle cx='250' cy='250' r='80' fill='%23ea580c'/%3E%3Ccircle cx='200' cy='320' r='60' fill='%23fbbf24'/%3E%3C/svg%3E";
-        const svgFuji = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 300'%3E%3Cpath d='M400,50 Q480,150 750,300 L50,300 Q320,150 400,50 Z' fill='%2338bdf8'/%3E%3Cpath d='M400,50 Q440,90 470,110 Q430,130 400,110 Q370,130 330,110 Q360,90 400,50 Z' fill='white'/%3E%3C/svg%3E";
-        const svgBamboo = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 800'%3E%3Crect x='20' y='0' width='16' height='800' fill='%2365a30d' rx='8'/%3E%3Crect x='60' y='0' width='12' height='800' fill='%234d7c0f' rx='6'/%3E%3Crect x='100' y='0' width='18' height='800' fill='%2384cc16' rx='9'/%3E%3Crect x='150' y='0' width='15' height='800' fill='%234d7c0f' rx='7'/%3E%3Cpath d='M100,150 Q150,100 180,150 Q150,165 100,150 Z' fill='%23a3e635'/%3E%3Cpath d='M60,300 Q10,250 -20,300 Q10,315 60,300 Z' fill='%23a3e635'/%3E%3Cpath d='M150,450 Q190,400 220,450 Q190,465 150,450 Z' fill='%23a3e635'/%3E%3C/svg%3E";
-        const svgPine = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 600'%3E%3Crect x='90' y='450' width='20' height='150' fill='%231e1b4b'/%3E%3Cpath d='M100,100 L180,300 L120,300 L190,450 L10,450 L80,300 L20,300 Z' fill='%23064e3b' stroke='%23047857' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E";
-
-        function renderThemeEffects(theme) {
-            const effectLayer = document.getElementById('themeEffectLayer');
-            effectLayer.innerHTML = ''; 
-            
-            // วาดต้นไม้ 2 ข้างทาง
-            if(theme === 'sakura' || theme === 'orange' || theme === 'bamboo' || theme === 'dark') {
-                let tl = document.createElement('div'); tl.className = 'scenery-element tree-avenue tree-left';
-                let tr = document.createElement('div'); tr.className = 'scenery-element tree-avenue tree-right';
-                
-                if(theme === 'sakura') { tl.style.backgroundImage = `url("${svgSakura}")`; tr.style.backgroundImage = `url("${svgSakura}")`; }
-                else if(theme === 'orange') { tl.style.backgroundImage = `url("${svgMaple}")`; tr.style.backgroundImage = `url("${svgMaple}")`; }
-                else if(theme === 'bamboo') { 
-                    tl.style.backgroundImage = `url("${svgBamboo}")`; tr.style.backgroundImage = `url("${svgBamboo}")`; 
-                    let panda = document.createElement('div'); panda.className = 'scenery-element'; panda.innerText = '🐼';
-                    panda.style.bottom = '-10px'; panda.style.left = '10vw'; panda.style.fontSize = '80px';
-                    panda.style.animation = 'swayPlant 3s infinite alternate';
-                    effectLayer.appendChild(panda);
-                }
-                else if(theme === 'dark') { 
-                    tl.style.backgroundImage = `url("${svgPine}")`; tr.style.backgroundImage = `url("${svgPine}")`; 
-                    tl.style.height = '60vh'; tl.style.width = '30vh'; tr.style.height = '60vh'; tr.style.width = '30vh';
-                }
-
-                effectLayer.appendChild(tl); effectLayer.appendChild(tr);
-            }
-
-            // ภูเขาและท้องฟ้า
-            if (theme === 'fuji') {
-                let fuji = document.createElement('div'); fuji.className = 'scenery-element fuji-mountain'; fuji.style.backgroundImage = `url("${svgFuji}")`; effectLayer.appendChild(fuji);
-                let branch = document.createElement('div'); branch.className = 'scenery-element';
-                branch.style.top = '-5vh'; branch.style.right = '-5vw'; branch.style.width = '40vh'; branch.style.height = '40vh';
-                branch.style.backgroundImage = `url("${svgSakura}")`; branch.style.transform = 'rotate(135deg)';
-                effectLayer.appendChild(branch);
-            } 
-            if (theme === 'fuji' || theme === 'skyblue') {
-                let sun = document.createElement('div'); sun.className = 'cute-sun'; 
-                if(theme==='skyblue') { sun.style.left = 'auto'; sun.style.right = '10vw'; }
-                effectLayer.appendChild(sun);
-            }
-
-            // ชามัทฉะ
-            if (theme === 'matcha') {
-                let matchaCup = document.createElement('div'); matchaCup.className = 'scenery-element'; matchaCup.innerText = '🍵';
-                matchaCup.style.bottom = '10px'; matchaCup.style.left = '5vw'; matchaCup.style.fontSize = '120px';
-                effectLayer.appendChild(matchaCup);
-            }
-
-            // คลื่นทะเลและปะการัง
-            if (theme === 'ocean') {
-                let waves = document.createElement('div'); waves.className = 'scenery-element ocean-waves';
-                waves.style.backgroundImage = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230ea5e9' fill-opacity='0.4' d='M0,160L48,170.7C96,181,192,203,288,197.3C384,192,480,160,576,149.3C672,139,768,149,864,170.7C960,192,1056,224,1152,229.3C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`;
-                effectLayer.appendChild(waves);
-
-                let coralL = document.createElement('div'); coralL.className = 'scenery-element'; coralL.innerText = '🪸'; coralL.style.bottom='20px'; coralL.style.left='5vw'; coralL.style.fontSize='100px'; coralL.style.animation='swayPlant 3s infinite alternate'; effectLayer.appendChild(coralL);
-                let coralR = document.createElement('div'); coralR.className = 'scenery-element'; coralR.innerText = '🪸'; coralR.style.bottom='20px'; coralR.style.right='5vw'; coralR.style.fontSize='100px'; coralR.style.animation='swayPlant 4s infinite alternate-reverse'; effectLayer.appendChild(coralR);
-            }
-
-            // ลาเวนเดอร์
-            if (theme === 'purple') {
-                let lavL = document.createElement('div'); lavL.className = 'scenery-element'; lavL.innerText = '🪻'; lavL.style.bottom='-20px'; lavL.style.left='5vw'; lavL.style.fontSize='150px'; lavL.style.animation='swayPlant 3s infinite alternate'; effectLayer.appendChild(lavL);
-                let lavR = document.createElement('div'); lavR.className = 'scenery-element'; lavR.innerText = '🪻'; lavR.style.bottom='-20px'; lavR.style.right='5vw'; lavR.style.fontSize='150px'; lavR.style.animation='swayPlant 4s infinite alternate-reverse'; effectLayer.appendChild(lavR);
-            }
-
-            // --- จัดการ Particles ตกแต่ง (✅ แก้แอนิเมชันให้ร่วงหล่น/ลอย ทำงานได้ 100%) ---
-            if (theme === 'sakura' || theme === 'orange' || theme === 'ruby' || theme === 'matcha' || theme === 'twotone') {
-                let types = ['🌸', '💮'];
-                if(theme === 'orange') types = ['🍁', '🍂', '✨'];
-                if(theme === 'ruby') types = ['🍎', '🍓', '✨'];
-                if(theme === 'matcha') types = ['🍃', '🍵', '✨'];
-                if(theme === 'twotone') types = ['🦄', '💖', '✨', '🍭'];
-
-                for(let i=0; i<30; i++) {
-                    let p = document.createElement('div'); 
-                    p.style.position = 'fixed';
-                    p.innerText = types[Math.floor(Math.random() * types.length)];
-                    p.style.left = (Math.random() * 100) + 'vw';
-                    p.style.fontSize = (Math.random() * 15 + 15) + 'px';
-                    p.style.opacity = '0.9';
-                    p.style.filter = 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))';
-                    // บังคับยัด Animation ลง inline style ให้มันร่วงลงมาแน่นอน
-                    p.style.animation = `fallAnim ${Math.random() * 6 + 4}s linear infinite`;
-                    p.style.animationDelay = `-${Math.random() * 10}s`; 
-                    effectLayer.appendChild(p);
-                }
-            } else if (theme === 'skyblue' || theme === 'fuji') {
-                for(let i=0; i<6; i++) {
-                    let cloud = document.createElement('div'); cloud.className = 'giant-cloud'; cloud.innerText = '☁️';
-                    cloud.style.top = (Math.random() * 40) + 'vh';
-                    cloud.style.fontSize = (Math.random() * 100 + 100) + 'px';
-                    cloud.style.animation = `driftRightAnim ${Math.random() * 40 + 30}s linear infinite`;
-                    cloud.style.animationDelay = `-${Math.random() * 30}s`; 
-                    effectLayer.appendChild(cloud);
-                }
-                if (theme === 'skyblue') {
-                    for(let i=0; i<5; i++) {
-                        let bird = document.createElement('div'); bird.style.position = 'fixed'; bird.innerText = '🕊️';
-                        bird.style.top = (Math.random() * 40) + 'vh'; bird.style.fontSize = '30px';
-                        bird.style.animation = `driftRightAnim ${Math.random() * 15 + 10}s linear infinite`;
-                        bird.style.animationDelay = `-${Math.random() * 15}s`;
-                        effectLayer.appendChild(bird);
-                    }
-                } else {
-                    for(let i=0; i<15; i++) {
-                        let p = document.createElement('div'); p.style.position = 'fixed'; p.innerText = '🌸';
-                        p.style.left = (Math.random() * 100) + 'vw'; p.style.fontSize = '20px';
-                        p.style.animation = `fallAnim ${Math.random() * 5 + 5}s linear infinite`;
-                        p.style.animationDelay = `-${Math.random() * 10}s`;
-                        effectLayer.appendChild(p);
-                    }
-                }
-            } else if (theme === 'tokyo' || theme === 'dark' || theme === 'purple') {
-                if(theme === 'dark' || theme === 'purple') {
-                    let moon = document.createElement('div'); moon.className = 'cute-sun'; moon.style.background = '#fde047'; moon.style.boxShadow = '0 0 40px #fef08a'; effectLayer.appendChild(moon);
-                }
-                let types = theme === 'tokyo' ? ['✨', '⚡', '🏮'] : ['⭐', '✨'];
-                for(let i=0; i<40; i++) {
-                    let s = document.createElement('div'); s.style.position = 'fixed';
-                    s.innerText = types[Math.floor(Math.random() * types.length)];
-                    s.style.color = theme === 'dark' ? '#fde047' : 'inherit';
-                    s.style.left = Math.random() * 100 + 'vw'; s.style.top = Math.random() * 100 + 'vh';
-                    s.style.fontSize = (Math.random() * 10 + 10) + 'px';
-                    s.style.animation = `blink ${Math.random() * 2 + 1}s infinite alternate`;
-                    s.style.animationDelay = `-${Math.random() * 2}s`;
-                    effectLayer.appendChild(s);
-                }
-                for(let i=0; i<5; i++) {
-                    let star = document.createElement('div'); star.style.position = 'fixed';
-                    star.style.height = '3px'; star.style.background = 'linear-gradient(to right, white, transparent)'; star.style.borderRadius = '50%';
-                    star.style.animation = `shootingStarAnim ${Math.random() * 1 + 1.5}s linear infinite`;
-                    star.style.animationDelay = `-${Math.random() * 8}s`;
-                    effectLayer.appendChild(star);
-                }
-            } else if (theme === 'ocean' || theme === 'blue') {
-                if (theme === 'ocean') {
-                    let seaCreatures = ['🐠', '🦑', '🦐', '🦈', '🐢'];
-                    for(let i=0; i<8; i++) {
-                        let fish = document.createElement('div'); fish.style.position = 'fixed'; 
-                        fish.innerText = seaCreatures[Math.floor(Math.random() * seaCreatures.length)];
-                        fish.style.top = (Math.random() * 50 + 20) + 'vh'; fish.style.fontSize = '40px';
-                        if(fish.innerText === '🦈') { fish.style.animation = `driftLeftAnim ${Math.random() * 15 + 15}s linear infinite`; } 
-                        else { fish.style.animation = `driftRightAnim ${Math.random() * 20 + 15}s linear infinite`; }
-                        fish.style.animationDelay = `-${Math.random() * 10}s`;
-                        effectLayer.appendChild(fish);
-                    }
-                }
-                for(let i=0; i<30; i++) {
-                    let b = document.createElement('div'); b.style.position = 'fixed';
-                    b.innerText = theme === 'ocean' ? '🫧' : '💧';
-                    b.style.left = Math.random() * 100 + 'vw'; b.style.fontSize = (Math.random() * 15 + 10) + 'px';
-                    if (theme === 'ocean') { b.style.animation = `bubbleRiseAnim ${Math.random() * 4 + 3}s linear infinite`; } 
-                    else { b.style.opacity = '0.6'; b.style.animation = `fallAnim ${Math.random() * 3 + 2}s linear infinite`; }
-                    b.style.animationDelay = `-${Math.random() * 5}s`;
-                    effectLayer.appendChild(b);
-                }
-            } else if (theme === 'bamboo') {
-                for(let i=0; i<20; i++) {
-                    let firefly = document.createElement('div'); firefly.style.position = 'fixed'; firefly.innerText = '✨';
-                    firefly.style.color = '#bef264'; firefly.style.left = Math.random() * 100 + 'vw'; firefly.style.top = Math.random() * 100 + 'vh';
-                    firefly.style.animation = `blink ${Math.random() * 3 + 2}s infinite alternate`;
-                    effectLayer.appendChild(firefly);
-                }
-            }
-
-            if (theme === 'twotone' || theme === 'purple' || theme === 'blue') {
-                for(let i=0; i<6; i++) {
-                    let blob = document.createElement('div'); blob.style.position = 'fixed';
-                    blob.style.borderRadius = '50%'; blob.style.opacity = '0.4'; blob.style.filter = 'blur(20px)';
-                    blob.style.width = (Math.random() * 200 + 150) + 'px'; blob.style.height = blob.style.width;
-                    if(theme === 'purple') blob.style.background = '#d8b4fe';
-                    else if(theme === 'blue') blob.style.background = '#bfdbfe';
-                    else blob.style.background = Math.random() > 0.5 ? '#fbcfe8' : '#bfdbfe';
-                    blob.style.left = Math.random() * 100 + 'vw'; blob.style.top = Math.random() * 100 + 'vh';
-                    blob.style.animation = `floatRandomAnim ${Math.random() * 5 + 5}s infinite alternate`;
-                    effectLayer.appendChild(blob);
-                }
+        function checkAutoTheme() {
+            if (!isAutoTheme) return;
+            const hour = new Date().getHours();
+            const isNight = hour < 6 || hour >= 18;
+            if (isNight) {
+                document.body.classList.add('night-mode');
+                document.getElementById('themeIcon').innerText = '🌙';
+                document.getElementById('themeText').innerText = 'Auto Night';
+            } else {
+                document.body.classList.remove('night-mode');
+                document.getElementById('themeIcon').innerText = '🌅';
+                document.getElementById('themeText').innerText = 'Auto Day';
             }
         }
+        checkAutoTheme();
+        setInterval(checkAutoTheme, 60000);
 
-        window.changeTheme = () => {
-            const theme = document.getElementById('themeSelect').value;
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('user_theme', theme);
-            renderThemeEffects(theme);
-            if(myChart) updateUI();
-        };
-
-        const savedTheme = localStorage.getItem('user_theme') || 'sakura';
-        document.getElementById('themeSelect').value = savedTheme;
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        renderThemeEffects(savedTheme);
-
-        window.toggleAuth = () => {
-            isLoginMode = !isLoginMode;
-            const title = document.getElementById('authTitle');
-            const sub = document.getElementById('authSubtitle');
-            const btn = document.getElementById('authBtn');
-            const confirmGroup = document.getElementById('confirmPasswordGroup');
-            const toggleText = document.getElementById('authToggle');
-            const confirmInput = document.getElementById('confirmPassword');
-            const emoji = document.getElementById('authEmoji');
-            
-            document.getElementById('password').value = ''; confirmInput.value = '';
-
-            if (isLoginMode) {
-                emoji.innerText = "👋"; title.innerText = "ยินดีต้อนรับ! ✨"; sub.innerText = "มาบันทึกเงินเดือนและโอทีกันเถอะ ~";
-                btn.innerText = "เข้าสู่ระบบ"; confirmGroup.style.display = "none"; confirmInput.removeAttribute('required');
-                toggleText.innerHTML = "ยังไม่มีบัญชีใช่ไหม? <span>สมัครสมาชิกที่นี่</span>";
+        document.getElementById('themeToggleBtn').addEventListener('click', () => {
+            isAutoTheme = false;
+            const isDark = document.body.classList.toggle('night-mode');
+            if (isDark) {
+                document.getElementById('themeIcon').innerText = '🌙';
+                document.getElementById('themeText').innerText = 'Dark Mode';
             } else {
-                emoji.innerText = "🚀"; title.innerText = "สร้างบัญชีใหม่ ✨"; sub.innerText = "สมัครฟรีเพื่อซิงค์ข้อมูลบน Cloud ของคุณ";
-                btn.innerText = "สร้างบัญชีเลย"; confirmGroup.style.display = "block"; confirmInput.setAttribute('required', 'true');
-                toggleText.innerHTML = "มีบัญชีอยู่แล้ว? <span>เข้าสู่ระบบ</span>";
-            }
-        };
-
-        window.handleResetPassword = async () => {
-            const email = document.getElementById('email').value.trim();
-            if(!email) return showPopup('พิมพ์อีเมลของคุณก่อนนะ\nแล้วค่อยกดปุ่มนี้จ้า', '📧');
-            try { await sendPasswordResetEmail(auth, email); showPopup(`ส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่\n${email} เรียบร้อยจ้า\n(เช็กใน Junk Mail ด้วยน้า)`, '✅'); } 
-            catch (error) { showPopup('ไม่พบอีเมลนี้ในระบบครับ', '❌'); }
-        };
-
-        window.handleAuth = async () => {
-            const email = document.getElementById('email').value.trim();
-            const p = document.getElementById('password').value.trim();
-            const cp = document.getElementById('confirmPassword').value.trim();
-            
-            if(!isLoginMode && p !== cp) return showPopup('รหัสผ่านไม่ตรงกันจ้า\nพิมพ์ใหม่อีกรอบนะ', '❌');
-
-            const btn = document.getElementById('authBtn');
-            const originalText = btn.innerText; btn.innerText = "⏳ กำลังโหลด..."; btn.disabled = true;
-
-            try {
-                if(!isLoginMode) { await createUserWithEmailAndPassword(auth, email, p); showPopup('สมัครสมาชิกสำเร็จ!\nยินดีต้อนรับจ้า', '🎉'); } 
-                else { await signInWithEmailAndPassword(auth, email, p); }
-            } catch (error) {
-                if (error.code === 'auth/email-already-in-use') showPopup('อีเมลนี้มีคนใช้แล้วจ้า', '⚠️');
-                else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') showPopup('อีเมลหรือรหัสผ่านผิดจ้า', '🚫');
-                else showPopup('เกิดข้อผิดพลาด:\n' + error.message, '🔧');
-            } finally { btn.innerText = originalText; btn.disabled = false; }
-        };
-
-        window.logout = () => signOut(auth);
-        window.changeYear = () => { selectedYear = document.getElementById('displayYear').value; loadData(); };
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('authSection').style.display = 'none';
-                document.getElementById('appSection').style.display = 'block';
-                document.getElementById('displayUser').innerText = user.email;
-                currentUserUid = user.uid; loadData();
-            } else {
-                document.getElementById('authSection').style.display = 'block';
-                document.getElementById('appSection').style.display = 'none';
-                currentUserUid = null;
+                document.getElementById('themeIcon').innerText = '☀️';
+                document.getElementById('themeText').innerText = 'Light Mode';
             }
         });
 
-        async function loadData() {
-            if(!currentUserUid) return;
-            // โหลดเงียบๆ ไร้ Error Popup กวนใจ
-            try {
-                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) currentData = docSnap.data().monthsData || Array(12).fill(null);
-                else currentData = Array(12).fill(null);
-            } catch (error) { 
-                console.error(error); 
-                currentData = Array(12).fill(null); 
-            } finally { 
-                renderTable(); updateUI(); 
+        function createSakuraPetals() {
+            const layer = document.getElementById('sakuraLayer');
+            const petalCount = 25; 
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                const size = Math.random() * 8 + 8; 
+                petal.style.width = `${size}px`;
+                petal.style.height = `${size}px`;
+                petal.style.left = `${Math.random() * 100}vw`; 
+                const fallDuration = Math.random() * 12 + 10; 
+                const swayDuration = Math.random() * 3 + 2; 
+                petal.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+                petal.style.animationDelay = `${Math.random() * -20}s, ${Math.random() * -5}s`;
+                layer.appendChild(petal);
             }
         }
+        createSakuraPetals();
 
-        window.handleSaveData = async () => {
+        window.switchTab = function(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        };
+
+        window.showPopup = function(msg, icon = "🌸") {
+            const row = document.getElementById('popupBtnRow');
+            row.innerHTML = '<button class="btn btn-primary" id="popupOkBtn" style="margin:0;">โอเคจ้า!</button>';
+            document.getElementById('popupOkBtn').addEventListener('click', closePopup);
+            document.getElementById('popupIcon').innerText = icon;
+            document.getElementById('popupMsg').innerText = msg;
+            document.getElementById('customPopup').classList.add('show');
+        }
+        window.closePopup = function() {
+            document.getElementById('customPopup').classList.remove('show');
+        }
+
+        window.openSlipModal = function() {
             const m = document.getElementById('monthSelect').value;
-            const base = parseFloat(document.getElementById('baseIn').value) || 0;
-            const house = parseFloat(document.getElementById('houseIn').value) || 0;
-            const food = parseFloat(document.getElementById('foodIn').value) || 0;
-            const leave = parseFloat(document.getElementById('leaveIn').value) || 0;
-            const ss = parseFloat(document.getElementById('ssIn').value) || 0;
-            const rate = base / 240;
-
-            const getH = (idH, idM) => (parseFloat(document.getElementById(idH).value)||0) + ((parseFloat(document.getElementById(idM).value)||0)/60);
-            const h15 = getH('ot15h', 'ot15m'), h20 = getH('ot20h', 'ot20m'), h30 = getH('ot30h', 'ot30m');
+            const c = calculateMonth(parseInt(m));
+            const todayStr = new Date().toLocaleDateString('th-TH');
+            document.getElementById('slipPrintDate').innerText = todayStr;
+            document.getElementById('slipMonthYear').innerText = `${monthsTH[m]} ${currentYear + 543}`;
+            document.getElementById('slipUserEmail').innerText = currentUserEmail || 'user@email.com';
             
-            const otVal = (h15 * rate * 1.5) + (h20 * rate * 2) + (h30 * rate * 3);
-            const totalH = h15 + h20 + h30;
-            const netVal = (base + house + food + otVal) - leave - ss;
+            document.getElementById('slipCompanyName').innerText = `🌸 ${userProfile.companyName || 'บริษัท ไทย เช็มคอน จำกัด'}`;
+            document.getElementById('slipEmpCode').innerText = userProfile.empCode || '-';
+            document.getElementById('slipDepartment').innerText = userProfile.department || '-';
+            document.getElementById('slipBankName').innerText = userProfile.bankName || '-';
+            document.getElementById('slipBankAcc').innerText = userProfile.bankAcc || '-';
 
-            currentData[m] = { base, house, food, leave, ss, otTotal: otVal, totalOtHours: totalH, net: netVal, ot15: h15, ot20: h20, ot30: h30 };
+            document.getElementById('slipBase').innerText = c.base.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipLicense').innerText = c.license.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipHouse').innerText = c.house.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipFood').innerText = c.foodMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipAllowance').innerText = c.allowanceMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipWelfare').innerText = c.welfare.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             
-            const btn = document.getElementById('saveBtn'); btn.innerText = "⏳ กำลังบันทึก..."; btn.disabled = true;
+            const hourlyRate = c.base > 0 ? c.base / 240 : 0;
+            document.getElementById('slipOt15').innerText = (c.h15 * 1.5 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipOt20').innerText = (c.h20 * 2.0 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipOt30').innerText = (c.h30 * 3.0 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipOt60').innerText = (c.h60 * 6.0 * hourlyRate).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            document.getElementById('slipLeave').innerText = c.leave.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipSS').innerText = c.ss.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipPvf').innerText = c.pvf.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+            document.getElementById('slipGrossTotal').innerText = c.grossIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+            const totalDeduct = c.leave + c.ss + c.pvf;
+            document.getElementById('slipDeductTotal').innerText = totalDeduct.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+
+            let accGross = 0, accSS = 0;
+            for(let i=0; i<=parseInt(m); i++) {
+                const tempC = calculateMonth(i);
+                accGross += tempC.grossIncome;
+                accSS += tempC.ss;
+            }
+            document.getElementById('slipAccGross').innerText = accGross.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('slipAccSS').innerText = accSS.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + '-';
+            document.getElementById('slipNetTotal').innerText = c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
+
+            document.getElementById('slipModal').classList.add('show');
+        }
+        window.closeSlipModal = function() { document.getElementById('slipModal').classList.remove('show'); }
+        window.downloadSlipImage = function() {
+            const slipCard = document.getElementById('cuteSlipCard');
+            html2canvas(slipCard, { scale: 2, backgroundColor: null }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Salary_Slip_${monthsTH[document.getElementById('monthSelect').value]}_${currentYear}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        function markDirty() {
+            formDirty = true;
+            document.getElementById('dirtyDot').classList.add('show');
+        }
+        function markClean() {
+            formDirty = false;
+            document.getElementById('dirtyDot').classList.remove('show');
+        }
+        INCOME_FIELD_IDS.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('input', () => { markDirty(); updateOtDonutChart(); });
+        });
+        document.getElementById('monthSelect').addEventListener('change', () => {
+            loadMonthToForm();
+            const viewVal = document.getElementById('otViewSelect').value;
+            if (viewVal !== 'year') {
+                document.getElementById('otViewSelect').value = document.getElementById('monthSelect').value;
+            }
+            updateOtDonutChart();
+        });
+        document.getElementById('otViewSelect').addEventListener('change', () => updateOtDonutChart());
+        document.getElementById('withholdingTaxIn').addEventListener('input', () => renderTableAndTax());
+
+        document.getElementById('togglePw').addEventListener('click', () => {
+            const pw = document.getElementById('password');
+            const btn = document.getElementById('togglePw');
+            const show = pw.type === 'password';
+            pw.type = show ? 'text' : 'password';
+            btn.innerText = show ? '🙈' : '👁️';
+        });
+
+        document.getElementById('authToggle').addEventListener('click', () => {
+            isSignUpMode = !isSignUpMode;
+            document.getElementById('authTitle').innerText = isSignUpMode ? "สร้างบัญชีใหม่" : "ยินดีต้อนรับ!";
+            document.getElementById('authSubtitle').innerText = isSignUpMode ? "เริ่มต้นจัดการรายได้ของคุณกัน" : "ระบบบันทึกเงินเดือน & ประเมินภาษี";
+            document.getElementById('confirmPasswordGroup').style.display = isSignUpMode ? "block" : "none";
+            document.getElementById('authBtnText').innerText = isSignUpMode ? "สมัครสมาชิก" : "เข้าสู่ระบบ";
+            document.getElementById('authToggle').innerHTML = isSignUpMode ? "มีบัญชีอยู่แล้ว? <span role='button' tabindex='0' style='color: var(--color-primary-hover); cursor: pointer; font-weight: 800;'>เข้าสู่ระบบที่นี่</span>" : "ยังไม่มีบัญชีใช่ไหม? <span role='button' tabindex='0' style='color: var(--color-primary-hover); cursor: pointer; font-weight: 800;'>สมัครสมาชิกที่นี่</span>";
+            document.getElementById('authEmoji').innerText = isSignUpMode ? "📝" : "🌸";
+        });
+
+        document.getElementById('forgotToggle').addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            if(!email) { showPopup("กรุณากรอกอีเมลในช่องด้านบนก่อนคลิกตั้งรหัสผ่านใหม่ครับ", "📧"); return; }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showPopup("ระบบส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่อีเมลของคุณแล้วจ้า!", "📩");
+            } catch(err) { showPopup("เกิดข้อผิดพลาด กรุณาลองใหม่ครับ", "❌"); }
+        });
+
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const authBtn = document.getElementById('authBtn');
+            authBtn.disabled = true;
+            try {
+                if(isSignUpMode) {
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    if(password !== confirmPassword) { showPopup("รหัสผ่านไม่ตรงกันครับ", "⚠️"); authBtn.disabled = false; return; }
+                    await createUserWithEmailAndPassword(auth, email, password);
+                } else {
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+            } catch(err) { showPopup("อีเมลหรือรหัสผ่านไม่ถูกต้องครับ", "❌"); authBtn.disabled = false; }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
+
+        function initYearSelector() {
+            const select = document.getElementById('displayYear');
+            select.innerHTML = '';
+            for(let y = currentYear - 2; y <= currentYear + 2; y++) {
+                const opt = document.createElement('option');
+                opt.value = y;
+                opt.innerText = `ปี ${y + 543}`;
+                if(y === currentYear) opt.selected = true;
+                select.appendChild(opt);
+            }
+        }
+
+        document.getElementById('displayYear').addEventListener('change', (e) => {
+            currentYear = parseInt(e.target.value);
+            markClean();
+            loadUserData();
+        });
+
+        async function loadUserData() {
+            if (!currentUid) return;
+            document.getElementById('loadingOverlay').style.display = 'block';
+            try {
+                const profileRef = doc(db, "users", currentUid, "settings", "profile");
+                const profileSnap = await getDoc(profileRef);
+                if (profileSnap.exists()) {
+                    userProfile = profileSnap.data();
+                }
+                document.getElementById('pCompanyName').value = userProfile.companyName || "";
+                document.getElementById('pEmpCode').value = userProfile.empCode || "";
+                document.getElementById('pDepartment').value = userProfile.department || "";
+                document.getElementById('pBankName').value = userProfile.bankName || "";
+                document.getElementById('pBankAcc').value = userProfile.bankAcc || "";
+
+                const docRef = doc(db, "users", currentUid, "years", currentYear.toString());
+                const docSnap = await getDoc(docRef);
+                yearlyData = docSnap.exists() ? docSnap.data() : {};
+                loadMonthToForm();
+                renderAll();
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการโหลดข้อมูล", "❌");
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }
+        }
+
+        document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+            if (!currentUid) return;
+            const btn = document.getElementById('saveProfileBtn');
+            btn.disabled = true;
+            document.getElementById('saveProfileBtnText').innerHTML = '<span class="spinner" style="display:inline-block; vertical-align:middle;"></span> กำลังบันทึก...';
+            
+            userProfile = {
+                companyName: document.getElementById('pCompanyName').value.trim(),
+                empCode: document.getElementById('pEmpCode').value.trim(),
+                department: document.getElementById('pDepartment').value.trim(),
+                bankName: document.getElementById('pBankName').value.trim(),
+                bankAcc: document.getElementById('pBankAcc').value.trim()
+            };
 
             try {
-                const docRef = doc(db, "salary_records", `${currentUserUid}_${selectedYear}`);
-                await setDoc(docRef, { monthsData: currentData });
-                document.querySelectorAll('.ot-row input').forEach(el => el.value = '');
-                renderTable(); updateUI();
-                showPopup(`บันทึกข้อมูลเดือน ${months[m]} เรียบร้อยจ้า!`, '💾');
-            } catch (error) { console.error(error); showPopup("บันทึกข้อมูลไม่สำเร็จ", "⚠️"); } 
-            finally { btn.innerText = "💾 บันทึกข้อมูลขึ้นระบบ"; btn.disabled = false; }
-        };
-
-        window.updateOTSummaryCard = () => {
-            const val = document.getElementById('otSummaryMonth').value;
-            let sum15 = 0, sum20 = 0, sum30 = 0, totalMoney = 0;
-            
-            if (val === 'all') {
-                sum15 = currentData.reduce((a,b) => a + (b ? (b.ot15 || 0) : 0), 0);
-                sum20 = currentData.reduce((a,b) => a + (b ? (b.ot20 || 0) : 0), 0);
-                sum30 = currentData.reduce((a,b) => a + (b ? (b.ot30 || 0) : 0), 0);
-                totalMoney = currentData.reduce((a,b) => a + (b ? (b.otTotal || 0) : 0), 0);
-            } else {
-                const d = currentData[parseInt(val)];
-                if (d) { sum15 = d.ot15 || 0; sum20 = d.ot20 || 0; sum30 = d.ot30 || 0; totalMoney = d.otTotal || 0; }
+                await setDoc(doc(db, "users", currentUid, "settings", "profile"), userProfile);
+                showPopup("บันทึกข้อมูลบริษัทและบัญชีของคุณเรียบร้อยแล้ว!", "🏢");
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการบันทึกข้อมูล", "❌");
+            } finally {
+                btn.disabled = false;
+                document.getElementById('saveProfileBtnText').innerText = '💾 บันทึกข้อมูลบริษัท/สลิปของฉัน';
             }
+        });
+
+        function loadMonthToForm() {
+            const m = document.getElementById('monthSelect').value;
+            const data = yearlyData[m] || {};
+            document.getElementById('baseIn').value = data.base ?? 0;
+            document.getElementById('licenseIn').value = data.license ?? 0;
+            document.getElementById('houseIn').value = data.house ?? 0;
+            document.getElementById('foodDaysIn').value = data.foodDays ?? 0;
+            document.getElementById('allowanceDaysIn').value = data.allowanceDays ?? 0;
+            document.getElementById('welfareIn').value = data.welfare ?? 0;
+            document.getElementById('leaveIn').value = data.leave ?? 0;
+            document.getElementById('ssIn').value = data.ss ?? 0;
+            document.getElementById('pvfIn').value = data.pvf ?? 600;
+            document.getElementById('ot15h').value = data.ot15h ?? 0;
+            document.getElementById('ot15m').value = data.ot15m ?? 0;
+            document.getElementById('ot20h').value = data.ot20h ?? 0;
+            document.getElementById('ot20m').value = data.ot20m ?? 0;
+            document.getElementById('ot30h').value = data.ot30h ?? 0;
+            document.getElementById('ot30m').value = data.ot30m ?? 0;
+            document.getElementById('ot60h').value = data.ot60h ?? 0;
+            document.getElementById('ot60m').value = data.ot60m ?? 0;
             
-            let totalOtSum = sum15 + sum20 + sum30;
+            document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
+            markClean();
+        }
 
-            document.getElementById('pieTotalHours').innerText = totalOtSum.toFixed(2);
-            document.getElementById('leg15').innerText = sum15.toFixed(2);
-            document.getElementById('leg20').innerText = sum20.toFixed(2);
-            document.getElementById('leg30').innerText = sum30.toFixed(2);
-            document.getElementById('legTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits: 2}) + ' บาท';
+        async function saveToFirebase() {
+            if (!currentUid) return;
+            const m = document.getElementById('monthSelect').value;
+            yearlyData[m] = {
+                base: parseFloat(document.getElementById('baseIn').value) || 0,
+                license: parseFloat(document.getElementById('licenseIn').value) || 0,
+                house: parseFloat(document.getElementById('houseIn').value) || 0,
+                foodDays: parseFloat(document.getElementById('foodDaysIn').value) || 0,
+                allowanceDays: parseFloat(document.getElementById('allowanceDaysIn').value) || 0,
+                welfare: parseFloat(document.getElementById('welfareIn').value) || 0,
+                leave: parseFloat(document.getElementById('leaveIn').value) || 0,
+                ss: parseFloat(document.getElementById('ssIn').value) || 0,
+                pvf: parseFloat(document.getElementById('pvfIn').value) || 0,
+                ot15h: parseFloat(document.getElementById('ot15h').value) || 0,
+                ot15m: parseFloat(document.getElementById('ot15m').value) || 0,
+                ot20h: parseFloat(document.getElementById('ot20h').value) || 0,
+                ot20m: parseFloat(document.getElementById('ot20m').value) || 0,
+                ot30h: parseFloat(document.getElementById('ot30h').value) || 0,
+                ot30m: parseFloat(document.getElementById('ot30m').value) || 0,
+                ot60h: parseFloat(document.getElementById('ot60h').value) || 0,
+                ot60m: parseFloat(document.getElementById('ot60m').value) || 0
+            };
+            yearlyData.withholdingTax = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
 
-            if(myPieChart) myPieChart.destroy();
-            if (totalOtSum === 0) {
-                document.getElementById('otPieChart').style.display = 'none';
-                document.getElementById('pieCenterText').style.display = 'none';
-                document.getElementById('noOtMessage').style.display = 'block';
-                document.getElementById('otCustomLegend').style.opacity = '0.4';
+            await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData);
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', async () => {
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = true;
+            document.getElementById('saveBtnText').innerHTML = '<span class="spinner" style="display:inline-block; vertical-align:middle;"></span> กำลังบันทึก...';
+            const m = document.getElementById('monthSelect').value;
+            
+            document.getElementById('loadingOverlay').style.display = 'block';
+            try {
+                await saveToFirebase();
+                showPopup("บันทึกข้อมูลเดือน " + monthsTH[m] + " เรียบร้อยแล้ว!", "💾");
+                markClean();
+                renderAll();
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการบันทึก", "❌");
+            } finally {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                saveBtn.disabled = false;
+                document.getElementById('saveBtnText').innerText = '💾 บันทึกข้อมูลลงระบบ';
+            }
+        });
+
+        function calculateMonth(m) {
+            const raw = yearlyData[m] || {};
+            const base = raw.base || 0;
+            const license = raw.license || 0;
+            const house = raw.house || 0;
+            const foodDays = raw.foodDays || 0;
+            const foodMoney = foodDays * 50;
+            const allowanceDays = raw.allowanceDays || 0;
+            const allowanceMoney = allowanceDays * 150;
+            const welfare = raw.welfare || 0;
+            const leave = raw.leave || 0;
+            const ss = raw.ss || 0;
+            const pvf = raw.pvf !== undefined ? raw.pvf : 600;
+
+            const baseIncome = base + license + house + foodMoney + allowanceMoney + welfare;
+            const hourlyRate = base > 0 ? base / 240 : 0;
+
+            const h15 = (raw.ot15h || 0) + ((raw.ot15m || 0) / 60);
+            const h20 = (raw.ot20h || 0) + ((raw.ot20m || 0) / 60);
+            const h30 = (raw.ot30h || 0) + ((raw.ot30m || 0) / 60);
+            const h60 = (raw.ot60h || 0) + ((raw.ot60m || 0) / 60);
+
+            const totalOtHours = h15 + h20 + h30 + h60;
+            const totalOtMoney = (h15 * 1.5 * hourlyRate) + (h20 * 2.0 * hourlyRate) + (h30 * 3.0 * hourlyRate) + (h60 * 6.0 * hourlyRate);
+            const grossIncome = baseIncome + totalOtMoney;
+            const netIncome = grossIncome - leave - ss - pvf;
+
+            return { 
+                base, license, house, foodDays, foodMoney, allowanceDays, allowanceMoney, welfare, leave, ss, pvf,
+                baseIncome, grossIncome, netIncome, totalOtHours, totalOtMoney, h15, h20, h30, h60 
+            };
+        }
+
+        function renderAll() {
+            renderTableAndTax();
+            updateOtDonutChart();
+        }
+
+        function updateOtDonutChart() {
+            const viewMode = document.getElementById('otViewSelect').value;
+            let sum15 = 0, sum20 = 0, sum30 = 0, sum60 = 0;
+            let totalMoney = 0;
+
+            const activeFormMonth = parseInt(document.getElementById('monthSelect').value);
+            const currH15 = (parseFloat(document.getElementById('ot15h').value) || 0) + ((parseFloat(document.getElementById('ot15m').value) || 0) / 60);
+            const currH20 = (parseFloat(document.getElementById('ot20h').value) || 0) + ((parseFloat(document.getElementById('ot20m').value) || 0) / 60);
+            const currH30 = (parseFloat(document.getElementById('ot30h').value) || 0) + ((parseFloat(document.getElementById('ot30m').value) || 0) / 60);
+            const currH60 = (parseFloat(document.getElementById('ot60h').value) || 0) + ((parseFloat(document.getElementById('ot60m').value) || 0) / 60);
+
+            if (viewMode === 'year') {
+                for (let i = 0; i < 12; i++) {
+                    if (i === activeFormMonth) {
+                        const b = parseFloat(document.getElementById('baseIn').value) || 0;
+                        const hr = b > 0 ? b / 240 : 0;
+                        sum15 += currH15; sum20 += currH20; sum30 += currH30; sum60 += currH60;
+                        totalMoney += (currH15 * 1.5 * hr) + (currH20 * 2.0 * hr) + (currH30 * 3.0 * hr) + (currH60 * 6.0 * hr);
+                    } else {
+                        const c = calculateMonth(i);
+                        sum15 += c.h15; sum20 += c.h20; sum30 += c.h30; sum60 += c.h60;
+                        totalMoney += c.totalOtMoney;
+                    }
+                }
             } else {
-                document.getElementById('otPieChart').style.display = 'block';
-                document.getElementById('pieCenterText').style.display = 'flex';
-                document.getElementById('noOtMessage').style.display = 'none';
-                document.getElementById('otCustomLegend').style.opacity = '1';
+                const mIdx = parseInt(viewMode);
+                if (mIdx === activeFormMonth) {
+                    const b = parseFloat(document.getElementById('baseIn').value) || 0;
+                    const hr = b > 0 ? b / 240 : 0;
+                    sum15 = currH15; sum20 = currH20; sum30 = currH30; sum60 = currH60;
+                    totalMoney = (currH15 * 1.5 * hr) + (currH20 * 2.0 * hr) + (currH30 * 3.0 * hr) + (currH60 * 6.0 * hr);
+                } else {
+                    const c = calculateMonth(mIdx);
+                    sum15 = c.h15; sum20 = c.h20; sum30 = c.h30; sum60 = c.h60;
+                    totalMoney = c.totalOtMoney;
+                }
+            }
 
-                Chart.defaults.plugins.legend.display = false;
+            const totalHours = sum15 + sum20 + sum30 + sum60;
 
-                myPieChart = new Chart(document.getElementById('otPieChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x'],
-                        datasets: [{ data: [sum15, sum20, sum30], backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444'], borderWidth: 0, hoverOffset: 5 }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '80%', plugins: { tooltip: { callbacks: { label: function(c) { return ` ${c.raw.toFixed(2)} ชม.`; } } } } }
+            document.getElementById('stat15h').innerText = sum15.toFixed(1) + ' ชม.';
+            document.getElementById('stat20h').innerText = sum20.toFixed(1) + ' ชม.';
+            document.getElementById('stat30h').innerText = sum30.toFixed(1) + ' ชม.';
+            document.getElementById('stat60h').innerText = sum60.toFixed(1) + ' ชม.';
+            document.getElementById('otCenterHours').innerText = totalHours.toFixed(1);
+            document.getElementById('otTotalMoneyText').innerText = `💰 รวมเงิน OT: ${totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท`;
+
+            const ctx = document.getElementById('otDonutChart').getContext('2d');
+            if (otDonutChartInstance) otDonutChartInstance.destroy();
+
+            const chartData = (totalHours === 0) ? [1] : [sum15, sum20, sum30, sum60];
+            const chartColors = (totalHours === 0) ? ['#f1f5f9'] : ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'];
+
+            otDonutChartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'],
+                    datasets: [{
+                        data: chartData,
+                        backgroundColor: chartColors,
+                        borderWidth: 3,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '72%',
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function renderTableAndTax() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalGrossSum = 0;
+            const today = new Date();
+            const isCurrentYear = currentYear === today.getFullYear();
+            const currentMonthIdx = today.getMonth();
+
+            for (let i = 0; i < 12; i++) {
+                const c = calculateMonth(i);
+                totalBaseSum += c.baseIncome; totalHoursSum += c.totalOtHours;
+                totalOtSum += c.totalOtMoney; totalNetSum += c.netIncome;
+                totalSSSum += c.ss; totalGrossSum += c.grossIncome;
+
+                const tr = document.createElement('tr');
+                if (isCurrentYear && i === currentMonthIdx) tr.classList.add('current-month');
+                tr.innerHTML = `<td style="text-align:center;">${monthsTH[i]}</td>
+                    <td>${c.baseIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td>${c.totalOtHours.toFixed(1)} ชม.</td>
+                    <td>${c.totalOtMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                    <td style="font-weight:700; color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>`;
+                
+                const detailTr = document.createElement('tr');
+                detailTr.className = 'breakdown-row';
+                detailTr.id = `breakdown-${i}`;
+                detailTr.innerHTML = `<td colspan="5">
+                    <div class="breakdown-content">
+                        <div class="breakdown-grid">
+                            <div class="breakdown-box">
+                                <h4>💰 รายได้ตั้งต้น & เงินช่วยเหลือ</h4>
+                                <div class="breakdown-item"><span>ฐานเงินเดือน:</span> <span>${c.base.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>ค่าใบประกอบ (กว.):</span> <span>${c.license.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>ค่าที่พัก/อื่นๆ:</span> <span>${c.house.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>ค่าอาหาร (${c.foodDays} วัน):</span> <span>${c.foodMoney.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>เบี้ยเลี้ยง (${c.allowanceDays} วัน):</span> <span>${c.allowanceMoney.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>สวัสดิการ:</span> <span>${c.welfare.toLocaleString()} ฿</span></div>
+                            </div>
+                            <div class="breakdown-box">
+                                <h4>⏱️ รายละเอียด OT</h4>
+                                <div class="breakdown-item"><span>OT 1.5x (${c.h15.toFixed(1)} ชม.):</span> <span>${(c.h15 * 1.5 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 2.0x (${c.h20.toFixed(1)} ชม.):</span> <span>${(c.h20 * 2.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 3.0x (${c.h30.toFixed(1)} ชม.):</span> <span>${(c.h30 * 3.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                                <div class="breakdown-item"><span>OT 6.0x (${c.h60.toFixed(1)} ชม.):</span> <span>${(c.h60 * 6.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
+                            </div>
+                            <div class="breakdown-box">
+                                <h4>✂️ รายการหักออก</h4>
+                                <div class="breakdown-item"><span>หักลางาน/อื่นๆ:</span> <span style="color:#e11d48;">- ${c.leave.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>หักประกันสังคม:</span> <span style="color:#e11d48;">- ${c.ss.toLocaleString()} ฿</span></div>
+                                <div class="breakdown-item"><span>หักสำรองเลี้ยงชีพ:</span> <span style="color:#e11d48;">- ${c.pvf.toLocaleString()} ฿</span></div>
+                                <div style="margin-top:10px; border-top:1px dashed var(--border-color); padding-top:5px;" class="breakdown-item"><strong>รับสุทธิ:</strong> <strong style="color:var(--color-primary-hover);">${c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>`;
+
+                tr.addEventListener('click', () => {
+                    const panel = document.getElementById(`breakdown-${i}`);
+                    panel.classList.toggle('show');
                 });
+
+                tbody.appendChild(tr);
+                tbody.appendChild(detailTr);
             }
-        };
 
-        function renderTable() {
-            const body = document.getElementById('tableBody'); body.innerHTML = '';
-            let sB=0, sO=0, sN=0, sH=0;
-            currentData.forEach((d, i) => {
-                if(d) {
-                    let foodVal = d.food || 0;
-                    body.innerHTML += `<tr><td style="text-align:center; font-weight:800;">${months[i]}</td>
-                        <td>${(d.base + d.house + foodVal).toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
-                        <td style="color:var(--color-primary); font-weight:800;">${d.totalOtHours.toFixed(2)}</td>
-                        <td>${d.otTotal.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td>
-                        <td class="income">${d.net.toLocaleString('th-TH', {minimumFractionDigits: 2})}</td></tr>`;
-                    sB += (d.base + d.house + foodVal); sO += d.otTotal; sN += d.net; sH += d.totalOtHours;
-                } else { body.innerHTML += `<tr><td style="text-align:center; font-weight:800;">${months[i]}</td><td colspan="4" style="text-align:center; color: var(--text-muted); opacity: 0.5;">-</td></tr>`; }
-            });
-            document.getElementById('totalBase').innerText = sB.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('totalOt').innerText = sO.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('totalHoursText').innerText = sH.toFixed(2) + " ชม.";
-            document.getElementById('totalNet').innerText = sN.toLocaleString('th-TH', {minimumFractionDigits: 2});
-        }
+            document.getElementById('totalBase').innerText = totalBaseSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('totalHoursText').innerText = totalHoursSum.toFixed(1) + ' ชม.';
+            document.getElementById('totalOt').innerText = totalOtSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('totalNet').innerText = totalNetSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
 
-        function updateUI() {
-            let ots = currentData.map(d => d ? d.totalOtHours : 0);
-            let totalG = currentData.reduce((a,b) => a + (b ? (b.base + b.house + (b.food || 0) + b.otTotal - b.leave) : 0), 0);
-            let totalSS = currentData.reduce((a,b) => a + (b ? b.ss : 0), 0);
+            const expenses = Math.min(totalGrossSum * 0.5, 100000);
+            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - totalSSSum);
 
-            const rootStyle = getComputedStyle(document.documentElement);
-            const textColor = rootStyle.getPropertyValue('--text-main').trim();
-            const barColor = rootStyle.getPropertyValue('--chart-bar').trim();
-            const gridColor = rootStyle.getPropertyValue('--border-color').trim();
-
-            Chart.defaults.color = textColor; Chart.defaults.font.family = "'Sarabun', sans-serif";
-            if(myChart) myChart.destroy();
-            myChart = new Chart(document.getElementById('otChart'), {
-                type: 'bar', 
-                data: { labels: months, datasets: [{ data: ots, backgroundColor: ots.map(h => h > 60 ? '#ef4444' : barColor), borderRadius: 8 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { color: textColor, font: {weight: 'bold'} } }, y: { grid: { color: gridColor }, ticks: { color: textColor } } } }
-            });
-
-            window.updateOTSummaryCard(); 
-
-            let exp = Math.min(totalG * 0.5, 100000);
-            let netT = Math.max(totalG - exp - 60000 - totalSS, 0);
             let tax = 0;
-            if(netT > 150000) tax += (Math.min(netT, 300000) - 150000) * 0.05;
-            if(netT > 300000) tax += (Math.min(netT, 500000) - 300000) * 0.10;
+            if (taxableIncome > 5000000) tax += (taxableIncome - 5000000) * 0.35 + 1265000;
+            else if (taxableIncome > 2000000) tax += (taxableIncome - 2000000) * 0.30 + 365000;
+            else if (taxableIncome > 1000000) tax += (taxableIncome - 1000000) * 0.25 + 115000;
+            else if (taxableIncome > 750000) tax += (taxableIncome - 750000) * 0.20 + 65000;
+            else if (taxableIncome > 500000) tax += (taxableIncome - 500000) * 0.15 + 27500;
+            else if (taxableIncome > 300000) tax += (taxableIncome - 300000) * 0.10 + 7500;
+            else if (taxableIncome > 150000) tax += (taxableIncome - 150000) * 0.05;
 
-            document.getElementById('taxGross').innerText = totalG.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('taxExp').innerText = exp.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('taxSS').innerText = totalSS.toLocaleString('th-TH', {minimumFractionDigits: 2});
-            document.getElementById('taxAmount').innerText = tax.toLocaleString('th-TH', {minimumFractionDigits: 2}) + " บาท";
+            const withholding = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
+            const finalTaxNet = tax - withholding;
+
+            document.getElementById('taxGross').innerText = totalGrossSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxExp').innerText = expenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxSS').innerText = totalSSSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             
-            const alertBox = document.getElementById('overworkAlert');
-            let maxH = Math.max(...ots);
-            alertBox.innerHTML = maxH > 80 ? "🔴 ทำโอทีหนักไปแล้ว พักบ้างนะ!" : maxH > 60 ? "🟡 เริ่มทำโอทีเยอะแล้ว รักษาสุขภาพด้วย" : "🟢 Work-Life Balance เยี่ยมมาก!";
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark' || document.documentElement.getAttribute('data-theme') === 'tokyo';
-            alertBox.style.background = maxH > 80 ? (isDark ? "rgba(127, 29, 29, 0.5)" : "rgba(254, 226, 226, 0.9)") : maxH > 60 ? (isDark ? "rgba(113, 63, 18, 0.5)" : "rgba(254, 249, 195, 0.9)") : (isDark ? "rgba(20, 83, 45, 0.5)" : "rgba(220, 252, 231, 0.9)");
-            alertBox.style.color = maxH > 80 ? (isDark ? "#fca5a5" : "#991b1b") : maxH > 60 ? (isDark ? "#fde047" : "#854d0e") : (isDark ? "#86efac" : "#166534");
+            const taxAmountEl = document.getElementById('taxAmount');
+            const taxLabelEl = document.getElementById('taxFinalLabel');
+            if (finalTaxNet >= 0) {
+                taxLabelEl.innerText = "ภาษีที่ต้องชำระสุทธิ";
+                taxAmountEl.innerText = finalTaxNet.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+            } else {
+                taxLabelEl.innerText = "ยอดภาษีที่ควรได้คืน ( Refund )";
+                taxAmountEl.innerText = Math.abs(finalTaxNet).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+                taxAmountEl.style.color = '#10b981';
+            }
         }
+
+        function computeQuickOT() {
+            const salary = parseFloat(document.getElementById('quickSalary').value) || 0;
+            const hourlyRate = salary > 0 ? salary / 240 : 0;
+            document.getElementById('quickRateDisplay').innerText = hourlyRate.toFixed(2);
+
+            const h15 = (parseFloat(document.getElementById('qOt15h').value) || 0) + ((parseFloat(document.getElementById('qOt15m').value) || 0) / 60);
+            const h20 = (parseFloat(document.getElementById('qOt20h').value) || 0) + ((parseFloat(document.getElementById('qOt20m').value) || 0) / 60);
+            const h30 = (parseFloat(document.getElementById('qOt30h').value) || 0) + ((parseFloat(document.getElementById('qOt30m').value) || 0) / 60);
+            const h60 = (parseFloat(document.getElementById('qOt60h').value) || 0) + ((parseFloat(document.getElementById('qOt60m').value) || 0) / 60);
+
+            const m15 = h15 * 1.5 * hourlyRate, m20 = h20 * 2.0 * hourlyRate, m30 = h30 * 3.0 * hourlyRate, m60 = h60 * 6.0 * hourlyRate;
+            const totalMoney = m15 + m20 + m30 + m60, totalHours = h15 + h20 + h30 + h60;
+
+            document.getElementById('res15Money').innerText = m15.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res15Time').innerText = h15.toFixed(1) + ' ชม.';
+            document.getElementById('res20Money').innerText = m20.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res20Time').innerText = h20.toFixed(1) + ' ชม.';
+            document.getElementById('res30Money').innerText = m30.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res30Time').innerText = h30.toFixed(1) + ' ชม.';
+            document.getElementById('res60Money').innerText = m60.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿'; document.getElementById('res60Time').innerText = h60.toFixed(1) + ' ชม.';
+            document.getElementById('resTotalMoney').innerText = totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
+            document.getElementById('resTotalHoursText').innerText = `รวมเวลา: ${totalHours.toFixed(1)} ชั่วโมง`;
+        }
+
+        ['quickSalary', 'qOt15h', 'qOt15m', 'qOt20h', 'qOt20m', 'qOt30h', 'qOt30m', 'qOt60h', 'qOt60m'].forEach(id => {
+            const input = document.getElementById(id);
+            if (input) input.addEventListener('input', computeQuickOT);
+        });
+
+        document.getElementById('copySummaryBtn').addEventListener('click', () => {
+            const text = `🌸 สรุปค่า OT ด่วน\n- OT 1.5x (${document.getElementById('res15Time').innerText}): ${document.getElementById('res15Money').innerText}\n- OT 2.0x (${document.getElementById('res20Time').innerText}): ${document.getElementById('res20Money').innerText}\n- OT 3.0x (${document.getElementById('res30Time').innerText}): ${document.getElementById('res30Money').innerText}\n- OT 6.0x (${document.getElementById('res60Time').innerText}): ${document.getElementById('res60Money').innerText}\n💰 รวมยอด OT ทั้งสิ้น: ${document.getElementById('resTotalMoney').innerText}`;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => showPopup("คัดลอกสรุปข้อความเรียบร้อยแล้ว!", "📋"));
+            }
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            document.getElementById('initialLoading').style.display = 'none';
+            if (user) {
+                currentUid = user.uid;
+                currentUserEmail = user.email || '';
+                document.getElementById('displayUser').innerText = currentUserEmail;
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('appSection').style.display = 'block';
+                initYearSelector(); loadUserData(); computeQuickOT();
+            } else {
+                currentUid = null;
+                currentUserEmail = "";
+                yearlyData = {};
+                markClean();
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('appSection').style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
+```[cite: 1]
