@@ -379,7 +379,8 @@
                     <div class="tax-box"><span class="tax-label">รายได้รวมทั้งปี</span><span class="tax-value" id="taxGross">0.00</span></div>
                     <div class="tax-box"><span class="tax-label">หักค่าใช้จ่าย (สูงสุด 1 แสน)</span><span class="tax-value deduct">- <span id="taxExp">0.00</span></span></div>
                     <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
-                    <div class="tax-box"><span class="tax-label">หักประกันสังคม</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">หักประกันสังคม (สูงสุด 9,000)</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">หักสำรองเลี้ยงชีพ</span><span class="tax-value deduct">- <span id="taxPvf">0.00</span></span></div>
                     <div class="tax-box tax-total-box"><span class="tax-label" id="taxFinalLabel" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
                 </div>
             </div>
@@ -393,7 +394,7 @@
                         <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
                         <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
                         <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
-                        <option value="9">ตลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
+                        <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                     </select>
                 </h3>
                 
@@ -442,9 +443,10 @@
                             <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
                             <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
                             <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
-                            <option value="9">ตลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
+                            <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                         </select>
                     </div>
+                    <button type="button" class="btn btn-secondary" style="padding:10px;font-size:.95rem;margin:-5px 0 20px" onclick="copyPrevMonth()">📋 คัดลอกจากเดือนก่อน</button>
                     <div class="form-group"><label for="baseIn">ฐานเงินเดือน</label><input type="number" id="baseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div class="form-group"><label for="licenseIn">ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div class="form-group"><label for="houseIn">ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="0" min="0" step="any" placeholder="0"></div>
@@ -496,6 +498,7 @@
                         </tr>
                     </tfoot>
                 </table>
+                <div style="padding:12px 20px;background:var(--bg-card);"><button type="button" class="btn btn-secondary" style="padding:10px;font-size:.95rem" onclick="exportCSV()">📥 ส่งออกตารางเป็น CSV</button></div>
                 <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: var(--bg-card);">💡 คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้</p>
             </div>
         </div>
@@ -630,11 +633,11 @@
         let currentYear = new Date().getFullYear();
         let yearlyData = {}; 
         let userProfile = {
-            companyName: "บริษัท ไทย เช็มคอน จำกัด",
-            empCode: "2026010",
-            department: "CONSTRUCTION",
-            bankName: "ไทยพาณิชย์ จำกัด",
-            bankAcc: "5042687004"
+            companyName: "",
+            empCode: "",
+            department: "",
+            bankName: "",
+            bankAcc: ""
         };
         let formDirty = false;
         let isAutoTheme = true;
@@ -718,7 +721,7 @@
             document.getElementById('slipMonthYear').innerText = `${monthsTH[m]} ${currentYear + 543}`;
             document.getElementById('slipUserEmail').innerText = currentUserEmail || 'user@email.com';
             
-            document.getElementById('slipCompanyName').innerText = `🌸 ${userProfile.companyName || 'บริษัท ไทย เช็มคอน จำกัด'}`;
+            document.getElementById('slipCompanyName').innerText = `🌸 ${userProfile.companyName || 'บริษัทของคุณ'}`;
             document.getElementById('slipEmpCode').innerText = userProfile.empCode || '-';
             document.getElementById('slipDepartment').innerText = userProfile.department || '-';
             document.getElementById('slipBankName').innerText = userProfile.bankName || '-';
@@ -780,7 +783,10 @@
             const el = document.getElementById(id);
             if (el) el.addEventListener('input', () => { markDirty(); updateOtDonutChart(); });
         });
-        document.getElementById('monthSelect').addEventListener('change', () => {
+        let lastMonth = document.getElementById('monthSelect').value;
+        document.getElementById('monthSelect').addEventListener('change', (e) => {
+            if (formDirty && !confirm('มีข้อมูลที่ยังไม่บันทึก ต้องการทิ้งใช่ไหม?')) { e.target.value = lastMonth; return; }
+            lastMonth = e.target.value;
             loadMonthToForm();
             const viewVal = document.getElementById('otViewSelect').value;
             if (viewVal !== 'year') {
@@ -992,7 +998,7 @@
             const welfare = raw.welfare || 0;
             const leave = raw.leave || 0;
             const ss = raw.ss || 0;
-            const pvf = raw.pvf !== undefined ? raw.pvf : 600;
+            const pvf = yearlyData[m] ? (raw.pvf !== undefined ? raw.pvf : 600) : 0;
 
             const baseIncome = base + license + house + foodMoney + allowanceMoney + welfare;
             const hourlyRate = base > 0 ? base / 240 : 0;
@@ -1094,7 +1100,7 @@
         function renderTableAndTax() {
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
-            let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalGrossSum = 0;
+            let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalGrossSum = 0, totalPvfSum = 0;
             const today = new Date();
             const isCurrentYear = currentYear === today.getFullYear();
             const currentMonthIdx = today.getMonth();
@@ -1103,7 +1109,7 @@
                 const c = calculateMonth(i);
                 totalBaseSum += c.baseIncome; totalHoursSum += c.totalOtHours;
                 totalOtSum += c.totalOtMoney; totalNetSum += c.netIncome;
-                totalSSSum += c.ss; totalGrossSum += c.grossIncome;
+                totalSSSum += c.ss; totalGrossSum += c.grossIncome; totalPvfSum += c.pvf;
 
                 const tr = document.createElement('tr');
                 if (isCurrentYear && i === currentMonthIdx) tr.classList.add('current-month');
@@ -1161,7 +1167,9 @@
             document.getElementById('totalNet').innerText = totalNetSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
 
             const expenses = Math.min(totalGrossSum * 0.5, 100000);
-            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - totalSSSum);
+            const ssDeduct = Math.min(totalSSSum, 9000);
+            const pvfDeduct = Math.min(totalPvfSum, totalGrossSum * 0.15, 500000);
+            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - ssDeduct - pvfDeduct);
 
             let tax = 0;
             if (taxableIncome > 5000000) tax += (taxableIncome - 5000000) * 0.35 + 1265000;
@@ -1177,12 +1185,13 @@
 
             document.getElementById('taxGross').innerText = totalGrossSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('taxExp').innerText = expenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
-            document.getElementById('taxSS').innerText = totalSSSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            document.getElementById('taxSS').innerText = fmt(ssDeduct);
+            document.getElementById('taxPvf').innerText = fmt(pvfDeduct);
             
             const taxAmountEl = document.getElementById('taxAmount');
             const taxLabelEl = document.getElementById('taxFinalLabel');
             if (finalTaxNet >= 0) {
-                taxLabelEl.innerText = "ภาษีที่ต้องชำระสุทธิ";
+                taxLabelEl.innerText = "ภาษีที่ต้องชำระสุทธิ"; taxAmountEl.style.color = '';
                 taxAmountEl.innerText = finalTaxNet.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
             } else {
                 taxLabelEl.innerText = "ยอดภาษีที่ควรได้คืน ( Refund )";
@@ -1224,6 +1233,31 @@
             }
         });
 
+        const fmt = n => n.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+        window.addEventListener('beforeunload', e => { if (formDirty) { e.preventDefault(); e.returnValue = ''; } });
+
+        window.copyPrevMonth = function() {
+            const m = parseInt(document.getElementById('monthSelect').value);
+            const p = m > 0 && yearlyData[m - 1];
+            if (!p) { showPopup("ไม่มีข้อมูลเดือนก่อนหน้า", "⚠️"); return; }
+            const map = {baseIn:'base', licenseIn:'license', houseIn:'house', welfareIn:'welfare', ssIn:'ss', pvfIn:'pvf', foodDaysIn:'foodDays', allowanceDaysIn:'allowanceDays'};
+            for (const [id, k] of Object.entries(map)) document.getElementById(id).value = p[k] ?? 0;
+            markDirty(); updateOtDonutChart();
+        };
+
+        window.exportCSV = function() {
+            const rows = [['เดือน','เงินเดือน','ใบประกอบ','ที่พัก/อื่นๆ','ค่าอาหาร','เบี้ยเลี้ยง','สวัสดิการ','ชม.OT','เงิน OT','รายได้รวม','หักลา','ประกันสังคม','สำรองเลี้ยงชีพ','รับสุทธิ']];
+            for (let i = 0; i < 12; i++) {
+                const c = calculateMonth(i);
+                rows.push([monthsTH[i], c.base, c.license, c.house, c.foodMoney, c.allowanceMoney, c.welfare, c.totalOtHours.toFixed(2), c.totalOtMoney.toFixed(2), c.grossIncome.toFixed(2), c.leave, c.ss, c.pvf, c.netIncome.toFixed(2)]);
+            }
+            const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+            a.download = `salary_${currentYear + 543}.csv`;
+            a.click();
+        };
+
         onAuthStateChanged(auth, (user) => {
             document.getElementById('initialLoading').style.display = 'none';
             if (user) {
@@ -1232,7 +1266,10 @@
                 document.getElementById('displayUser').innerText = currentUserEmail;
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('appSection').style.display = 'block';
-                initYearSelector(); loadUserData(); computeQuickOT();
+                initYearSelector();
+                document.getElementById('monthSelect').value = new Date().getMonth();
+                lastMonth = document.getElementById('monthSelect').value;
+                loadUserData(); computeQuickOT();
             } else {
                 currentUid = null;
                 currentUserEmail = "";
