@@ -2,213 +2,387 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Salary & Tax System (Default 0 Fields)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f472b6">
+    <meta name="description" content="ระบบบันทึกเงินเดือน คำนวณ OT ใบจ่ายเงินเดือน และประเมินภาษีเงินได้ประจำปี (ภ.ง.ด.91)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8C%B8%3C/text%3E%3C/svg%3E">
+    <title>Salary & Tax Pro</title>
     
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap');
-        
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@500;600&family=Sarabun:wght@400;500;600;700&display=swap');
+
         * { box-sizing: border-box; }
 
         :root {
-            --bg-main: linear-gradient(135deg, #ffe4e1 0%, #fff0f5 100%); 
-            --bg-card: rgba(255, 255, 255, 0.75); 
-            --bg-input: rgba(255, 255, 255, 0.9);
-            --text-main: #831843; 
-            --text-muted: #be185d; 
-            --color-primary: #f472b6;
-            --color-primary-hover: #db2777; 
-            --color-header: #9d174d; 
-            --border-color: rgba(255, 255, 255, 0.8);
-            --color-danger: #e11d48;
+            --bg-main: #fdf5f7;
+            --bg-card: #ffffff;
+            --bg-input: #ffffff;
+            --surface-2: #fff0f4;
+            --brand-soft: #fce3ec;
+            --text-main: #3a1b2c;
+            --text-muted: #7a5568;
+            --color-primary: #c2255c;
+            --color-primary-hover: #a31c4b;
+            --on-primary: #ffffff;
+            --color-header: #5a1038;
+            --border-color: #f0d5de;
+            --input-line: #b58aa0;
+            --color-danger: #c92a2a;
+            --good: #2b8a5a;
+            --hero-bg: #5a1038;
+            --hero-ink: #ffffff;
+            --hero-muted: #f3bcd2;
+            --shadow: 0 1px 2px rgba(90, 16, 56, 0.06);
+            --font-display: 'Prompt', 'Sarabun', sans-serif;
+            --r-card: 16px;
+            --r-ctl: 10px;
         }
 
         body.night-mode {
-            --bg-main: linear-gradient(135deg, #1e1b2e 0%, #2d1f3d 100%);
-            --bg-card: rgba(45, 31, 61, 0.75);
-            --bg-input: rgba(45, 31, 61, 0.9);
-            --text-main: #fbcfe8;
-            --text-muted: #f472b6;
-            --color-primary: #ec4899;
-            --color-primary-hover: #f472b6;
-            --color-header: #f9a8d4;
-            --border-color: rgba(244, 114, 182, 0.2);
+            --bg-main: #170f1f;
+            --bg-card: #261833;
+            --bg-input: #1e1229;
+            --surface-2: #2e1d3c;
+            --brand-soft: #3a2145;
+            --text-main: #f8e7ef;
+            --text-muted: #c9a6bb;
+            --color-primary: #f783ac;
+            --color-primary-hover: #ffa8c5;
+            --on-primary: #2a0f1d;
+            --color-header: #ffd1e1;
+            --border-color: #43294f;
+            --input-line: #8a6a9b;
+            --color-danger: #ff8787;
+            --good: #63d2a0;
+            --hero-bg: #3a1b4b;
+            --shadow: none;
         }
 
-        body { 
-            font-family: 'Sarabun', sans-serif; 
-            background: var(--bg-main); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 2vh 20px; 
-            min-height: 100vh; 
-            overflow-x: hidden; 
-            background-attachment: fixed;
-            transition: background 0.5s ease, color 0.5s ease;
+        html { -webkit-text-size-adjust: 100%; }
+
+        body {
+            font-family: 'Sarabun', sans-serif;
+            font-size: 16px;
+            line-height: 1.55;
+            background: var(--bg-main);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, span[role="button"]:focus-visible {
-            outline: 3px solid var(--color-primary-hover);
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible,
+        span[role="button"]:focus-visible, div[role="button"]:focus-visible, tr:focus-visible {
+            outline: 3px solid var(--color-primary);
             outline-offset: 2px;
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+            .petal { display: none; }
         }
 
+        /* ---------- ambient layer ---------- */
         #sakuraLayer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -2; overflow: hidden; }
-        .sakura-branch { position: fixed; top: -20px; right: -50px; width: 500px; opacity: 0.85; filter: drop-shadow(0 10px 15px rgba(244, 114, 182, 0.2)); }
-        body.night-mode .sakura-branch { opacity: 0.3; filter: drop-shadow(0 10px 15px rgba(236, 72, 153, 0.1)); }
-        
+        .sakura-branch { position: fixed; top: -30px; right: -70px; width: 380px; opacity: 0.5; }
+        body.night-mode .sakura-branch { opacity: 0.16; }
         .petal {
-            position: absolute; background: linear-gradient(135deg, #ffb7c5, #ff8da1);
-            border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.8;
-            box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
+            position: absolute; top: 0; will-change: translate, transform;
+            background: linear-gradient(135deg, #ffb7c5, #ff8da1);
+            border-radius: 15px 0 15px 0; pointer-events: none; opacity: 0.6;
             animation: fall linear infinite, sway ease-in-out infinite alternate;
         }
-        body.night-mode .petal { background: linear-gradient(135deg, #f472b6, #db2777); opacity: 0.5; }
-        @keyframes fall { 0% { top: -10%; opacity: 0; transform: rotate(0deg); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 110%; opacity: 0; transform: rotate(360deg); } }
+        body.night-mode .petal { background: linear-gradient(135deg, #f472b6, #db2777); opacity: 0.35; }
+        @keyframes fall { 0% { translate: 0 -10vh; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { translate: 0 110vh; opacity: 0; } }
         @keyframes sway { 0% { transform: translateX(0px) rotate(0deg); } 100% { transform: translateX(40px) rotate(45deg); } }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes bounceIn { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .dashboard-wrapper { width: 100%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
+
+        /* ---------- app shell ---------- */
+        .dashboard-wrapper {
+            width: 100%; max-width: 1240px; margin: 0 auto; position: relative; z-index: 10;
+            display: grid; grid-template-columns: 248px minmax(0, 1fr); column-gap: 28px; align-items: start;
+        }
+        .dashboard-wrapper > * { grid-column: 2; min-width: 0; }
 
         .top-nav {
-            display: flex; justify-content: space-between; align-items: center;
-            background: var(--bg-card); backdrop-filter: blur(20px);
-            padding: 15px 30px; border-radius: 24px; border: 2px solid var(--border-color);
-            box-shadow: 0 15px 35px rgba(244, 114, 182, 0.1); margin-bottom: 25px;
-            animation: fadeUp 0.6s ease-out forwards; flex-wrap: wrap; gap: 15px;
+            grid-column: 1; grid-row: 1 / span 6; position: sticky; top: 20px; align-self: start;
+            display: flex; flex-direction: column; gap: 22px; padding: 20px 16px;
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--r-card);
         }
-        .app-title { font-size: 1.8rem; font-weight: 800; color: var(--color-header); display: flex; align-items: center; gap: 10px; margin: 0; }
-        
-        .tab-nav { display: flex; gap: 10px; background: rgba(244, 114, 182, 0.1); padding: 5px; border-radius: 20px; }
-        .tab-btn { padding: 12px 20px; border: none; background: transparent; color: var(--color-header); font-family: 'Sarabun', sans-serif; font-size: 1rem; font-weight: 800; border-radius: 16px; cursor: pointer; transition: 0.3s; }
-        .tab-btn:hover { background: rgba(255, 255, 255, 0.3); }
-        .tab-btn.active { background: var(--bg-input); color: var(--color-primary-hover); box-shadow: 0 4px 15px rgba(244, 114, 182, 0.2); }
-        
-        .tab-content { display: none; animation: fadeUp 0.5s ease-out forwards; }
-        .tab-content.active { display: block; }
+        .app-title { font: 600 1.2rem/1.2 var(--font-display); color: var(--color-header); display: flex; align-items: center; gap: 10px; margin: 0; }
+        .brand-mark { width: 36px; height: 36px; border-radius: 10px; background: var(--brand-soft); display: grid; place-items: center; font-size: 1.2rem; flex: none; }
 
-        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
-        
-        .card { 
-            background: var(--bg-card); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            border: 2px solid var(--border-color); border-radius: 32px; padding: 30px; 
-            box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.15); transition: 0.3s; margin-bottom: 25px;
+        .tab-nav { display: flex; flex-direction: column; gap: 4px; }
+        .tab-btn {
+            display: flex; align-items: center; gap: 12px; padding: 11px 12px; border: 0; background: transparent;
+            color: var(--text-muted); font: 500 1rem 'Sarabun', sans-serif; border-radius: 10px; cursor: pointer;
+            text-align: left; position: relative; transition: background 0.15s, color 0.15s;
         }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 20px 50px -10px rgba(244, 114, 182, 0.25); border-color: var(--color-primary); }
-        .card h3 { margin-top: 0; color: var(--color-header); border-bottom: 2px dashed rgba(244, 114, 182, 0.3); padding-bottom: 15px; font-size: 1.3rem; font-weight: 800; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .tab-btn svg { width: 20px; height: 20px; flex: none; }
+        .tab-btn:hover { background: var(--surface-2); color: var(--text-main); }
+        .tab-btn.active { background: var(--brand-soft); color: var(--color-primary-hover); font-weight: 600; }
+        .tab-btn.active::before { content: ""; position: absolute; left: -16px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--color-primary); }
 
-        .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
-        .tax-box { background: var(--bg-input); padding: 20px; border-radius: 24px; text-align: center; transition: 0.3s; border: 1px solid var(--border-color); }
-        .tax-box:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(244, 114, 182, 0.15);}
-        .tax-label { display: block; font-size: 0.95rem; font-weight: 700; color: var(--text-muted); margin-bottom: 5px; }
-        .tax-value { display: block; font-size: 1.6rem; font-weight: 800; color: var(--text-main); }
-        .tax-value.deduct { color: #ec4899; }
-        .tax-total-box { grid-column: 1 / -1; background: linear-gradient(135deg, rgba(244, 114, 182, 0.15), rgba(253, 164, 175, 0.15)); border: 2px solid rgba(244, 114, 182, 0.4); }
-        .tax-total-box .tax-value { color: #be123c; font-size: 2.2rem; }
-        body.night-mode .tax-total-box .tax-value { color: #f472b6; }
-
-        .form-group { margin-bottom: 20px; width: 100%; }
-        label { font-weight: 800; font-size: 1.05rem; margin-bottom: 8px; display: block; color: var(--color-header); padding-left: 5px; }
-        input, select { 
-            width: 100%; padding: 16px 20px; border: 2px solid transparent; 
-            border-radius: 20px; font-family: 'Sarabun', sans-serif; font-size: 1.1rem; 
-            background-color: var(--bg-input); color: var(--text-main); font-weight: 600;
-            transition: 0.3s; box-shadow: inset 0 2px 5px rgba(244, 114, 182, 0.05); 
+        .nav-tools { display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid var(--border-color); }
+        .nav-actions { display: flex; gap: 8px; }
+        .icon-btn {
+            flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 10px;
+            border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-main);
+            font: 500 0.9rem 'Sarabun', sans-serif; cursor: pointer; transition: background 0.15s;
         }
-        input:focus, select:focus { border-color: var(--color-primary); background-color: var(--bg-input); box-shadow: 0 8px 25px rgba(244, 114, 182, 0.2); outline: none; transform: translateY(-2px); }
-        .field-hint { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 6px; padding-left: 5px; display: block; }
-        
+        .icon-btn:hover { background: var(--surface-2); }
+        .icon-btn.danger { color: var(--color-danger); }
+        .user-chip { font-size: 0.85rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; padding: 0 2px; }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.18s ease-out; }
+
+        #loadingOverlay {
+            display: none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 970;
+            background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color);
+            border-radius: 999px; padding: 8px 18px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 6px 20px rgba(58, 27, 44, 0.18);
+        }
+        #initialLoading { text-align: center; padding: 15vh 0; color: var(--color-primary-hover); font-weight: 600; font-size: 1.1rem; }
+
+        /* ---------- hero: this month's payslip stub ---------- */
+        .hero {
+            display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); position: relative;
+            margin-bottom: 20px; background: var(--hero-bg); color: var(--hero-ink); border-radius: 20px; overflow: hidden;
+        }
+        .hero-main { padding: 28px 32px; }
+        .hero-cap { margin: 0 0 6px; font-size: 0.95rem; color: var(--hero-muted); }
+        .hero-cap strong { font-weight: 600; color: var(--hero-ink); }
+        .hero-net {
+            margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(2.4rem, 6vw, 3.6rem);
+            line-height: 1.1; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 8px; font-variant-numeric: tabular-nums;
+        }
+        .hero-net .cur { font-size: 0.5em; opacity: 0.7; }
+        .hero-note { margin: 12px 0 0; font-size: 0.92rem; color: var(--hero-muted); min-height: 1.4em; }
+        .hero-stub { position: relative; padding: 28px 32px 28px 36px; border-left: 2px dashed rgba(255, 255, 255, 0.28); }
+        .hero-stub::before, .hero-stub::after { content: ""; position: absolute; left: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--bg-main); }
+        .hero-stub::before { top: -11px; }
+        .hero-stub::after { bottom: -11px; }
+        .hero-stub dl { margin: 0; display: grid; gap: 9px; }
+        .hero-stub .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 0.95rem; }
+        .hero-stub dt { color: var(--hero-muted); }
+        .hero-stub dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+        .hero-stub .sep { border-top: 1px solid rgba(255, 255, 255, 0.16); margin: 4px 0; }
+        .hero-stub .sub { font-size: 0.8rem; font-weight: 400; color: var(--hero-muted); margin-left: 4px; }
+
+        /* ---------- cards ---------- */
+        .grid-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; align-items: start; }
+        .card {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--r-card);
+            padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow);
+        }
+        .card h3 {
+            margin: 0 0 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-color); color: var(--color-header);
+            font: 600 1.1rem var(--font-display); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+        }
+
+        /* ---------- tax: statement ledger on dashboard ---------- */
+        #dashboardTab .tax-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+        #dashboardTab .tax-box {
+            display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 4px 12px;
+            text-align: left; padding: 11px 2px; background: transparent; border: 0; border-bottom: 1px dotted var(--border-color); border-radius: 0;
+        }
+        #dashboardTab .tax-box .tax-label { margin: 0; font-weight: 500; }
+        #dashboardTab .tax-box .tax-value { font-size: 1.05rem; font-weight: 600; }
+        #dashboardTab .tax-box small.field-hint { flex-basis: 100%; margin: 0; }
+        #dashboardTab .tax-total-box {
+            margin: 10px 0 14px; padding: 16px 18px; background: var(--brand-soft); border-radius: 12px; border: 0; align-items: center;
+        }
+        #dashboardTab .tax-total-box .tax-label { font-size: 1.05rem; color: var(--color-header) !important; font-weight: 600 !important; }
+        #dashboardTab .tax-total-box .tax-value { font-size: 1.7rem; color: var(--color-primary-hover); }
+
+        .tax-box { background: var(--surface-2); padding: 16px; border-radius: 12px; text-align: center; }
+        .tax-label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        .tax-value { display: block; font: 600 1.4rem var(--font-display); color: var(--text-main); font-variant-numeric: tabular-nums; }
+        .tax-value.deduct { color: var(--text-muted); }
+        .tax-total-box { background: var(--brand-soft); }
+        .tax-total-box .tax-value { color: var(--color-primary-hover); }
+        #calcTab .tax-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        #calcTab .tax-total-box { grid-column: 1 / -1; }
+
+        details.tax-extra { margin: 14px 0 6px; background: var(--surface-2); border: 1px solid var(--border-color); border-radius: 12px; padding: 2px 16px; }
+        details.tax-extra summary { cursor: pointer; font-weight: 600; color: var(--color-header); padding: 12px 0; }
+        .extra-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; padding: 4px 0 16px; }
+        .extra-grid .form-group { margin-bottom: 0; }
+        .tax-note { font-size: 0.85rem; color: var(--text-muted); margin: 10px 0 0; }
+        #withholdingTaxIn { height: 40px; }
+
+        /* ---------- ot card ---------- */
+        .ot-body { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+        .ot-chart { position: relative; width: 220px; height: 220px; flex: none; }
+        .ot-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; color: var(--text-muted); font-size: 0.85rem; }
+        .ot-center strong { font: 600 2rem/1.1 var(--font-display); color: var(--color-header); }
+        .ot-legend { flex: 1; min-width: 240px; max-width: 420px; display: grid; gap: 0; }
+        .lg { display: flex; align-items: center; gap: 10px; padding: 10px 2px; border-bottom: 1px dotted var(--border-color); }
+        .lg .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+        .lg .lg-name { flex: 1; color: var(--text-muted); }
+        .lg .lg-val { font-weight: 600; font-variant-numeric: tabular-nums; }
+        .ot-total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; padding: 12px 16px; background: var(--brand-soft); border-radius: 12px; color: var(--color-header); font-weight: 600; }
+        .ot-total strong { font: 600 1.2rem var(--font-display); color: var(--color-primary-hover); }
+        .compact-select { width: auto; height: 38px; padding: 0 12px; font-size: 0.9rem; }
+
+        /* ---------- forms ---------- */
+        .form-group { margin-bottom: 16px; width: 100%; }
+        label { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; color: var(--text-main); }
+        input, select {
+            width: 100%; height: 48px; padding: 0 14px; border: 1px solid var(--input-line); border-radius: var(--r-ctl);
+            font: 500 1rem 'Sarabun', sans-serif; background: var(--bg-input); color: var(--text-main);
+            font-variant-numeric: tabular-nums; transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 25%, transparent); }
+        .field-hint { display: block; font-size: 0.82rem; color: var(--text-muted); margin-top: 5px; }
         .password-wrap { position: relative; }
-        .password-wrap input { padding-right: 55px; }
-        .toggle-pw { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.3rem; padding: 6px; line-height: 1; }
+        .password-wrap input { padding-right: 52px; }
+        .toggle-pw { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: 0; cursor: pointer; font-size: 1.1rem; padding: 8px; border-radius: 8px; line-height: 1; }
 
-        .ot-row { display: flex; gap: 10px; }
-        .ot-row input { text-align: center; font-weight: 800; color: var(--color-primary-hover); font-size: 1.2rem; }
+        .ot-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .unit { position: relative; }
+        .unit input { padding-right: 56px; }
+        .unit::after { content: attr(data-unit); position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; pointer-events: none; }
+        label.tier { display: flex; align-items: center; gap: 8px; }
+        label.tier::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--tier); flex: none; }
+        .tier-15 { --tier: #f472b6; } .tier-20 { --tier: #fb923c; } .tier-30 { --tier: #ef4444; } .tier-60 { --tier: #8b5cf6; }
 
-        .btn { width: 100%; padding: 20px; border: none; border-radius: 24px; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.25rem; color: white; display: flex; justify-content: center; align-items: center; gap: 10px;}
-        .btn-primary { background: linear-gradient(135deg, #f472b6, #db2777); box-shadow: 0 10px 25px rgba(219, 39, 119, 0.3); }
-        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(219, 39, 119, 0.4); filter: brightness(1.1); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; filter: none; }
-        .btn-primary .spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-        
-        .dirty-dot { display: none; width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; margin-left: 6px; box-shadow: 0 0 0 3px rgba(245,158,11,0.25); }
-        .dirty-dot.show { display: inline-block; }
-
-        .table-responsive { width: 100%; overflow-x: auto; border-radius: 24px; margin-top: 25px; background: var(--bg-card); box-shadow: 0 15px 40px -10px rgba(244, 114, 182, 0.1); border: 2px solid var(--border-color); }
-        table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        th, td { padding: 18px 20px; text-align: right; border-bottom: 1px dashed rgba(244, 114, 182, 0.2); font-size: 1.05rem;}
-        th { color: var(--color-header); font-weight: 800; text-align: center; border-bottom: 2px solid rgba(244, 114, 182, 0.3); background: rgba(253, 242, 248, 0.3);}
-        body.night-mode th { background: rgba(45, 31, 61, 0.5); }
-        tbody tr { transition: 0.2s; cursor: pointer; }
-        tbody tr:hover { background: rgba(244, 114, 182, 0.08); }
-        tbody tr.current-month td { background: rgba(244, 114, 182, 0.06); }
-        .tfoot-bg { background: rgba(244, 114, 182, 0.15); font-weight: 800; color: var(--color-header); font-size: 1.15rem; }
-
-        .breakdown-row { background: var(--bg-card) !important; display: none; }
-        .breakdown-row.show { display: table-row; }
-        .breakdown-content { padding: 20px; text-align: left; color: var(--text-main); font-size: 0.95rem; }
-        .breakdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; }
-        .breakdown-box { background: var(--bg-input); padding: 15px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(244, 114, 182, 0.05); }
-        .breakdown-box h4 { margin: 0 0 10px 0; color: var(--color-header); font-size: 1rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; }
-        .breakdown-item { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
-
-        /* 🌸 สลิปเงินเดือนดีไซน์ละเอียด */
-        .slip-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
-        .slip-modal-overlay.show { opacity: 1; pointer-events: auto; }
-        
-        .cute-slip-card {
-            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e1 100%);
-            border: 4px solid #f472b6; border-radius: 28px; padding: 25px; width: 95%; max-width: 600px;
-            color: #831843; box-shadow: 0 25px 50px rgba(244,114,182,0.3); font-family: 'Sarabun', sans-serif;
+        .btn {
+            width: 100%; min-height: 48px; padding: 12px 18px; border: 0; border-radius: var(--r-ctl); font: 600 1rem 'Sarabun', sans-serif;
+            cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; color: var(--on-primary);
+            transition: background 0.15s, transform 0.1s;
         }
-        .slip-header-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #f472b6; padding-bottom: 12px; margin-bottom: 15px; }
-        .slip-company { font-size: 1.3rem; font-weight: 800; color: #9d174d; }
-        .slip-title { font-size: 1.1rem; font-weight: 800; color: #be185d; text-align: right; }
-        
-        .slip-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.9rem; font-weight: 600; margin-bottom: 15px; background: rgba(255,255,255,0.6); padding: 12px; border-radius: 16px; }
-        
-        .slip-table-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: rgba(255,255,255,0.8); padding: 15px; border-radius: 20px; border: 2px solid #fbcfe8; }
-        .slip-col h4 { margin: 0 0 10px 0; text-align: center; color: #9d174d; font-size: 1rem; border-bottom: 2px solid #f472b6; padding-bottom: 5px; }
-        .slip-row-item { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 6px; font-weight: 600; }
-        
-        .slip-total-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; font-weight: 800; font-size: 1rem; }
-        .slip-total-box-in { background: #fce7f3; padding: 10px 15px; border-radius: 14px; display: flex; justify-content: space-between; color: #9d174d; border: 1px solid #f472b6; }
-        
-        .slip-footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 15px; background: rgba(255,255,255,0.7); padding: 12px; border-radius: 16px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #831843; }
+        .btn:active { transform: scale(0.99); }
+        .btn-primary { background: var(--color-primary); }
+        .btn-primary:hover { background: var(--color-primary-hover); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-primary .spinner { width: 18px; height: 18px; border: 3px solid rgba(255, 255, 255, 0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        .btn-secondary { background: var(--brand-soft); color: var(--color-primary-hover); }
+        .btn-secondary:hover { background: var(--surface-2); }
 
-        .cute-popup-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .dirty-dot { display: none; width: 10px; height: 10px; border-radius: 50%; background: #f59e0b; margin-left: 6px; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25); }
+        .dirty-dot.show { display: inline-block; }
+        .float-save { position: fixed; right: 20px; bottom: 20px; z-index: 900; width: auto; padding: 12px 22px; border-radius: 999px; display: none; box-shadow: 0 8px 24px rgba(58, 27, 44, 0.3); }
+        .float-save.show { display: flex; }
+
+        /* ---------- table ---------- */
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: var(--r-card); margin: 0 0 20px; background: var(--bg-card); border: 1px solid var(--border-color); }
+        table { width: 100%; border-collapse: collapse; white-space: nowrap; font-variant-numeric: tabular-nums; }
+        th, td { padding: 13px 16px; text-align: right; border-bottom: 1px solid var(--border-color); font-size: 0.97rem; }
+        th { color: var(--text-muted); font-weight: 600; font-size: 0.85rem; background: var(--surface-2); }
+        th:first-child, td:first-child { text-align: left !important; }
+        tbody tr { cursor: pointer; transition: background 0.15s; }
+        tbody tr:hover { background: var(--surface-2); }
+        tbody tr.current-month td:first-child { box-shadow: inset 3px 0 0 var(--color-primary); font-weight: 600; }
+        .tfoot-bg td { background: var(--brand-soft); font-weight: 600; color: var(--color-header); border-bottom: 0; }
+
+        .breakdown-row { display: none; }
+        .breakdown-row.show { display: table-row; }
+        .breakdown-row > td { background: var(--surface-2); white-space: normal; }
+        .breakdown-content { padding: 6px 4px; text-align: left; color: var(--text-main); font-size: 0.93rem; }
+        .breakdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+        .breakdown-box { background: var(--bg-card); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .breakdown-box h4 { margin: 0 0 10px; color: var(--color-header); font: 600 0.95rem var(--font-display); border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+        .breakdown-item { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+
+        /* ---------- payslip (also exported as image: keep colours literal) ---------- */
+        .slip-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30, 10, 24, 0.55);
+            display: flex; justify-content: center; align-items: safe center; z-index: 9999; opacity: 0; pointer-events: none;
+            transition: opacity 0.2s; overflow-y: auto; padding: 16px 0;
+        }
+        .slip-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .cute-slip-card {
+            background: #fffdfb; border: 1px solid #e9cbd8; border-radius: 14px; padding: 24px; width: 94%; max-width: 600px;
+            color: #3a1b2c; box-shadow: 0 20px 50px rgba(30, 10, 24, 0.35); font-family: 'Sarabun', sans-serif;
+        }
+        .slip-header-top { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #5a1038; padding-bottom: 12px; margin-bottom: 14px; }
+        .slip-company { font: 600 1.15rem 'Prompt', 'Sarabun', sans-serif; color: #5a1038; }
+        .slip-title { font: 600 1rem 'Prompt', 'Sarabun', sans-serif; color: #5a1038; text-align: right; }
+        .slip-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 0.88rem; margin-bottom: 14px; background: #fff0f4; padding: 10px 12px; border-radius: 10px; }
+        .slip-table-container { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; padding: 4px 2px; }
+        .slip-col h4 { margin: 0 0 8px; font: 600 0.95rem 'Prompt', 'Sarabun', sans-serif; color: #5a1038; border-bottom: 1px solid #e9cbd8; padding-bottom: 6px; }
+        .slip-row-item { display: flex; justify-content: space-between; font-size: 0.88rem; padding: 3px 0; font-variant-numeric: tabular-nums; }
+        .slip-total-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; font-weight: 600; font-size: 0.95rem; }
+        .slip-total-box-in { background: #fce3ec; padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; color: #5a1038; }
+        .slip-footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; padding: 12px 4px 0; border-top: 1px dashed #c9a0b2; text-align: center; font-size: 0.82rem; color: #3a1b2c; }
+
+        /* ---------- popup ---------- */
+        .cute-popup-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(30, 10, 24, 0.5);
+            display: flex; justify-content: center; align-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
         .cute-popup-overlay.show { opacity: 1; pointer-events: auto; }
-        .cute-popup-box { background: var(--bg-card); border: 4px solid var(--color-primary); padding: 40px; border-radius: 36px; text-align: center; max-width: 400px; width: 90%; transform: scale(0.5); transition: 0.4s; box-shadow: 0 30px 60px rgba(244, 114, 182, 0.25); }
-        .cute-popup-overlay.show .cute-popup-box { transform: scale(1); animation: bounceIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        .popup-btn-row { display: flex; gap: 12px; margin-top: 15px; }
+        .cute-popup-box {
+            background: var(--bg-card); border: 1px solid var(--border-color); padding: 28px 24px 22px; border-radius: 18px;
+            text-align: center; max-width: 380px; width: 90%; transform: translateY(8px) scale(0.98); transition: transform 0.2s;
+            box-shadow: 0 24px 60px rgba(30, 10, 24, 0.35);
+        }
+        .cute-popup-overlay.show .cute-popup-box { transform: none; }
+        .cute-popup-msg { font-size: 1.05rem; line-height: 1.5; margin-bottom: 18px; }
+        .popup-btn-row { display: flex; gap: 10px; }
         .popup-btn-row .btn { margin: 0; }
-        .btn-secondary { background: rgba(244,114,182,0.12); color: var(--color-primary-hover); }
-        .btn-secondary:hover { background: rgba(244,114,182,0.2); }
-        
-        #authSection { max-width: 450px; margin: 10vh auto; }
-        #appSection { display: none; }
-        #initialLoading { text-align: center; padding: 15vh 0; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; }
-        #loadingOverlay { display: none; text-align: center; color: var(--color-primary-hover); font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; background: var(--bg-card); padding: 15px; border-radius: 20px; }
-        .user-chip { font-weight: 700; color: var(--color-header); background: rgba(244,114,182,0.12); padding: 8px 16px; border-radius: 16px; font-size: 0.95rem; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+        /* ---------- sign in ---------- */
+        #authSection { max-width: 420px; margin: 8vh auto; padding: 32px 28px; }
+        #appSection { display: none; }
+        #appSection.on { display: grid; }
+        .auth-mark { width: 56px; height: 56px; border-radius: 16px; background: var(--brand-soft); display: grid; place-items: center; margin: 0 auto 14px; font-size: 1.8rem; }
+        .auth-title { color: var(--color-header); font: 600 1.6rem var(--font-display); margin: 0 0 4px; }
+        .auth-sub { color: var(--text-muted); margin: 0; }
+
+        /* ---------- tablet & phone ---------- */
         @media (max-width: 1024px) {
             .grid-forms { grid-template-columns: 1fr; }
-            .dashboard-wrapper { padding: 0; }
-            .top-nav { flex-direction: column; text-align: center; padding: 20px; }
-            .tab-nav { width: 100%; justify-content: center; flex-wrap: wrap; }
-            .sakura-branch { width: 300px; right: -30px; top: -10px; }
-            .user-chip { max-width: 100%; }
             .slip-table-container { grid-template-columns: 1fr; }
-            .slip-total-bar { grid-template-columns: 1fr; }
-            .slip-footer-grid { grid-template-columns: 1fr 1fr; }
         }
+        @media (max-width: 860px) {
+            body { padding: 16px 14px; }
+            #appSection.on { display: block; padding-bottom: 84px; }
+            .top-nav { display: contents; }
+            .app-title { margin: 0 0 12px; }
+            .nav-tools { flex-direction: row; flex-wrap: wrap; align-items: center; border: 0; padding: 0; margin-bottom: 16px; }
+            .nav-tools #displayYear { width: auto; height: 40px; }
+            .nav-tools .user-chip { flex: 1; min-width: 0; }
+            .nav-actions { flex: none; }
+            .icon-btn { flex: none; }
+            .tab-nav {
+                position: fixed; left: 0; right: 0; bottom: 0; z-index: 960; flex-direction: row; gap: 0;
+                background: var(--bg-card); border-top: 1px solid var(--border-color); padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+            }
+            .tab-btn { flex: 1; flex-direction: column; gap: 2px; font-size: 0.78rem; padding: 8px 4px; align-items: center; text-align: center; }
+            .tab-btn.active::before { display: none; }
+            .float-save { left: 14px; right: 14px; bottom: calc(76px + env(safe-area-inset-bottom)); justify-content: center; }
+            .sakura-branch { width: 240px; right: -50px; }
+            .hero { grid-template-columns: 1fr; }
+            .hero-main { padding: 24px 22px; }
+            .hero-stub { padding: 24px 22px; border-left: 0; border-top: 2px dashed rgba(255, 255, 255, 0.28); }
+            .hero-stub::before { left: -11px; top: -12px; }
+            .hero-stub::after { left: auto; right: -11px; top: -12px; bottom: auto; }
+        }
+        @media (max-width: 600px) {
+            .card { padding: 18px; border-radius: 14px; }
+            th, td { padding: 11px 12px; font-size: 0.92rem; }
+            .ot-chart { width: 190px; height: 190px; }
+            #calcTab .tax-grid { grid-template-columns: 1fr; }
+            .slip-footer-grid { grid-template-columns: 1fr 1fr; }
+            .slip-total-bar { grid-template-columns: 1fr; }
+        }
+
+        .hero-cap { display: flex; align-items: center; gap: 8px; }
+        .hero-cap .step { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.3); background: transparent; color: var(--hero-ink); cursor: pointer; font-size: 1rem; line-height: 1; display: grid; place-items: center; padding: 0; }
+        .hero-cap .step:hover { background: rgba(255, 255, 255, 0.12); }
+        .hero-cap .step:focus-visible { outline-color: #fff; }
+        .icon-btn { white-space: nowrap; }
+        #themeToggleBtn { flex: 1.7; }
+        .hero-note:empty { display: none; }
+        .ot-chart canvas { max-width: 100%; }
+        @media (max-width: 860px) { #themeText { display: none; } }
     </style>
 </head>
 <body>
@@ -233,7 +407,7 @@
 
     <div id="customPopup" class="cute-popup-overlay" role="alertdialog" aria-modal="true" aria-labelledby="popupMsg">
         <div class="cute-popup-box">
-            <div class="cute-popup-icon" id="popupIcon" style="font-size: 5rem; margin-bottom: 10px;">🌸</div>
+            <div class="cute-popup-icon" id="popupIcon" style="font-size: 2.4rem; margin-bottom: 6px;">🌸</div>
             <div class="cute-popup-msg" id="popupMsg">ข้อความแจ้งเตือน</div>
             <div class="popup-btn-row" id="popupBtnRow">
                 <button class="btn btn-primary" id="popupOkBtn" style="margin: 0;">โอเคจ้า!</button>
@@ -242,8 +416,8 @@
     </div>
 
     <!-- 🌸 ป๊อปอัปสลิปเงินเดือน -->
-    <div id="slipModal" class="slip-modal-overlay">
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
+    <div id="slipModal" class="slip-modal-overlay" role="dialog" aria-modal="true" aria-label="ใบจ่ายเงินเดือน">
+        <div id="slipWrap" style="display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%;">
             <div id="cuteSlipCard" class="cute-slip-card">
                 <div class="slip-header-top">
                     <div>
@@ -282,7 +456,7 @@
                         <h4>รายการหัก</h4>
                         <div class="slip-row-item"><span>หักลางาน/อื่นๆ</span> <span id="slipLeave" style="color:#e11d48;">0.00</span></div>
                         <div class="slip-row-item"><span>ประกันสังคม</span> <span id="slipSS" style="color:#e11d48;">0.00</span></div>
-                        <div class="slip-row-item"><span>สำรองเลี้ยงชีพ</span> <span id="slipPvf" style="color:#e11d48;">600.00</span></div>
+                        <div class="slip-row-item"><span>สำรองเลี้ยงชีพ</span> <span id="slipPvf" style="color:#e11d48;">0.00</span></div>
                     </div>
                 </div>
 
@@ -299,9 +473,10 @@
                 </div>
             </div>
 
+            <div id="slipDirtyNote" style="display:none; width:95%; max-width:600px; background:#fff7ed; color:#9a3412; border:2px solid #fdba74; border-radius:16px; padding:10px 14px; font-weight:700; font-size:.9rem; text-align:center;">⚠️ มีข้อมูลที่ยังไม่ได้บันทึก — สลิปนี้แสดงข้อมูลที่บันทึกล่าสุดเท่านั้น</div>
             <div style="display: flex; gap: 10px; width: 95%; max-width: 600px;">
                 <button class="btn btn-secondary" onclick="closeSlipModal()">ปิดหน้าต่าง</button>
-                <button class="btn btn-primary" onclick="downloadSlipImage()">📥 ดาวน์โหลดรูปสลิป</button>
+                <button class="btn btn-primary" onclick="downloadSlipImage()">ดาวน์โหลดรูปสลิป</button>
             </div>
         </div>
     </div>
@@ -310,9 +485,9 @@
 
     <div id="authSection" class="card" style="display:none;">
         <div style="text-align: center; margin-bottom: 25px;">
-            <div style="width: 80px; height: 80px; background: var(--bg-input); border: 3px solid var(--color-primary); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 15px auto; font-size: 2.8rem; box-shadow: 0 10px 20px rgba(244,114,182,0.2);" id="authEmoji">🌸</div>
-            <h2 id="authTitle" style="color: var(--color-header); font-weight: 800; margin-bottom: 5px; font-size: 1.8rem;">ยินดีต้อนรับ!</h2>
-            <p id="authSubtitle" style="color: var(--text-muted); margin-top: 0; font-weight: 500;">ระบบบันทึกเงินเดือน & ประเมินภาษี</p>
+            <div class="auth-mark" id="authEmoji">🌸</div>
+            <h2 id="authTitle" class="auth-title">ยินดีต้อนรับ!</h2>
+            <p id="authSubtitle" class="auth-sub">ระบบบันทึกเงินเดือน & ประเมินภาษี</p>
         </div>
         
         <form id="authForm" novalidate>
@@ -344,32 +519,62 @@
     <div id="appSection" class="dashboard-wrapper">
         
         <div class="top-nav">
-            <h1 class="app-title">🌸 Salary & Tax Pro</h1>
-            
-            <div class="tab-nav">
-                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">📊 แดชบอร์ด</button>
-                <button class="tab-btn" onclick="switchTab('profileTab', this)">⚙️ ตั้งค่าบริษัท/สลิป</button>
-                <button class="tab-btn" onclick="switchTab('calcTab', this)">🧮 คำนวณ OT ด่วน</button>
-            </div>
+            <h1 class="app-title"><span class="brand-mark" aria-hidden="true">🌸</span> Salary &amp; Tax Pro</h1>
 
-            <div style="display:flex; align-items:center; gap:12px; flex-wrap: wrap;">
-                <button id="themeToggleBtn" title="สลับโหมดกลางวัน/กลางคืน" style="background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--border-color); border-radius: 16px; padding: 10px 14px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 5px;">
-                    <span id="themeIcon">🌅</span> <span id="themeText" style="font-size: 0.9rem;">Auto Theme</span>
+            <nav class="tab-nav" aria-label="เมนูหลัก">
+                <button class="tab-btn active" onclick="switchTab('dashboardTab', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+                    <span>แดชบอร์ด</span>
                 </button>
-                
+                <button class="tab-btn" onclick="switchTab('profileTab', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v16M14 9h5a1 1 0 0 1 1 1v11M3 21h18M8 8h2M8 12h2M8 16h2"/></svg>
+                    <span>ข้อมูลสลิป</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('calcTab', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M8 15h2M12 15h2M8 18h8"/></svg>
+                    <span>คำนวณ OT</span>
+                </button>
+            </nav>
+
+            <div class="nav-tools">
+                <select id="displayYear" aria-label="เลือกปีที่แสดง"></select>
                 <span class="user-chip" id="displayUser" title=""></span>
-                <select id="displayYear" aria-label="เลือกปีที่แสดง" style="width:auto; padding:10px 15px; border-radius: 16px; font-weight: 800; background: var(--bg-input); border: 2px solid var(--border-color); color: var(--color-primary-hover); cursor: pointer;"></select>
-                <button id="logoutBtn" style="background: var(--bg-input); color: #e11d48; border: 2px solid #fda4af; border-radius: 16px; padding: 10px 20px; font-weight: 800; font-family: 'Sarabun'; cursor: pointer; transition: 0.3s;">🚪 ออก</button>
+                <div class="nav-actions">
+                    <button id="themeToggleBtn" class="icon-btn" title="สลับโหมดกลางวัน/กลางคืน"><span id="themeIcon">🌅</span> <span id="themeText">Auto Theme</span></button>
+                    <button id="logoutBtn" class="icon-btn danger">ออก</button>
+                </div>
             </div>
         </div>
-        
+
         <div id="loadingOverlay">กำลังซิงค์ข้อมูล... ⏳</div>
 
         <div id="dashboardTab" class="tab-content active">
+
+            <section class="hero" aria-label="สรุปรายได้เดือนที่เลือก">
+                <div class="hero-main">
+                    <div class="hero-cap">
+                        <button type="button" class="step" data-month-step="-1" aria-label="เดือนก่อนหน้า">‹</button>
+                        <span>รับสุทธิเดือน <strong id="heroMonth">-</strong></span>
+                        <button type="button" class="step" data-month-step="1" aria-label="เดือนถัดไป">›</button>
+                    </div>
+                    <p class="hero-net" aria-live="polite"><span class="cur">฿</span><span id="heroNet">0.00</span></p>
+                    <p class="hero-note" id="heroNote"></p>
+                </div>
+                <div class="hero-stub">
+                    <dl>
+                        <div class="row"><dt>รายได้รวม</dt><dd id="heroGross">0.00</dd></div>
+                        <div class="row"><dt>เงิน OT <span class="sub" id="heroOtHours">0.0 ชม.</span></dt><dd id="heroOt">0.00</dd></div>
+                        <div class="row"><dt>รายการหัก</dt><dd id="heroDeduct">0.00</dd></div>
+                        <div class="sep"></div>
+                        <div class="row"><dt>รับสุทธิสะสมทั้งปี</dt><dd id="heroYtd">0.00</dd></div>
+                        <div class="row"><dt id="heroTaxLabel">ภาษีที่ต้องจ่ายทั้งปี</dt><dd id="heroTaxValue">0.00 บาท</dd></div>
+                    </dl>
+                </div>
+            </section>
             
             <div class="card">
                 <h3 style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                    <span>🧾 ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</span>
+                    <span>ประเมินภาษีเงินได้ประจำปี (ภ.ง.ด. 91)</span>
                     <div style="display:flex; align-items:center; gap:8px; font-size:0.95rem; font-weight:normal;">
                         <label for="withholdingTaxIn" style="margin:0; font-size:0.95rem; color:var(--text-muted);">ภาษีหัก ณ ที่จ่ายสะสม:</label>
                         <input type="number" id="withholdingTaxIn" value="0" min="0" step="any" style="width:130px; padding:8px 12px; font-size:1rem; border-radius:12px;" placeholder="0.00">
@@ -381,64 +586,66 @@
                     <div class="tax-box"><span class="tax-label">หักลดหย่อนส่วนตัว</span><span class="tax-value deduct">- 60,000.00</span></div>
                     <div class="tax-box"><span class="tax-label">หักประกันสังคม (สูงสุด 9,000)</span><span class="tax-value deduct">- <span id="taxSS">0.00</span></span></div>
                     <div class="tax-box"><span class="tax-label">หักสำรองเลี้ยงชีพ</span><span class="tax-value deduct">- <span id="taxPvf">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">หักลดหย่อนอื่นๆ (ที่กรอกด้านล่าง)</span><span class="tax-value deduct">- <span id="taxExtraDed">0.00</span></span></div>
+                    <div class="tax-box"><span class="tax-label">เงินได้สุทธิ (ฐานภาษี)</span><span class="tax-value" id="taxNetIncome">0.00</span></div>
+                    <div class="tax-box"><span class="tax-label">ภาษีตามอัตราก้าวหน้า</span><span class="tax-value" id="taxBeforeWht">0.00</span><small class="field-hint" id="taxBracket">อยู่ในช่วงยกเว้นภาษี</small></div>
                     <div class="tax-box tax-total-box"><span class="tax-label" id="taxFinalLabel" style="color: #be123c; font-weight: 800;">ภาษีที่ต้องชำระสุทธิ</span><span class="tax-value" id="taxAmount">0.00 บาท</span></div>
+                    <details class="tax-extra" id="taxExtraDetails" style="grid-column: 1 / -1;">
+                        <summary>ค่าลดหย่อนเพิ่มเติม (คู่สมรส บุตร บิดามารดา ประกัน ดอกเบี้ยบ้าน ฯลฯ)</summary>
+                        <div class="extra-grid">
+                            <div class="form-group"><label for="exSpouse">คู่สมรส (ไม่มีเงินได้)</label><select id="exSpouse"><option value="0">ไม่มี</option><option value="1">มี (60,000)</option></select></div>
+                            <div class="form-group"><label for="exChildren">บุตร (คนละ 30,000)</label><input type="number" id="exChildren" value="0" min="0" step="1" placeholder="จำนวนคน"></div>
+                            <div class="form-group"><label for="exParents">บิดามารดา (คนละ 30,000 สูงสุด 4 คน)</label><input type="number" id="exParents" value="0" min="0" max="4" step="1" placeholder="จำนวนคน"></div>
+                            <div class="form-group"><label for="exLife">เบี้ยประกันชีวิต (สูงสุด 100,000)</label><input type="number" id="exLife" value="0" min="0" step="any" placeholder="0"></div>
+                            <div class="form-group"><label for="exHealth">เบี้ยประกันสุขภาพ (สูงสุด 25,000)</label><input type="number" id="exHealth" value="0" min="0" step="any" placeholder="0"><span class="field-hint">รวมกับประกันชีวิตแล้วไม่เกิน 100,000</span></div>
+                            <div class="form-group"><label for="exParentHealth">ประกันสุขภาพบิดามารดา (สูงสุด 15,000)</label><input type="number" id="exParentHealth" value="0" min="0" step="any" placeholder="0"></div>
+                            <div class="form-group"><label for="exMortgage">ดอกเบี้ยเงินกู้ที่อยู่อาศัย (สูงสุด 100,000)</label><input type="number" id="exMortgage" value="0" min="0" step="any" placeholder="0"></div>
+                            <div class="form-group"><label for="exOther">ลดหย่อนอื่นๆ (RMF/SSF/ThaiESG/บริจาค ฯลฯ)</label><input type="number" id="exOther" value="0" min="0" step="any" placeholder="0"><span class="field-hint">ใส่ยอดที่หักได้จริงตามเพดานของแต่ละรายการ</span></div>
+                        </div>
+                    </details>
+                    <button type="button" id="saveTaxBtn" class="btn btn-primary" style="grid-column: 1 / -1; padding: 14px; font-size: 1.05rem;"><span id="saveTaxBtnText">บันทึกข้อมูลภาษี</span></button>
+                    <p class="tax-note" style="grid-column: 1 / -1;">เป็นการประมาณการเบื้องต้นจากรายได้ที่บันทึกในระบบเท่านั้น ไม่รวมรายได้อื่น และไม่ใช่คำแนะนำทางภาษี — โปรดตรวจสอบกับกรมสรรพากรอีกครั้ง</p>
                 </div>
             </div>
 
-            <!-- 🌸 การ์ดวงล้อสัดส่วน OT -->
-            <div class="card" style="display: flex; flex-direction: column; align-items: center;">
-                <h3 style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="display: flex; align-items: center; gap: 8px;">🍩 สัดส่วนโอที</span>
-                    <select id="otViewSelect" style="width: auto; padding: 8px 15px; font-size: 0.95rem; border-radius: 16px; font-weight: 800; background: var(--bg-input); border: 2px solid var(--color-primary); color: var(--color-primary-hover); cursor: pointer;">
-                        <option value="year">☀️ รวมทั้งปี</option>
+            <div class="card">
+                <h3>
+                    <span>สัดส่วนโอที</span>
+                    <select id="otViewSelect" class="compact-select" aria-label="เลือกช่วงเวลาที่แสดง">
+                        <option value="year">รวมทั้งปี</option>
                         <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
                         <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
                         <option value="6">กรกฎาคม</option><option value="7">สิงหาคม</option><option value="8">กันยายน</option>
                         <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                     </select>
                 </h3>
-                
-                <div style="width: 280px; height: 280px; position: relative; margin: 15px 0;">
-                    <canvas id="otDonutChart"></canvas>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                        <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); display: block;" id="otCenterTitle">รวมเวลา</span>
-                        <span style="font-size: 2rem; font-weight: 800; color: var(--color-header); display: block; line-height: 1.1;" id="otCenterHours">0.0</span>
-                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block;">ชั่วโมง</span>
+                <div class="ot-body">
+                    <div class="ot-chart">
+                        <canvas id="otDonutChart" role="img" aria-label="กราฟโดนัทแสดงสัดส่วนชั่วโมง OT แยกตามอัตรา"></canvas>
+                        <div class="ot-center">
+                            <span id="otCenterTitle">รวมเวลา</span>
+                            <strong id="otCenterHours">0.0</strong>
+                            <span>ชั่วโมง</span>
+                        </div>
                     </div>
-                </div>
-
-                <div style="width: 100%; max-width: 700px; background: var(--bg-input); padding: 15px 20px; border-radius: 20px; border: 2px solid var(--border-color); display: grid; grid-template-columns: repeat(4, 1fr); text-align: center; gap: 10px; margin-top: 10px;">
-                    <div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #f472b6; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#f472b6; border-radius:50%; display:inline-block;"></span> 1.5x</div>
-                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat15h">0.0 ชม.</div>
+                    <div class="ot-legend">
+                        <div class="lg"><span class="dot" style="background:#f472b6"></span><span class="lg-name">OT 1.5 เท่า</span><span class="lg-val" id="stat15h">0.0 ชม.</span></div>
+                        <div class="lg"><span class="dot" style="background:#fb923c"></span><span class="lg-name">OT 2.0 เท่า</span><span class="lg-val" id="stat20h">0.0 ชม.</span></div>
+                        <div class="lg"><span class="dot" style="background:#ef4444"></span><span class="lg-name">OT 3.0 เท่า</span><span class="lg-val" id="stat30h">0.0 ชม.</span></div>
+                        <div class="lg"><span class="dot" style="background:#8b5cf6"></span><span class="lg-name">OT 6.0 เท่า</span><span class="lg-val" id="stat60h">0.0 ชม.</span></div>
+                        <div class="ot-total"><span>รวมเงิน OT</span><strong id="otTotalMoneyText">0.00 บาท</strong></div>
                     </div>
-                    <div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #fb923c; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#fb923c; border-radius:50%; display:inline-block;"></span> 2.0x</div>
-                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat20h">0.0 ชม.</div>
-                    </div>
-                    <div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #ef4444; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#ef4444; border-radius:50%; display:inline-block;"></span> 3.0x</div>
-                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat30h">0.0 ชม.</div>
-                    </div>
-                    <div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; color: #8b5cf6; font-size: 0.9rem;"><span style="width:8px; height:8px; background:#8b5cf6; border-radius:50%; display:inline-block;"></span> 6.0x</div>
-                        <div style="font-weight: 800; font-size: 1.1rem; color: var(--text-main); margin-top: 4px;" id="stat60h">0.0 ชม.</div>
-                    </div>
-                </div>
-
-                <div style="width: 100%; max-width: 700px; background: linear-gradient(135deg, rgba(244,114,182,0.15), rgba(253,164,175,0.15)); border: 2px solid rgba(244,114,182,0.4); padding: 15px; border-radius: 20px; text-align: center; margin-top: 15px;">
-                    <span style="font-weight: 800; font-size: 1.2rem; color: var(--color-header);" id="otTotalMoneyText">💰 รวมเงิน OT: 0.00 บาท</span>
                 </div>
             </div>
 
             <div class="grid-forms">
                 <div class="card" style="margin-bottom:0;">
-                    <h3 style="color: var(--color-primary-hover);">
-                        <span>💰 บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
-                        <button class="btn btn-secondary" onclick="openSlipModal()" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin: 0;">🌸 ดูสลิปเดือนนี้</button>
+                    <h3>
+                        <span>บันทึกรายได้ประจำเดือน <span id="dirtyDot" class="dirty-dot" title="มีการแก้ไขที่ยังไม่บันทึก"></span></span>
+                        <button class="btn btn-secondary" onclick="openSlipModal()" style="width: auto; padding: 8px 15px; font-size: 0.9rem; margin: 0;">ดูสลิปเดือนนี้</button>
                     </h3>
                     <div class="form-group">
-                        <label for="monthSelect">📅 เลือกเดือนที่จะบันทึก</label>
+                        <label for="monthSelect">เลือกเดือนที่จะบันทึก</label>
                         <select id="monthSelect" style="border: 2px solid var(--color-primary); background: var(--bg-input);">
                             <option value="0">มกราคม</option><option value="1">กุมภาพันธ์</option><option value="2">มีนาคม</option>
                             <option value="3">เมษายน</option><option value="4">พฤษภาคม</option><option value="5">มิถุนายน</option>
@@ -446,8 +653,8 @@
                             <option value="9">ตุลาคม</option><option value="10">พฤศจิกายน</option><option value="11">ธันวาคม</option>
                         </select>
                     </div>
-                    <button type="button" class="btn btn-secondary" style="padding:10px;font-size:.95rem;margin:-5px 0 20px" onclick="copyPrevMonth()">📋 คัดลอกจากเดือนก่อน</button>
-                    <div class="form-group"><label for="baseIn">ฐานเงินเดือน</label><input type="number" id="baseIn" value="0" min="0" step="any" placeholder="0"></div>
+                    <button type="button" class="btn btn-secondary" style="padding:10px;font-size:.95rem;margin:-5px 0 20px" onclick="copyPrevMonth()">คัดลอกจากเดือนก่อน</button>
+                    <div class="form-group"><label for="baseIn">ฐานเงินเดือน</label><input type="number" id="baseIn" value="0" min="0" step="any" placeholder="0"><span class="field-hint">ใช้คำนวณเรท OT = เงินเดือน ÷ 240 ชม.</span></div>
                     <div class="form-group"><label for="licenseIn">ค่าใบประกอบวิชาชีพ (กว.)</label><input type="number" id="licenseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div class="form-group"><label for="houseIn">ค่าที่พัก/รายได้อื่น</label><input type="number" id="houseIn" value="0" min="0" step="any" placeholder="0"></div>
                     <div style="display:flex; gap:15px;">
@@ -466,25 +673,25 @@
                 </div>
 
                 <div class="card" style="margin-bottom:0;">
-                    <h3 style="color: var(--color-primary-hover);">⏱️ บันทึกชั่วโมงโอที</h3>
+                    <h3>บันทึกชั่วโมงโอที</h3>
                     <div class="form-group">
-                        <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot15h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot15m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <label class="tier tier-15">OT 1.5 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 1.5 เท่า ชั่วโมง" type="number" id="ot15h" value="0" min="0" step="any" placeholder="ชั่วโมง"></div><div class="unit" data-unit="นาที"><input aria-label="OT 1.5 เท่า นาที" type="number" id="ot15m" value="0" min="0" max="59" step="any" placeholder="นาที"></div></div>
                     </div>
                     <div class="form-group">
-                        <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot20h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot20m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <label class="tier tier-20">OT 2.0 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 2.0 เท่า ชั่วโมง" type="number" id="ot20h" value="0" min="0" step="any" placeholder="ชั่วโมง"></div><div class="unit" data-unit="นาที"><input aria-label="OT 2.0 เท่า นาที" type="number" id="ot20m" value="0" min="0" max="59" step="any" placeholder="นาที"></div></div>
                     </div>
                     <div class="form-group">
-                        <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot30h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot30m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <label class="tier tier-30">OT 3.0 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 3.0 เท่า ชั่วโมง" type="number" id="ot30h" value="0" min="0" step="any" placeholder="ชั่วโมง"></div><div class="unit" data-unit="นาที"><input aria-label="OT 3.0 เท่า นาที" type="number" id="ot30m" value="0" min="0" max="59" step="any" placeholder="นาที"></div></div>
                     </div>
                     <div class="form-group">
-                        <label style="color: #8b5cf6;">⭐ OT 6.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="ot60h" value="0" min="0" step="any" placeholder="ชั่วโมง"><input type="number" id="ot60m" value="0" min="0" max="59" step="any" placeholder="นาที"></div>
+                        <label class="tier tier-60">OT 6.0 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 6.0 เท่า ชั่วโมง" type="number" id="ot60h" value="0" min="0" step="any" placeholder="ชั่วโมง"></div><div class="unit" data-unit="นาที"><input aria-label="OT 6.0 เท่า นาที" type="number" id="ot60m" value="0" min="0" max="59" step="any" placeholder="นาที"></div></div>
                     </div>
                     
-                    <button id="saveBtn" class="btn btn-primary" style="margin-top: 30px; height: 75px; font-size: 1.4rem;"><span id="saveBtnText">💾 บันทึกข้อมูลลงระบบ</span></button>
+                    <button id="saveBtn" class="btn btn-primary" style="margin-top: 12px;"><span id="saveBtnText">บันทึกข้อมูลลงระบบ</span></button>
                 </div>
             </div>
 
@@ -498,16 +705,20 @@
                         </tr>
                     </tfoot>
                 </table>
-                <div style="padding:12px 20px;background:var(--bg-card);"><button type="button" class="btn btn-secondary" style="padding:10px;font-size:.95rem" onclick="exportCSV()">📥 ส่งออกตารางเป็น CSV</button></div>
-                <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: var(--bg-card);">💡 คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้</p>
+                <div style="padding:12px 20px;background:var(--bg-card);"><button type="button" class="btn btn-secondary" style="padding:10px;font-size:.95rem" onclick="exportCSV()">ส่งออกตารางเป็น CSV</button></div>
+                <p class="field-hint" style="text-align: center; padding: 10px; margin: 0; background: var(--bg-card);">คลิกที่แถวแต่ละเดือนเพื่อดูรายละเอียดแยกย่อยรายได้</p>
             </div>
         </div>
 
         <!-- 🌸 แท็บตั้งค่าบริษัทและข้อมูลสลิปส่วนตัว -->
         <div id="profileTab" class="tab-content">
             <div class="card" style="max-width: 800px; margin: 0 auto;">
-                <h3 style="color: var(--color-primary-hover);">🏢 ตั้งค่าข้อมูลบริษัทและบัญชีเงินเดือนส่วนตัว</h3>
+                <h3>ตั้งค่าข้อมูลบริษัทและบัญชีเงินเดือนส่วนตัว</h3>
                 <p class="field-hint" style="margin-bottom: 20px;">ข้อมูลเหล่านี้จะถูกบันทึกผูกไว้กับบัญชีของคุณ และนำไปแสดงบนใบสลิปเงินเดือนโดยอัตโนมัติ</p>
+                <div class="form-group">
+                    <label for="pFullName">ชื่อ-นามสกุล (แสดงบนสลิป)</label>
+                    <input type="text" id="pFullName" placeholder="เช่น สมหญิง ใจดี" autocomplete="name">
+                </div>
                 
                 <div class="form-group">
                     <label for="pCompanyName">ชื่อบริษัท / หน่วยงาน</label>
@@ -534,17 +745,17 @@
                     </div>
                 </div>
 
-                <button id="saveProfileBtn" class="btn btn-primary" style="margin-top: 25px;"><span id="saveProfileBtnText">💾 บันทึกข้อมูลบริษัท/สลิปของฉัน</span></button>
+                <button id="saveProfileBtn" class="btn btn-primary" style="margin-top: 25px;"><span id="saveProfileBtnText">บันทึกข้อมูลบริษัท/สลิปของฉัน</span></button>
             </div>
         </div>
 
         <div id="calcTab" class="tab-content">
             <div class="grid-forms">
                 <div class="card" style="margin-bottom:0;">
-                    <h3 style="color: var(--color-primary-hover);">🧮 เครื่องคำนวณ OT ด่วน</h3>
+                    <h3>เครื่องคำนวณ OT ด่วน</h3>
                     
                     <div class="form-group">
-                        <label for="quickSalary">💰 ฐานเงินเดือน (เพื่อคำนวณเรท/ชม.)</label>
+                        <label for="quickSalary">ฐานเงินเดือน (เพื่อคำนวณเรท/ชม.)</label>
                         <input type="number" id="quickSalary" value="20000" min="0" placeholder="ระบุเงินเดือน">
                         <div style="background: var(--bg-input); padding: 15px; border-radius: 16px; margin-top: 15px; border: 1px dashed var(--color-primary); text-align: center;">
                             <span style="color: var(--text-muted); font-weight: 700;">อัตราค่าแรงต่อชั่วโมง</span><br>
@@ -553,20 +764,20 @@
                     </div>
 
                     <div class="form-group" style="margin-top: 25px;">
-                        <label style="color: #f472b6;">🌸 OT 1.5 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt15h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt15m" value="0" min="0" max="59" placeholder="นาที"></div>
+                        <label class="tier tier-15">OT 1.5 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 1.5 เท่า ชั่วโมง" type="number" id="qOt15h" value="0" min="0" placeholder="ชม."></div><div class="unit" data-unit="นาที"><input aria-label="OT 1.5 เท่า นาที" type="number" id="qOt15m" value="0" min="0" max="59" placeholder="นาที"></div></div>
                     </div>
                     <div class="form-group">
-                        <label style="color: #fb923c;">🍁 OT 2.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt20h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt20m" value="0" min="0" max="59" placeholder="นาที"></div>
+                        <label class="tier tier-20">OT 2.0 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 2.0 เท่า ชั่วโมง" type="number" id="qOt20h" value="0" min="0" placeholder="ชม."></div><div class="unit" data-unit="นาที"><input aria-label="OT 2.0 เท่า นาที" type="number" id="qOt20m" value="0" min="0" max="59" placeholder="นาที"></div></div>
                     </div>
                     <div class="form-group">
-                        <label style="color: #ef4444;">🌹 OT 3.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt30h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt30m" value="0" min="0" max="59" placeholder="นาที"></div>
+                        <label class="tier tier-30">OT 3.0 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 3.0 เท่า ชั่วโมง" type="number" id="qOt30h" value="0" min="0" placeholder="ชม."></div><div class="unit" data-unit="นาที"><input aria-label="OT 3.0 เท่า นาที" type="number" id="qOt30m" value="0" min="0" max="59" placeholder="นาที"></div></div>
                     </div>
                     <div class="form-group">
-                        <label style="color: #8b5cf6;">⭐ OT 6.0 เท่า</label>
-                        <div class="ot-row"><input type="number" id="qOt60h" value="0" min="0" placeholder="ชม."><input type="number" id="qOt60m" value="0" min="0" max="59" placeholder="นาที"></div>
+                        <label class="tier tier-60">OT 6.0 เท่า</label>
+                        <div class="ot-row"><div class="unit" data-unit="ชม."><input aria-label="OT 6.0 เท่า ชั่วโมง" type="number" id="qOt60h" value="0" min="0" placeholder="ชม."></div><div class="unit" data-unit="นาที"><input aria-label="OT 6.0 เท่า นาที" type="number" id="qOt60m" value="0" min="0" max="59" placeholder="นาที"></div></div>
                     </div>
                 </div>
 
@@ -601,12 +812,14 @@
                         </div>
                     </div>
 
-                    <button class="btn" id="copySummaryBtn" style="margin-top: 20px; background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--color-primary); box-shadow: 0 5px 15px rgba(244,114,182,0.1);">📋 คัดลอกสรุปข้อความ (ส่งไลน์)</button>
+                    <button class="btn" id="copySummaryBtn" style="margin-top: 20px; background: var(--bg-input); color: var(--color-primary-hover); border: 2px solid var(--color-primary); box-shadow: 0 5px 15px rgba(244,114,182,0.1);">คัดลอกสรุปข้อความ (ส่งไลน์)</button>
                 </div>
             </div>
         </div>
         
     </div>
+
+    <button type="button" id="floatSave" class="btn btn-primary float-save" aria-live="polite">บันทึกข้อมูลที่แก้ไข</button>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -640,16 +853,21 @@
             bankAcc: ""
         };
         let formDirty = false;
+        let taxDirty = false;
         let isAutoTheme = true;
         let otDonutChartInstance = null;
+        let chartHasOT = false;
 
         const monthsTH = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
-        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','pvfIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m','withholdingTaxIn'];
+        const INCOME_FIELD_IDS = ['baseIn','licenseIn','houseIn','foodDaysIn','allowanceDaysIn','welfareIn','leaveIn','ssIn','pvfIn','ot15h','ot15m','ot20h','ot20m','ot30h','ot30m','ot60h','ot60m'];
+        const TAX_INPUT_IDS = ['withholdingTaxIn','exSpouse','exChildren','exParents','exLife','exHealth','exParentHealth','exMortgage','exOther'];
 
         function checkAutoTheme() {
             if (!isAutoTheme) return;
             const hour = new Date().getHours();
             const isNight = hour < 6 || hour >= 18;
+            const wasNight = document.body.classList.contains('night-mode');
+            if (wasNight !== isNight) setTimeout(refreshChartTheme, 0);
             if (isNight) {
                 document.body.classList.add('night-mode');
                 document.getElementById('themeIcon').innerText = '🌙';
@@ -666,6 +884,7 @@
         document.getElementById('themeToggleBtn').addEventListener('click', () => {
             isAutoTheme = false;
             const isDark = document.body.classList.toggle('night-mode');
+            setTimeout(refreshChartTheme, 0);
             if (isDark) {
                 document.getElementById('themeIcon').innerText = '🌙';
                 document.getElementById('themeText').innerText = 'Dark Mode';
@@ -677,7 +896,7 @@
 
         function createSakuraPetals() {
             const layer = document.getElementById('sakuraLayer');
-            const petalCount = 25; 
+            const petalCount = window.matchMedia('(max-width: 600px)').matches ? 10 : 22; 
             for (let i = 0; i < petalCount; i++) {
                 const petal = document.createElement('div');
                 petal.classList.add('petal');
@@ -708,6 +927,7 @@
             document.getElementById('popupIcon').innerText = icon;
             document.getElementById('popupMsg').innerText = msg;
             document.getElementById('customPopup').classList.add('show');
+            document.getElementById('popupOkBtn').focus();
         }
         window.closePopup = function() {
             document.getElementById('customPopup').classList.remove('show');
@@ -719,7 +939,7 @@
             const todayStr = new Date().toLocaleDateString('th-TH');
             document.getElementById('slipPrintDate').innerText = todayStr;
             document.getElementById('slipMonthYear').innerText = `${monthsTH[m]} ${currentYear + 543}`;
-            document.getElementById('slipUserEmail').innerText = currentUserEmail || 'user@email.com';
+            document.getElementById('slipUserEmail').innerText = userProfile.fullName || currentUserEmail || '-';
             
             document.getElementById('slipCompanyName').innerText = `🌸 ${userProfile.companyName || 'บริษัทของคุณ'}`;
             document.getElementById('slipEmpCode').innerText = userProfile.empCode || '-';
@@ -755,13 +975,15 @@
                 accSS += tempC.ss;
             }
             document.getElementById('slipAccGross').innerText = accGross.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
-            document.getElementById('slipAccSS').innerText = accSS.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + '-';
+            document.getElementById('slipAccSS').innerText = accSS.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('slipNetTotal').innerText = c.netIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ฿';
 
+            document.getElementById('slipDirtyNote').style.display = formDirty ? 'block' : 'none';
             document.getElementById('slipModal').classList.add('show');
         }
         window.closeSlipModal = function() { document.getElementById('slipModal').classList.remove('show'); }
         window.downloadSlipImage = function() {
+            if (typeof html2canvas === 'undefined') { alert('โหลดตัวสร้างรูปภาพไม่สำเร็จ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่'); return; }
             const slipCard = document.getElementById('cuteSlipCard');
             html2canvas(slipCard, { scale: 2, backgroundColor: null }).then(canvas => {
                 const link = document.createElement('a');
@@ -771,13 +993,67 @@
             });
         }
 
+        function refreshChartTheme() { if (otDonutChartInstance) updateOtDonutChart(); }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSlipModal(); closePopup(); } });
+        document.getElementById('slipModal').addEventListener('click', e => {
+            if (e.target.id === 'slipModal' || e.target.id === 'slipWrap') closeSlipModal();
+        });
+
+        function refreshFloat() {
+            document.getElementById('floatSave').classList.toggle('show', formDirty || taxDirty);
+        }
+        function markTaxDirty() { taxDirty = true; refreshFloat(); }
+        function markTaxClean() { taxDirty = false; refreshFloat(); }
+
+        function authErrorMessage(err) {
+            const code = (err && err.code) || '';
+            const map = {
+                'auth/invalid-email': 'รูปแบบอีเมลไม่ถูกต้องครับ',
+                'auth/invalid-credential': 'อีเมลหรือรหัสผ่านไม่ถูกต้องครับ',
+                'auth/wrong-password': 'อีเมลหรือรหัสผ่านไม่ถูกต้องครับ',
+                'auth/user-not-found': 'อีเมลหรือรหัสผ่านไม่ถูกต้องครับ',
+                'auth/email-already-in-use': 'อีเมลนี้สมัครสมาชิกไว้แล้ว ลองเข้าสู่ระบบแทนนะครับ',
+                'auth/weak-password': 'รหัสผ่านสั้นเกินไป (อย่างน้อย 6 ตัวอักษร)',
+                'auth/too-many-requests': 'ลองหลายครั้งเกินไป กรุณารอสักครู่แล้วลองใหม่ครับ',
+                'auth/network-request-failed': 'เชื่อมต่ออินเทอร์เน็ตไม่ได้ กรุณาตรวจสอบสัญญาณแล้วลองใหม่ครับ'
+            };
+            return map[code] || 'เกิดข้อผิดพลาด กรุณาลองใหม่ครับ';
+        }
+
+        function readTaxExtra() {
+            const n = id => Math.max(0, parseFloat(document.getElementById(id).value) || 0);
+            return {
+                spouse: document.getElementById('exSpouse').value === '1',
+                children: Math.floor(n('exChildren')),
+                parents: Math.min(4, Math.floor(n('exParents'))),
+                life: n('exLife'), health: n('exHealth'), parentHealth: n('exParentHealth'),
+                mortgage: n('exMortgage'), other: n('exOther')
+            };
+        }
+        function loadTaxToForm() {
+            const x = yearlyData.taxExtra || {};
+            document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
+            document.getElementById('exSpouse').value = x.spouse ? '1' : '0';
+            document.getElementById('exChildren').value = x.children ?? 0;
+            document.getElementById('exParents').value = x.parents ?? 0;
+            document.getElementById('exLife').value = x.life ?? 0;
+            document.getElementById('exHealth').value = x.health ?? 0;
+            document.getElementById('exParentHealth').value = x.parentHealth ?? 0;
+            document.getElementById('exMortgage').value = x.mortgage ?? 0;
+            document.getElementById('exOther').value = x.other ?? 0;
+            markTaxClean();
+        }
+
         function markDirty() {
             formDirty = true;
             document.getElementById('dirtyDot').classList.add('show');
+            refreshFloat();
         }
         function markClean() {
             formDirty = false;
             document.getElementById('dirtyDot').classList.remove('show');
+            refreshFloat();
         }
         INCOME_FIELD_IDS.forEach(id => {
             const el = document.getElementById(id);
@@ -788,6 +1064,7 @@
             if (formDirty && !confirm('มีข้อมูลที่ยังไม่บันทึก ต้องการทิ้งใช่ไหม?')) { e.target.value = lastMonth; return; }
             lastMonth = e.target.value;
             loadMonthToForm();
+            renderHero();
             const viewVal = document.getElementById('otViewSelect').value;
             if (viewVal !== 'year') {
                 document.getElementById('otViewSelect').value = document.getElementById('monthSelect').value;
@@ -795,7 +1072,18 @@
             updateOtDonutChart();
         });
         document.getElementById('otViewSelect').addEventListener('change', () => updateOtDonutChart());
-        document.getElementById('withholdingTaxIn').addEventListener('input', () => renderTableAndTax());
+        TAX_INPUT_IDS.forEach(id => document.getElementById(id).addEventListener('input', () => { markTaxDirty(); renderTableAndTax(); renderHero(); }));
+        document.querySelectorAll('[data-month-step]').forEach(btn => btn.addEventListener('click', () => {
+            const sel = document.getElementById('monthSelect');
+            const next = Math.min(11, Math.max(0, parseInt(sel.value) + parseInt(btn.dataset.monthStep)));
+            if (String(next) === sel.value) return;
+            sel.value = String(next);
+            sel.dispatchEvent(new Event('change'));
+        }));
+        document.getElementById('floatSave').addEventListener('click', () => {
+            if (formDirty) document.getElementById('saveBtn').click();
+            else if (taxDirty) document.getElementById('saveTaxBtn').click();
+        });
 
         document.getElementById('togglePw').addEventListener('click', () => {
             const pw = document.getElementById('password');
@@ -821,7 +1109,7 @@
             try {
                 await sendPasswordResetEmail(auth, email);
                 showPopup("ระบบส่งลิงก์ตั้งรหัสผ่านใหม่ไปที่อีเมลของคุณแล้วจ้า!", "📩");
-            } catch(err) { showPopup("เกิดข้อผิดพลาด กรุณาลองใหม่ครับ", "❌"); }
+            } catch(err) { showPopup(authErrorMessage(err), "❌"); }
         });
 
         document.getElementById('authForm').addEventListener('submit', async (e) => {
@@ -838,7 +1126,7 @@
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
                 }
-            } catch(err) { showPopup("อีเมลหรือรหัสผ่านไม่ถูกต้องครับ", "❌"); authBtn.disabled = false; }
+            } catch(err) { showPopup(authErrorMessage(err), "❌"); authBtn.disabled = false; }
         });
 
         document.getElementById('logoutBtn').addEventListener('click', () => signOut(auth));
@@ -856,6 +1144,7 @@
         }
 
         document.getElementById('displayYear').addEventListener('change', (e) => {
+            if ((formDirty || taxDirty) && !confirm('มีข้อมูลที่ยังไม่บันทึก ต้องการทิ้งใช่ไหม?')) { e.target.value = currentYear; return; }
             currentYear = parseInt(e.target.value);
             markClean();
             loadUserData();
@@ -867,9 +1156,11 @@
             try {
                 const profileRef = doc(db, "users", currentUid, "settings", "profile");
                 const profileSnap = await getDoc(profileRef);
+                userProfile = { fullName: "", companyName: "", empCode: "", department: "", bankName: "", bankAcc: "" };
                 if (profileSnap.exists()) {
                     userProfile = profileSnap.data();
                 }
+                document.getElementById('pFullName').value = userProfile.fullName || "";
                 document.getElementById('pCompanyName').value = userProfile.companyName || "";
                 document.getElementById('pEmpCode').value = userProfile.empCode || "";
                 document.getElementById('pDepartment').value = userProfile.department || "";
@@ -879,6 +1170,7 @@
                 const docRef = doc(db, "users", currentUid, "years", currentYear.toString());
                 const docSnap = await getDoc(docRef);
                 yearlyData = docSnap.exists() ? docSnap.data() : {};
+                loadTaxToForm();
                 loadMonthToForm();
                 renderAll();
             } catch (err) {
@@ -895,6 +1187,7 @@
             document.getElementById('saveProfileBtnText').innerHTML = '<span class="spinner" style="display:inline-block; vertical-align:middle;"></span> กำลังบันทึก...';
             
             userProfile = {
+                fullName: document.getElementById('pFullName').value.trim(),
                 companyName: document.getElementById('pCompanyName').value.trim(),
                 empCode: document.getElementById('pEmpCode').value.trim(),
                 department: document.getElementById('pDepartment').value.trim(),
@@ -909,7 +1202,28 @@
                 showPopup("เกิดข้อผิดพลาดในการบันทึกข้อมูล", "❌");
             } finally {
                 btn.disabled = false;
-                document.getElementById('saveProfileBtnText').innerText = '💾 บันทึกข้อมูลบริษัท/สลิปของฉัน';
+                document.getElementById('saveProfileBtnText').innerText = 'บันทึกข้อมูลบริษัท/สลิปของฉัน';
+            }
+        });
+
+        document.getElementById('saveTaxBtn').addEventListener('click', async () => {
+            if (!currentUid) return;
+            const btn = document.getElementById('saveTaxBtn');
+            btn.disabled = true;
+            document.getElementById('saveTaxBtnText').innerText = 'กำลังบันทึก...';
+            try {
+                const withholdingTax = Math.max(0, parseFloat(document.getElementById('withholdingTaxIn').value) || 0);
+                const taxExtra = readTaxExtra();
+                await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), { withholdingTax, taxExtra }, { merge: true });
+                yearlyData.withholdingTax = withholdingTax;
+                yearlyData.taxExtra = taxExtra;
+                markTaxClean();
+                showPopup("บันทึกข้อมูลภาษีเรียบร้อยแล้ว!", "🧾");
+            } catch (err) {
+                showPopup("เกิดข้อผิดพลาดในการบันทึกข้อมูลภาษี", "❌");
+            } finally {
+                btn.disabled = false;
+                document.getElementById('saveTaxBtnText').innerText = 'บันทึกข้อมูลภาษี';
             }
         });
 
@@ -934,7 +1248,7 @@
             document.getElementById('ot60h').value = data.ot60h ?? 0;
             document.getElementById('ot60m').value = data.ot60m ?? 0;
             
-            document.getElementById('withholdingTaxIn').value = yearlyData.withholdingTax ?? 0;
+            
             markClean();
         }
 
@@ -960,7 +1274,16 @@
                 ot60h: parseFloat(document.getElementById('ot60h').value) || 0,
                 ot60m: parseFloat(document.getElementById('ot60m').value) || 0
             };
-            yearlyData.withholdingTax = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
+            yearlyData.withholdingTax = Math.max(0, parseFloat(document.getElementById('withholdingTaxIn').value) || 0);
+            yearlyData.taxExtra = readTaxExtra();
+            const rec = yearlyData[m];
+            Object.keys(rec).forEach(k => { rec[k] = Math.max(0, rec[k]); });
+            ['15', '20', '30', '60'].forEach(k => {
+                const totalMin = rec['ot' + k + 'h'] * 60 + rec['ot' + k + 'm'];
+                const hh = Math.floor(totalMin / 60);
+                rec['ot' + k + 'h'] = hh;
+                rec['ot' + k + 'm'] = Math.round((totalMin - hh * 60) * 100) / 100;
+            });
 
             await setDoc(doc(db, "users", currentUid, "years", currentYear.toString()), yearlyData);
         }
@@ -975,6 +1298,8 @@
             try {
                 await saveToFirebase();
                 showPopup("บันทึกข้อมูลเดือน " + monthsTH[m] + " เรียบร้อยแล้ว!", "💾");
+                markTaxClean();
+                loadMonthToForm();
                 markClean();
                 renderAll();
             } catch (err) {
@@ -982,7 +1307,7 @@
             } finally {
                 document.getElementById('loadingOverlay').style.display = 'none';
                 saveBtn.disabled = false;
-                document.getElementById('saveBtnText').innerText = '💾 บันทึกข้อมูลลงระบบ';
+                document.getElementById('saveBtnText').innerText = 'บันทึกข้อมูลลงระบบ';
             }
         });
 
@@ -1023,6 +1348,25 @@
         function renderAll() {
             renderTableAndTax();
             updateOtDonutChart();
+            renderHero();
+        }
+
+        function renderHero() {
+            const m = parseInt(document.getElementById('monthSelect').value);
+            const c = calculateMonth(m);
+            const f = n => n.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
+            const set = (id, v) => { document.getElementById(id).innerText = v; };
+            set('heroMonth', `${monthsTH[m]} ${currentYear + 543}`);
+            set('heroNet', f(c.netIncome));
+            set('heroGross', f(c.grossIncome));
+            set('heroOt', f(c.totalOtMoney));
+            set('heroOtHours', `${c.totalOtHours.toFixed(1)} ชม.`);
+            set('heroDeduct', f(c.leave + c.ss + c.pvf));
+            set('heroYtd', document.getElementById('totalNet').innerText);
+            const refund = document.getElementById('taxFinalLabel').innerText.includes('คืน');
+            set('heroTaxLabel', refund ? 'ภาษีที่ควรได้คืนทั้งปี' : 'ภาษีที่ต้องจ่ายทั้งปี');
+            set('heroTaxValue', document.getElementById('taxAmount').innerText);
+            set('heroNote', c.grossIncome === 0 ? 'ยังไม่มีข้อมูลเดือนนี้ กรอกรายได้ด้านล่างแล้วกดบันทึก' : '');
         }
 
         function updateOtDonutChart() {
@@ -1070,36 +1414,46 @@
             document.getElementById('stat30h').innerText = sum30.toFixed(1) + ' ชม.';
             document.getElementById('stat60h').innerText = sum60.toFixed(1) + ' ชม.';
             document.getElementById('otCenterHours').innerText = totalHours.toFixed(1);
-            document.getElementById('otTotalMoneyText').innerText = `💰 รวมเงิน OT: ${totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท`;
+            document.getElementById('otTotalMoneyText').innerText = `${totalMoney.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} บาท`;
 
+            if (typeof Chart === 'undefined') return;
             const ctx = document.getElementById('otDonutChart').getContext('2d');
-            if (otDonutChartInstance) otDonutChartInstance.destroy();
+            const night = document.body.classList.contains('night-mode');
+            chartHasOT = totalHours > 0;
+            const chartData = chartHasOT ? [sum15, sum20, sum30, sum60] : [1];
+            const chartColors = chartHasOT ? ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'] : [night ? '#3b2d4f' : '#f1f5f9'];
+            const chartLabels = chartHasOT ? ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'] : ['ยังไม่มี OT'];
+            const sliceBorder = night ? '#2d1f3d' : '#ffffff';
 
-            const chartData = (totalHours === 0) ? [1] : [sum15, sum20, sum30, sum60];
-            const chartColors = (totalHours === 0) ? ['#f1f5f9'] : ['#f472b6', '#fb923c', '#ef4444', '#8b5cf6'];
+            if (otDonutChartInstance) {
+                const ds = otDonutChartInstance.data.datasets[0];
+                otDonutChartInstance.data.labels = chartLabels;
+                ds.data = chartData; ds.backgroundColor = chartColors; ds.borderColor = sliceBorder;
+                otDonutChartInstance.update('none');
+                return;
+            }
 
             otDonutChartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['OT 1.5x', 'OT 2.0x', 'OT 3.0x', 'OT 6.0x'],
-                    datasets: [{
-                        data: chartData,
-                        backgroundColor: chartColors,
-                        borderWidth: 3,
-                        borderColor: '#ffffff'
-                    }]
+                    labels: chartLabels,
+                    datasets: [{ data: chartData, backgroundColor: chartColors, borderWidth: 3, borderColor: sliceBorder }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '72%',
-                    plugins: { legend: { display: false } }
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { filter: () => chartHasOT, callbacks: { label: c => ` ${c.label}: ${Number(c.parsed).toFixed(1)} ชม.` } }
+                    }
                 }
             });
         }
 
         function renderTableAndTax() {
             const tbody = document.getElementById('tableBody');
+            const openSet = new Set([...document.querySelectorAll('.breakdown-row.show')].map(el => el.id));
             tbody.innerHTML = '';
             let totalBaseSum = 0, totalHoursSum = 0, totalOtSum = 0, totalNetSum = 0, totalSSSum = 0, totalGrossSum = 0, totalPvfSum = 0;
             const today = new Date();
@@ -1113,6 +1467,8 @@
                 totalSSSum += c.ss; totalGrossSum += c.grossIncome; totalPvfSum += c.pvf;
 
                 const tr = document.createElement('tr');
+                tr.tabIndex = 0; tr.setAttribute('role', 'button');
+                tr.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); tr.click(); } });
                 if (isCurrentYear && i === currentMonthIdx) tr.classList.add('current-month');
                 tr.innerHTML = `<td style="text-align:center;">${monthsTH[i]}</td>
                     <td>${c.baseIncome.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
@@ -1123,11 +1479,12 @@
                 const detailTr = document.createElement('tr');
                 detailTr.className = 'breakdown-row';
                 detailTr.id = `breakdown-${i}`;
+                if (openSet.has(detailTr.id)) detailTr.classList.add('show');
                 detailTr.innerHTML = `<td colspan="5">
                     <div class="breakdown-content">
                         <div class="breakdown-grid">
                             <div class="breakdown-box">
-                                <h4>💰 รายได้ตั้งต้น & เงินช่วยเหลือ</h4>
+                                <h4>รายได้ตั้งต้น & เงินช่วยเหลือ</h4>
                                 <div class="breakdown-item"><span>ฐานเงินเดือน:</span> <span>${c.base.toLocaleString()} ฿</span></div>
                                 <div class="breakdown-item"><span>ค่าใบประกอบ (กว.):</span> <span>${c.license.toLocaleString()} ฿</span></div>
                                 <div class="breakdown-item"><span>ค่าที่พัก/อื่นๆ:</span> <span>${c.house.toLocaleString()} ฿</span></div>
@@ -1136,14 +1493,14 @@
                                 <div class="breakdown-item"><span>สวัสดิการ:</span> <span>${c.welfare.toLocaleString()} ฿</span></div>
                             </div>
                             <div class="breakdown-box">
-                                <h4>⏱️ รายละเอียด OT</h4>
+                                <h4>รายละเอียด OT</h4>
                                 <div class="breakdown-item"><span>OT 1.5x (${c.h15.toFixed(1)} ชม.):</span> <span>${(c.h15 * 1.5 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
                                 <div class="breakdown-item"><span>OT 2.0x (${c.h20.toFixed(1)} ชม.):</span> <span>${(c.h20 * 2.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
                                 <div class="breakdown-item"><span>OT 3.0x (${c.h30.toFixed(1)} ชม.):</span> <span>${(c.h30 * 3.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
                                 <div class="breakdown-item"><span>OT 6.0x (${c.h60.toFixed(1)} ชม.):</span> <span>${(c.h60 * 6.0 * (c.base > 0 ? c.base/240 : 0)).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2})} ฿</span></div>
                             </div>
                             <div class="breakdown-box">
-                                <h4>✂️ รายการหักออก</h4>
+                                <h4>รายการหักออก</h4>
                                 <div class="breakdown-item"><span>หักลางาน/อื่นๆ:</span> <span style="color:#e11d48;">- ${c.leave.toLocaleString()} ฿</span></div>
                                 <div class="breakdown-item"><span>หักประกันสังคม:</span> <span style="color:#e11d48;">- ${c.ss.toLocaleString()} ฿</span></div>
                                 <div class="breakdown-item"><span>หักสำรองเลี้ยงชีพ:</span> <span style="color:#e11d48;">- ${c.pvf.toLocaleString()} ฿</span></div>
@@ -1170,7 +1527,11 @@
             const expenses = Math.min(totalGrossSum * 0.5, 100000);
             const ssDeduct = Math.min(totalSSSum, 9000);
             const pvfDeduct = Math.min(totalPvfSum, totalGrossSum * 0.15, 500000);
-            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - ssDeduct - pvfDeduct);
+            const ex = readTaxExtra();
+            const lifeHealth = Math.min(Math.min(ex.life, 100000) + Math.min(ex.health, 25000), 100000);
+            const extraDeduct = (ex.spouse ? 60000 : 0) + ex.children * 30000 + Math.min(ex.parents, 4) * 30000
+                + lifeHealth + Math.min(ex.parentHealth, 15000) + Math.min(ex.mortgage, 100000) + ex.other;
+            const taxableIncome = Math.max(0, totalGrossSum - expenses - 60000 - ssDeduct - pvfDeduct - extraDeduct);
 
             let tax = 0;
             if (taxableIncome > 5000000) tax += (taxableIncome - 5000000) * 0.35 + 1265000;
@@ -1183,6 +1544,12 @@
 
             const withholding = parseFloat(document.getElementById('withholdingTaxIn').value) || 0;
             const finalTaxNet = tax - withholding;
+            document.getElementById('taxExtraDed').innerText = fmt(extraDeduct);
+            document.getElementById('taxNetIncome').innerText = fmt(taxableIncome);
+            document.getElementById('taxBeforeWht').innerText = fmt(tax);
+            const rate = taxableIncome > 5000000 ? 35 : taxableIncome > 2000000 ? 30 : taxableIncome > 1000000 ? 25
+                : taxableIncome > 750000 ? 20 : taxableIncome > 500000 ? 15 : taxableIncome > 300000 ? 10 : taxableIncome > 150000 ? 5 : 0;
+            document.getElementById('taxBracket').innerText = rate === 0 ? 'อยู่ในช่วงยกเว้นภาษี' : `ขั้นภาษีสูงสุดที่ชนช่วง ${rate}%`;
 
             document.getElementById('taxGross').innerText = totalGrossSum.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
             document.getElementById('taxExp').innerText = expenses.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
@@ -1197,7 +1564,7 @@
             } else {
                 taxLabelEl.innerText = "ยอดภาษีที่ควรได้คืน ( Refund )";
                 taxAmountEl.innerText = Math.abs(finalTaxNet).toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' บาท';
-                taxAmountEl.style.color = '#10b981';
+                taxAmountEl.style.color = 'var(--good)';
             }
         }
 
@@ -1228,14 +1595,15 @@
         });
 
         document.getElementById('copySummaryBtn').addEventListener('click', () => {
-            const text = `🌸 สรุปค่า OT ด่วน\n- OT 1.5x (${document.getElementById('res15Time').innerText}): ${document.getElementById('res15Money').innerText}\n- OT 2.0x (${document.getElementById('res20Time').innerText}): ${document.getElementById('res20Money').innerText}\n- OT 3.0x (${document.getElementById('res30Time').innerText}): ${document.getElementById('res30Money').innerText}\n- OT 6.0x (${document.getElementById('res60Time').innerText}): ${document.getElementById('res60Money').innerText}\n💰 รวมยอด OT ทั้งสิ้น: ${document.getElementById('resTotalMoney').innerText}`;
+            const text = `🌸 สรุปค่า OT ด่วน (เงินเดือน ${document.getElementById('quickSalary').value || 0} บาท, เรท ${document.getElementById('quickRateDisplay').innerText} บาท/ชม.)\n- OT 1.5x (${document.getElementById('res15Time').innerText}): ${document.getElementById('res15Money').innerText}\n- OT 2.0x (${document.getElementById('res20Time').innerText}): ${document.getElementById('res20Money').innerText}\n- OT 3.0x (${document.getElementById('res30Time').innerText}): ${document.getElementById('res30Money').innerText}\n- OT 6.0x (${document.getElementById('res60Time').innerText}): ${document.getElementById('res60Money').innerText}\n💰 รวมยอด OT ทั้งสิ้น: ${document.getElementById('resTotalMoney').innerText}`;
+            if (!navigator.clipboard) { showPopup("เบราว์เซอร์นี้ไม่รองรับการคัดลอกอัตโนมัติ", "⚠️"); return; }
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(text).then(() => showPopup("คัดลอกสรุปข้อความเรียบร้อยแล้ว!", "📋"));
             }
         });
 
         const fmt = n => n.toLocaleString('th-TH', {minimumFractionDigits:2, maximumFractionDigits:2});
-        window.addEventListener('beforeunload', e => { if (formDirty) { e.preventDefault(); e.returnValue = ''; } });
+        window.addEventListener('beforeunload', e => { if (formDirty || taxDirty) { e.preventDefault(); e.returnValue = ''; } });
 
         window.copyPrevMonth = function() {
             const m = parseInt(document.getElementById('monthSelect').value);
@@ -1259,6 +1627,11 @@
             a.click();
         };
 
+        document.querySelectorAll('input[type=number]').forEach(inp => {
+            inp.setAttribute('inputmode', 'decimal');
+            inp.addEventListener('focus', () => inp.select());
+        });
+
         onAuthStateChanged(auth, (user) => {
             document.getElementById('initialLoading').style.display = 'none';
             if (user) {
@@ -1266,7 +1639,7 @@
                 currentUserEmail = user.email || '';
                 document.getElementById('displayUser').innerText = currentUserEmail;
                 document.getElementById('authSection').style.display = 'none';
-                document.getElementById('appSection').style.display = 'block';
+                document.getElementById('appSection').classList.add('on');
                 initYearSelector();
                 document.getElementById('monthSelect').value = new Date().getMonth();
                 lastMonth = document.getElementById('monthSelect').value;
@@ -1277,10 +1650,14 @@
                 yearlyData = {};
                 markClean();
                 document.getElementById('authSection').style.display = 'block';
-                document.getElementById('appSection').style.display = 'none';
+                document.getElementById('authBtn').disabled = false;
+                document.getElementById('password').value = '';
+                document.getElementById('confirmPassword').value = '';
+                markTaxClean();
+                closeSlipModal();
+                document.getElementById('appSection').classList.remove('on');
             }
         });
     </script>
 </body>
 </html>
-```[cite: 1]
